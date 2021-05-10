@@ -1,0 +1,477 @@
+syntax for creating Internal Table:
+
+create table tablename(schema)
+row format delimited
+fields terminated by 'delimiter';
+
+
+Loading data into internal table: two ways
+
+i)from LFS:
+  syntax:
+  load data local inpath 'LFS filepath' into table tablename;
+ii)from HDFS:
+  syntax:
+  load data  inpath 'HDFS filepath' into table tablename;
+  
+  
+syntax for creating External Table:
+
+create external table tablename(schema)
+row format delimited
+fields terminated by 'delimiter';
+
+Loading data into external table: 2 ways
+
+i)from LFS:
+  syntax:
+  load data local inpath 'LFS filepath' into table tablename;
+ii)from HDFS:
+  syntax:
+  load data  inpath 'HDFS filepath' into table tablename;
+  
+  
+
+Working with internal tables:
+
+cat > file1
+Good Morning..........
+Good Morning.........
+Good Morning.........
+Good Morning........
+Good Morning........
+
+cat > file2
+Hello............
+Hello...........
+Hello............  
+Hello............
+Hello...........
+Hello..........
+
+hive> create table mysamp1(line string);
+
+load data local inpath 'file1' into table mysamp1;
+
+select * from mysamp1;
+
+load data local inpath 'file2' into table mysamp1;
+
+select * from mysamp1;
+
+
+cat > file3
+hi.....
+hi....
+hi....
+hi...
+hi...
+
+
+hive> select * from mysamp1;
+
+External Tables
+
+create table mysample2(line string) location '/user/myyloc1';
+
+
+overwriting contents of a hive table:
+
+create table ctab1(line string);
+
+load data local inpath 'file1' into table ctab1;
+
+select * from ctab1;
+
+load data local inpath 'file2' into table ctab1;
+
+select * from ctab1;
+
+
+load data local inpath 'file3' overwrite into table ctab1;
+
+select * from ctab1;
+
+
+
+create table ctab2(line string);
+
+insert overwrite table ctab2 select * from ctab1;
+
+select * from ctab2;
+
+
+
+
+
+
+Creating table from another table
+---------------------------------
+$ cat > file1
+Hadoop is great
+Hadoop is simple
+Hadoop is distributed
+
+hive> create database hivedb1;
+OK
+Time taken: 0.602 seconds
+
+
+hive> use hivedb1;
+OK
+Time taken: 0.034 seconds
+
+hive> create table mysamp1(line string);
+OK
+Time taken: 0.662 seconds
+hive> load data local inpath 'file1' into table mysamp1;
+Loading data to table hivedb11.mysamp1
+OK
+Time taken: 1.824 seconds
+hive> select * from mysamp1;
+OK
+Hadoop is Great
+Hadoop is simple
+Hadoop is booming
+
+create table mysamp2 like mysamp1;
+
+
+Task: Find yearwise max temperature and min temperature
+
+$ cat tmpr
+Hyd 2015 apr 41 
+pun 2015 apr 39
+ban 2015 apr 38
+Hyd 2016 apr 34  
+pun 2016 apr 35
+ban 2016 apr 32
+Hyd 2017 apr 37  
+pun 2017 apr 39
+ban 2017 apr 38
+
+hive> create table tmpr1(line string);
+OK
+Time taken: 0.285 seconds
+hive> load data local inpath 'tmpr' into table tmpr1;
+Loading data to table hivedb11.tmpr1
+OK
+Time taken: 0.617 seconds
+hive> select * from tmpr1;
+OK
+Hyd 2015 apr 41 
+pun 2015 apr 39
+ban 2015 apr 38
+Hyd 2016 apr 34  
+pun 2016 apr 35
+ban 2016 apr 32
+Hyd 2017 apr 37  
+pun 2017 apr 39
+ban 2017 apr 38
+
+hive> create table tmpr2(year int,temp int);
+OK
+Time taken: 0.321 seconds
+hive> insert overwrite table temp2 select substr(line,5,4),substr(line,14,2) from temp1;
+
+hive> select * from tmpr2;
+OK
+2015	41
+2015	39
+2015	38
+2016	34
+2016	35
+2016	32
+2017	37
+2017	39
+2017	38
+
+hive> create table temp3(year int,max int,min int);
+OK
+Time taken: 0.237 seconds
+hive> insert overwrite table temp3 select year,max(temp),min(temp) from temp2 group by year;
+
+hive> select * from tmpr3;
+OK
+2015	41	38
+2016	35	32
+2017	39	37
+
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -ls /user/hive/warehouse/hivedb11.db/tmpr3/000000_0
+-rwxr-xr-x   1 lenovo supergroup         33 2018-09-05 12:13 /user/hive/warehouse/hivedb11.db/tmpr3/000000_0
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /user/hive/warehouse/hivedb11.db/tmpr3/000000_0
+2015 41 38
+2016 35 32
+2017 39 37
+
+---------------------------------------------------------------------------------------------------
+Task 2 : IF Temperature has -ve values
+
+$ cat tmpr1
+Hyd 2015 apr 41 
+pun 2015 apr -39
+ban 2015 apr 38
+Hyd 2016 apr 34  
+pun 2016 apr -35
+ban 2016 apr 32
+Hyd 2017 apr 37  
+pun 2017 apr -39
+ban 2017 apr 38
+
+hive> create table temp1(line string);
+
+hive> load data local inpath 'tmpr1' into table temp1;
+
+hive> select * from temp1;
+OK
+Hyd 2015 apr 41 
+pun 2015 apr -39
+ban 2015 apr 38
+Hyd 2016 apr 34  
+pun 2016 apr -35
+ban 2016 apr 32
+Hyd 2017 apr 37  
+pun 2017 apr -39
+ban 2017 apr 38
+
+hive> create table temp2(year int,temp int);
+
+hive> insert overwrite table temp2
+    > select * from (
+    > select substr(line,5,4),substr(line,14,2) from temp1 where substr(line,14,1)!='-'
+    > union all
+    > select substr(line,5,4),substr(line,14,3) from temp1 where substr(line,14,1)='-')x;
+
+hive> select * from temp2;
+OK
+2015	41
+2015	-39
+2015	38
+2016	34
+2016	-35
+2016	32
+2017	37
+2017	-39
+2017	38
+Time taken: 0.272 seconds, Fetched: 9 row(s)
+hive> create table temp3(year int,max int,min int);
+OK
+Time taken: 0.25 seconds
+hive> insert overwrite table temp3
+    > select year,max(temp),min(temp) from temp2 group by year;
+
+hive> select * from temp3;
+OK
+2015	41	-39
+2016	34	-35
+2017	38	-39
+
+------------------------------------------------------------------------------------------------------------------
+
+
+
+
+working with delimiters:
+
+hive> create table emp1(eid int,ename string,sal int,gender string,dno int);
+OK
+Time taken: 0.311 seconds
+hive> load data local inpath 'emp7' into table emptab1;
+Loading data to table hivedb9.emptab1
+OK
+Time taken: 0.618 seconds
+hive> select * from emptab1;
+OK
+NULL	NULL	NULL	NULL	NULL
+NULL	NULL	NULL	NULL	NULL
+NULL	NULL	NULL	NULL	NULL
+NULL	NULL	NULL	NULL	NULL
+NULL	NULL	NULL	NULL	NULL
+
+Here all Nulls becoz, here delimiter is not specified.
+
+Note: Default delimiter in hive is diamond('\001')
+
+hive> create table emp(eid int,ename string,sal int,gender string,dno int)
+  row format delimited
+  fields terminated by ',';
+
+hive> load data local inpath 'emp7' into table emp;
+hive> select * from emp;
+OK
+101	miller	10000	m	11
+102	Blake	20000	m	12
+103	sony	30000	f	11
+104	sita	40000	f	12
+105	John	50000	m	13
+
+
+
+Datatypes in Hive:
+
+1.simple data types  :   int,float,long,double,string
+2.complex data types :  array,struct,map
+
+array-->homogeneous  ex: [11,12,13]--->representing homogeneous values deptnos
+
+struct--->heterogeneos ex:[p1,2000,hyd]-->heterogeneous values-->product,price,city
+
+map--->set of (k,v)pairs ---><B.Tech:2010,M.Tech:2014> set of (k,v)pairs
+
+
+
+Loading Array, Struct, Map collection Items
+
+Ex:working with array
+
+
+$ cat profile1
+
+101,Ajay,btech#mtech,25,hyd
+102,sanjay,bsc#msc#mtech,26,pune
+
+
+
+hive> create database pract;
+
+hive> use pract;
+
+hive> create table profile1(id int, name string, qual  array<string>, age int,city string) 
+    > row format delimited        
+    >     fields terminated by ','
+    >     collection items terminated by '#';
+
+hive> load data local inpath 'profile1' into table profile1;
+
+hive> select * from profile1;
+OK
+101     Venu    ["btech","mtech"]       25      hyd
+102     Veni    ["bsc","msc","mtech"]   26      pune
+
+
+
+
+
+
+working with heterogeneous(struct)
+__________________
+
+$ cat profile2
+
+101,Arun,smitha#25#btech,hyd
+102,Varun,Aruna#24#mba,pune
+
+
+hive> create table profile2(
+      id int, name string, 
+       wife struct<name:string,age:int,qual:string>, city string)
+       row format delimited 
+         fields terminated by ','
+         collection items terminated by '#';
+
+hive> load data local inpath 'profile2' into table profile2;
+
+hive> select * from profile2;
+OK
+101     Venu    {"name":"Vani","age":25,"qual":"btech"}   hyd
+102     Varun   {"name":"Varuna","age":24,"qual":"mba"}   pune
+
+hive> select name, wife.name from profile2;
+
+Venu    Vani
+Varun   Varuna
+
+hive> create table info(id int, name string,wname string, wage int, wqual string, city string);
+
+hive> insert overwrite table info
+       select id, name, wife.name, wife.age,
+       wife.qual , city  from profile2;
+
+hive> select * from info;
+OK
+101     Venu    Vani    25      btech   hyd
+102     Varun   Varuna  24      mba     pune
+
+
+
+ex:3 working with map collection
+____________________________________
+$ cat profile3
+101,p1#1000$p3#2000$p7#4000,hyd
+102,p1#1200$p2#5000,delhi
+
+
+hive> create table  trans(cid int, 
+    >   plist map<string,int>,
+    >  city string)
+    > row format delimited 
+    >    fields terminated by ','
+    >    collection items terminated by '$'
+    >   map keys terminated by '#';
+
+hive> load data local inpath 'profile3'into table trans;
+
+hive> select cid, plist['p1'] , city from trans;
+
+hive>
+101     1000    hyd
+102     1200    del
+
+hive> select plist["p1"] from trans;
+OK
+1000
+5000
+
+
+
+hive> create table sales(cid int, prid  array<string>,pr array<int>);
+
+hive> insert overwrite table sales
+    >   select cid, map_keys(plist),
+    >    map_values(plist)  from trans;
+
+
+hive> select * from sales;
+OK
+101     ["p1","p3","p7"]        [1000,2000,4000]
+102     ["p1","p2"]     [1200,5000]
+Time taken: 0.056 seconds
+hive> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+
+
+
+

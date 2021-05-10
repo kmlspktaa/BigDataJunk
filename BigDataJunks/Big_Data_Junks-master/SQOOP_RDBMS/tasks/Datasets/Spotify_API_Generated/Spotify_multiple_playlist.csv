@@ -1,0 +1,312 @@
+artist,album,track_name,track_id,danceability,energy,key,loudness,mode,speechiness,instrumentalness,liveness,valence,tempo,duration_ms,time_signature,playlist
+yaeow,The Way I Love You,The Way I Love You,3XV5r1cMB2AlD2ir0v6mfm,0.543,0.206,6,-18.037,1,0.0319,0.453,0.385,0.13,113.107,162727,3,warm_fuzzy_feeling
+Heather Janssen,Dancing When I Die,Dancing When I Die,6epGSSmdGkjcBmLDKXLbMl,0.448,0.173,10,-12.406,1,0.0458,0.0,0.0987,0.282,108.107,162000,4,warm_fuzzy_feeling
+Juke Ross,Chapter 2,Sophia,093KMwH96ZwZRZn2lKoX9Z,0.514,0.32,5,-11.937,1,0.0428,4.83e-05,0.115,0.14,115.312,231693,4,warm_fuzzy_feeling
+Rajiv Dhall,84,84,3qePCADpvWQ38YCLxXBrdU,0.448,0.413,5,-7.411,1,0.0511,0.0,0.121,0.406,169.319,155729,4,warm_fuzzy_feeling
+James Arthur,Falling Like The Stars,Falling Like The Stars,15xWRPHQMeqgdkGzInx3PY,0.296,0.351,6,-9.538,1,0.0351,1.5e-06,0.11,0.19,177.596,212720,3,warm_fuzzy_feeling
+Dylan Dunlap,Who Would Have Thought,Who Would Have Thought,1ws2DVEGJD2d12aDm4zqic,0.42,0.43,11,-7.454,1,0.0298,0.0,0.26,0.323,140.962,244478,3,warm_fuzzy_feeling
+Bruno Major,The Most Beautiful Thing,The Most Beautiful Thing,7EncNzyGs8uJiQittB38ef,0.806,0.362,7,-10.381,1,0.0345,0.045,0.111,0.42,127.502,235427,4,warm_fuzzy_feeling
+Niall Horan,Put A Little Love On Me,Put A Little Love On Me,1hCTxutVVYvggAQcUUUZAT,0.584,0.465,10,-4.88,1,0.0262,0.0,0.106,0.299,95.969,224586,4,warm_fuzzy_feeling
+Jake Scott,Favorite T-Shirt (Acoustic),Favorite T-Shirt (Acoustic),0sem2PTbwYJdCHoDn487TE,0.823,0.399,9,-8.608,1,0.0571,0.0,0.123,0.607,114.999,188442,4,warm_fuzzy_feeling
+Emilee,Heaven,Heaven,24FprytnP9KMqH01aPR2N5,0.417,0.208,0,-11.307,1,0.0545,0.0,0.12,0.293,80.71,154763,4,warm_fuzzy_feeling
+Taylor Swift,folklore,invisible string,6VsvKPJ4xjVNKpI8VVZ3SV,0.653,0.452,4,-11.143,0,0.055,7.73e-05,0.108,0.45,83.433,252881,4,warm_fuzzy_feeling
+CAL,Dressed Up In White,Dressed Up In White,0MoupiG0cMvbfPV1nwZAry,0.735,0.422,3,-8.208,1,0.0733,0.0,0.208,0.399,146.062,203836,4,warm_fuzzy_feeling
+Sigrid,Home To You,Home To You,0qBug5X3DaJv2zgXtp55wn,0.619,0.146,8,-14.439,1,0.0382,0.0,0.0971,0.288,139.533,221587,4,warm_fuzzy_feeling
+Harry Styles,Fine Line,Cherry,2IOFZdYYkFxEHVz1w34PoL,0.53,0.512,7,-9.261,1,0.0259,0.00453,0.129,0.411,95.946,259187,4,warm_fuzzy_feeling
+Forest Blakk,If You Love Her,If You Love Her,727Z2S2mtNH46CbP9EWPwY,0.286,0.445,6,-8.087,1,0.0347,0.0,0.114,0.278,50.827,217352,4,warm_fuzzy_feeling
+JP Saxe,If the World Was Ending (feat. Julia Michaels),If the World Was Ending - feat. Julia Michaels,2kJwzbxV2ppxnQoYw4GLBZ,0.464,0.473,1,-10.086,1,0.129,0.0,0.109,0.604,75.801,208687,4,warm_fuzzy_feeling
+A Great Big World,Fall On Me,Fall On Me,1sbNEp1zyMXQCXUHNllTaR,0.459,0.292,9,-6.235,1,0.0348,0.0,0.119,0.226,110.674,263054,4,warm_fuzzy_feeling
+Dan + Shay,"10,000 Hours (with Justin Bieber) [Piano]","10,000 Hours (with Justin Bieber) - Piano",6HjF1gzVEZMb4GplnGl9B3,0.426,0.366,10,-6.514,1,0.0312,0.0,0.117,0.386,179.736,172320,4,warm_fuzzy_feeling
+Tyler Ward,One More Time Around,One More Time Around,3DyhwZyBFedvnt68fMi6vf,0.429,0.358,0,-9.076,1,0.0346,0.0,0.0875,0.187,134.279,205667,4,warm_fuzzy_feeling
+Tom Walker,Better Half of Me,Better Half of Me,114xcQz8sZ6fxRBTZmgmNE,0.576,0.453,3,-4.4,1,0.0294,0.0,0.267,0.418,107.89,195452,4,warm_fuzzy_feeling
+Donovan Woods,The Other Way,I Ain't Ever Loved No One - Acoustic,3i8ZkeKgwu1t4m8SPPzNvv,0.32,0.223,10,-14.728,0,0.0329,0.0,0.106,0.158,160.626,199594,4,warm_fuzzy_feeling
+Kacey Musgraves,Golden Hour,Rainbow,79qxwHypONUt3AFq0WPpT9,0.581,0.197,3,-7.697,1,0.0329,0.0,0.107,0.349,130.367,214293,4,warm_fuzzy_feeling
+Phoebe Bridgers,Spotify Singles,Friday I’m In Love - Recorded at Spotify Studios NYC,07vS8obfeZbr8H4MgQfXR7,0.373,0.123,7,-15.193,1,0.0407,0.0,0.0816,0.138,97.129,220813,4,warm_fuzzy_feeling
+Ed Sheeran,Best Part of Me (feat. YEBBA),Best Part of Me (feat. YEBBA),5ug4vqGZ3eisGhY1IsziNX,0.565,0.242,2,-8.367,1,0.0318,9.3e-06,0.285,0.237,81.657,243267,4,warm_fuzzy_feeling
+Ryan Hurd,To a T (Stripped),To a T - Stripped,6di48z6eF5dBYVpB0tZV5i,0.599,0.325,9,-6.793,1,0.0297,3.66e-06,0.133,0.319,114.053,198386,4,warm_fuzzy_feeling
+Alicia Keys,Spotify Singles,ocean eyes - Recorded Live at Jungle City Studios,7rLokcIMP9p8fl0iROdVfC,0.353,0.148,7,-13.108,1,0.0421,0.0,0.112,0.297,88.203,184548,5,warm_fuzzy_feeling
+Jonas Brothers,Happiness Begins,Love Her,2hgk8iKN9UdoM4ILlJ9F5N,0.74,0.337,8,-6.039,1,0.0282,0.0,0.0944,0.56,103.002,193133,4,warm_fuzzy_feeling
+James Bay,Oh My Messy Mind,Break My Heart Right,6BP8sg44smNB3pbD4QAOzi,0.63,0.103,2,-11.6,1,0.0499,1.14e-06,0.0915,0.298,113.61,204013,4,warm_fuzzy_feeling
+Daniel Caesar,Freudian,Best Part (feat. H.E.R.),1RMJOxR6GRPsBHL8qeC2ux,0.524,0.364,7,-10.209,1,0.0367,0.0,0.1,0.436,75.24,209831,4,warm_fuzzy_feeling
+Lo Moon,"For Me, It's You","For Me, It's You",2odYUJ9LhwDVVPxXL3NxuB,0.452,0.46,0,-12.986,1,0.0327,0.0199,0.177,0.199,81.957,240027,4,warm_fuzzy_feeling
+Dan + Shay,Dan + Shay,Speechless,3GJ4hzg4lrGwU51Y3VARbF,0.616,0.438,1,-5.968,1,0.0298,0.0,0.24,0.386,135.929,213387,4,warm_fuzzy_feeling
+Imaginary Future,I Will Spend My Whole Life Loving You,I Will Spend My Whole Life Loving You,77enz5hl8RicxrbPB56VXQ,0.637,0.129,11,-17.082,1,0.0346,0.0,0.0719,0.298,125.802,227619,4,warm_fuzzy_feeling
+Hozier,Hozier,Cherry Wine - Live,0bZ52QzCCKfrfOqs7za6lI,0.415,0.11,1,-14.901,1,0.0388,0.00234,0.0962,0.234,81.876,240147,4,warm_fuzzy_feeling
+Haley Reinhart,Can't Help Falling in Love,Can't Help Falling in Love,0Rm2G83ELwkuEgpHlJcBPn,0.406,0.0307,0,-17.636,1,0.04,0.0,0.0984,0.245,136.716,173500,4,warm_fuzzy_feeling
+AJR,Spotify Singles,Location - Recorded at Spotify Studios NYC,7jwZYPS8reDirsT4Mvqpui,0.566,0.261,10,-8.801,1,0.0375,0.0,0.106,0.477,97.595,178795,4,warm_fuzzy_feeling
+James Bay,James Bay Spotify Session 2015,"If I Ain’t Got You - James Bay Spotify Session 2015 ""Alicia Keys Cover""",1zJpJ3HPRtAYYNLWm5BJEf,0.652,0.18,5,-9.735,0,0.111,4.04e-06,0.71,0.328,115.218,261120,3,warm_fuzzy_feeling
+One Direction,Take Me Home: Yearbook Edition,Little Things,7kSLdGdXLey7pzLsWpdg1h,0.707,0.222,7,-11.716,1,0.0329,0.0,0.205,0.556,110.095,219640,4,warm_fuzzy_feeling
+Niall Horan,Flicker (Deluxe),This Town,0qvzXomUDJVaUboy2wMfiS,0.677,0.401,9,-8.467,1,0.0308,0.0,0.116,0.195,111.825,232852,4,warm_fuzzy_feeling
+Kodaline,In A Perfect World,All I Want,5JuA3wlm0kn7IHfbeHV0i6,0.226,0.408,0,-9.74,1,0.0432,0.131,0.187,0.142,91.341,306387,3,warm_fuzzy_feeling
+Taylor Swift,Lover (Remix) [feat. Shawn Mendes],Lover (Remix) [feat. Shawn Mendes],3i9UVldZOE0aD0JnyfAZZ0,0.448,0.603,7,-7.176,1,0.064,0.0,0.0862,0.422,205.272,221307,3,warm_fuzzy_feeling
+John Legend,Spotify Singles,Love Me Now - Recorded at Spotify Studios NYC,2pPRgFEENF3LtuxYUPuT24,0.508,0.233,8,-8.311,1,0.0535,0.0,0.111,0.421,85.543,228507,3,warm_fuzzy_feeling
+Sara Bareilles,Little Voice,Gravity,4oa14QBfWRDfJy2agySy0L,0.27,0.275,0,-10.357,1,0.0356,0.0,0.146,0.231,168.964,232760,4,warm_fuzzy_feeling
+Jessie Ware,Say You Love Me,Say You Love Me,2hcPE11xSLCNHt5PYidj5U,0.387,0.413,7,-8.95,1,0.0559,1.56e-05,0.262,0.249,173.73,257484,3,warm_fuzzy_feeling
+John Mayer,XO,XO,7cpCU3Denug5NGZsSpQl8v,0.431,0.377,2,-9.753,1,0.0288,0.0,0.211,0.353,173.67,213627,4,warm_fuzzy_feeling
+Angus & Julia Stone,Spotify Sessions,Stay With Me - Live From Spotify Berlin,2GiYPEgOA7hb7sqsEWX8df,0.614,0.101,0,-22.159,1,0.0395,0.0217,0.707,0.155,75.902,174360,4,warm_fuzzy_feeling
+Ed Sheeran,+,Kiss Me,0Tel1fmuCxEFV6wBLXsEdk,0.589,0.227,2,-16.67,1,0.0498,0.00469,0.0248,0.182,74.993,280853,4,warm_fuzzy_feeling
+Bright Eyes,"I'm Wide Awake, It's Morning",First Day Of My Life,5OiaAaIMYlCZONyDBxqk4G,0.468,0.201,4,-17.024,1,0.0388,8.28e-05,0.0952,0.383,94.422,188800,4,warm_fuzzy_feeling
+Adele,19,Make You Feel My Love,7rPLZ8Krm6CZIbraFUlnWZ,0.325,0.18,10,-10.647,1,0.0311,0.000633,0.113,0.0997,72.416,212040,1,warm_fuzzy_feeling
+Jack Johnson,In Between Dreams,Better Together,4VywXu6umkIQ2OS0m1I79y,0.868,0.347,5,-9.529,1,0.0536,2e-05,0.11,0.659,110.059,207680,4,warm_fuzzy_feeling
+Ellie Goulding,Halcyon Days,How Long Will I Love You - Bonus Track,0ZPfDxZn5O0L84wvPSN2iG,0.512,0.304,0,-9.19,1,0.0318,0.000622,0.118,0.172,126.078,154435,5,warm_fuzzy_feeling
+Ed Sheeran,x (Deluxe Edition),Tenerife Sea,1HbcclMpw0q2WDWpdGCKdS,0.53,0.346,8,-10.497,1,0.0376,1.07e-05,0.105,0.359,121.876,241347,4,warm_fuzzy_feeling
+Alicia Keys,The Diary Of Alicia Keys,If I Ain't Got You,3XVBdLihbNbxUwZosxcGuJ,0.609,0.445,7,-9.129,1,0.106,6.77e-06,0.104,0.166,118.393,228707,3,warm_fuzzy_feeling
+Train,"Save Me, San Francisco (Golden Gate Edition)",Marry Me,0VZ9xPNa6ROafP6GYYuv2S,0.366,0.269,0,-8.456,1,0.0287,1.67e-05,0.108,0.492,86.577,205453,4,warm_fuzzy_feeling
+Jason Mraz,We Sing. We Dance. We Steal Things.,Lucky,0IktbUcnAGrvD03AWnz3Q8,0.623,0.417,0,-8.699,1,0.0354,0.0,0.135,0.721,130.032,191360,4,warm_fuzzy_feeling
+John Mayer,Where the Light Is: John Mayer Live In Los Angeles,"Free Fallin' - Live at the Nokia Theatre, Los Angeles, CA - December 2007",4LloVtxNZpeh7q7xdi1DQc,0.315,0.296,5,-13.262,1,0.0317,0.0,0.702,0.436,172.638,263573,4,warm_fuzzy_feeling
+Lily Allen,Somewhere Only We Know,Somewhere Only We Know,3DDGhkxq3FeUorZppSgeLE,0.314,0.286,10,-10.191,1,0.035,0.0258,0.0999,0.278,172.021,208154,4,warm_fuzzy_feeling
+Coldplay,Parachutes,Yellow,3AJwUDP919kvQ9QcozQPxg,0.429,0.661,11,-7.227,1,0.0281,0.00013,0.234,0.285,173.365,266773,4,warm_fuzzy_feeling
+Adele,21,Turning Tables,5O6yk6U8L3rTbFsIwuqe8H,0.305,0.452,0,-6.077,0,0.0293,1.68e-05,0.129,0.21,79.83,250133,4,warm_fuzzy_feeling
+Colbie Caillat,Coco,Bubbly,0rFOs9paloAvEtzwDX1Kmc,0.697,0.474,9,-6.663,1,0.0351,0.0,0.11,0.249,127.904,196280,4,warm_fuzzy_feeling
+One Direction,FOUR (Deluxe),Night Changes,5O2P9iiztwhomNh8xkR9lJ,0.672,0.52,8,-7.747,1,0.0353,0.0,0.115,0.37,120.001,226600,4,warm_fuzzy_feeling
+Jason Mraz,Love Is a Four Letter Word (Deluxe Edition),I Won't Give Up,53QF56cjZA9RTuuMZDrSA6,0.585,0.303,4,-10.058,1,0.0398,0.0,0.115,0.142,136.703,240166,3,warm_fuzzy_feeling
+Katy Perry,Katy Perry - Teenage Dream: The Complete Confection,The One That Got Away - Acoustic,5jx8tCxiO0uIbo2uNia23K,0.714,0.434,4,-11.542,1,0.0396,0.0,0.0919,0.352,123.942,259040,4,warm_fuzzy_feeling
+Snow Patrol,Eyes Open,Chasing Cars,11bD1JtSjlIgKgZG2134DZ,0.563,0.592,9,-4.571,1,0.0276,5.08e-05,0.132,0.136,104.016,267933,4,warm_fuzzy_feeling
+Coldplay,X&Y,Fix You,7LVHVU3tWfcxj5aiPFEW4Q,0.209,0.417,3,-8.74,1,0.0338,0.00196,0.113,0.124,138.178,295533,4,warm_fuzzy_feeling
+Meghan Trainor,Title (Deluxe),Like I'm Gonna Lose You (feat. John Legend),2YlZnw2ikdb837oKMKjBkW,0.63,0.53,0,-7.259,1,0.0434,0.0,0.177,0.417,108.038,225053,3,warm_fuzzy_feeling
+Christina Perri,A Thousand Years,A Thousand Years,6lanRgr6wXibZr8KgzXxBl,0.421,0.407,10,-7.445,1,0.0267,0.000961,0.11,0.161,139.028,285120,3,warm_fuzzy_feeling
+Sam Smith,In The Lonely Hour (Deluxe Edition),Stay With Me,7IHOIqZUUInxjVkko181PB,0.5,0.418,0,-6.535,1,0.0377,0.000193,0.11,0.176,84.899,172724,4,warm_fuzzy_feeling
+Jason Mraz,We Sing. We Dance. We Steal Things.,I'm Yours,1EzrEOXmMH3G43AXT1y7pA,0.686,0.457,11,-8.322,1,0.0468,0.0,0.105,0.718,150.953,242187,4,warm_fuzzy_feeling
+Coldplay,A Rush of Blood to the Head,The Scientist,75JFxkI2RXiU7L9VXzMkle,0.56,0.442,5,-7.224,1,0.0243,1.71e-05,0.11,0.212,146.448,309600,4,warm_fuzzy_feeling
+Ed Sheeran,x (Deluxe Edition),Photograph,1HNkqx9Ahdgi1Ixy2xkKkL,0.614,0.379,4,-10.48,1,0.0476,0.000464,0.0986,0.201,107.989,258987,4,warm_fuzzy_feeling
+John Legend,Love In The Future (South Africa Tour Edition),All of Me,3uhBIQ7tv8j1FME8cFGEfG,0.422,0.264,8,-7.064,1,0.0322,0.0,0.132,0.331,119.93,269560,4,warm_fuzzy_feeling
+Russell Dickerson,Yours,Yours - Wedding Edition,0vBMmF78QgtWY6dDNDPhbv,0.607,0.425,11,-7.975,1,0.0269,0.0,0.0883,0.536,134.003,216333,4,warm_fuzzy_feeling
+Adam Melchor,Real Estate,Real Estate,2VvTMIXG760UiG9OSiFt9j,0.493,0.284,2,-12.815,1,0.0309,0.00739,0.151,0.199,79.959,216000,4,warm_fuzzy_feeling
+Ben Platt,Sing To Me Instead,Grow As We Go,6hYvw3LLTViP2mT4MpDNmT,0.458,0.137,8,-14.083,1,0.0355,0.0,0.15,0.437,80.824,249427,4,warm_fuzzy_feeling
+Ed Sheeran,x (Deluxe Edition),Thinking out Loud,34gCuhDGsG4bRPIf9bb02f,0.781,0.445,2,-6.061,1,0.0295,0.0,0.184,0.591,78.998,281560,4,warm_fuzzy_feeling
+Various Artists,The Twilight Saga: Breaking Dawn - Part 1 (Original Motion Picture Soundtrack),Turning Page,42BAwiGC1egjbiJ6y512Tz,0.304,0.379,3,-8.484,1,0.029,0.025,0.112,0.189,125.203,255373,4,warm_fuzzy_feeling
+Iron & Wine,The Shepherd's Dog,"Flightless Bird, American Mouth",6iWwfN1euztxZi1OK38HbU,0.359,0.391,3,-8.034,1,0.026,0.0708,0.163,0.19,154.66,242226,3,warm_fuzzy_feeling
+Death Cab for Cutie,Plans,I Will Follow You into the Dark,3kZC0ZmFWrEHdUCmUqlvgZ,0.517,0.206,5,-12.233,1,0.0421,0.0,0.118,0.489,80.401,189187,4,warm_fuzzy_feeling
+Howie Day,Stop All The World Now,Collide,6dwkFmLUz6hx2CZG2EqLol,0.636,0.625,11,-7.895,1,0.0277,5.35e-05,0.119,0.342,93.931,249120,4,warm_fuzzy_feeling
+The Civil Wars,Barton Hollow,Poison & Wine,3wsZYuHJrk3lssa7V7jvye,0.285,0.186,1,-12.729,1,0.0288,7.3e-05,0.104,0.203,153.848,219467,4,warm_fuzzy_feeling
+Ed Sheeran,x (Deluxe Edition),Thinking out Loud,34gCuhDGsG4bRPIf9bb02f,0.781,0.445,2,-6.061,1,0.0295,0,0.184,0.591,78.998,281560,4,love_songs_heart
+JP Saxe,If the World Was Ending (feat. Julia Michaels),If the World Was Ending - feat. Julia Michaels,2kJwzbxV2ppxnQoYw4GLBZ,0.464,0.473,1,-10.086,1,0.129,0,0.109,0.604,75.801,208687,4,love_songs_heart
+Rihanna,ANTI (Deluxe),Love On The Brain,26QRPeQOgmIGLCQKgoUJkG,0.509,0.637,4,-4.83,0,0.0471,1.08e-05,0.0789,0.378,172.006,224000,3,love_songs_heart
+Lewis Capaldi,Breach,Someone You Loved,2TIlqbIneP0ZY1O0EzYLlc,0.501,0.405,1,-5.679,1,0.0319,0,0.105,0.446,109.891,182161,4,love_songs_heart
+Lady Gaga,Shallow,Shallow,5lK18Pt33xNudq4qYDxIm8,0.572,0.385,7,-6.362,1,0.0308,0,0.231,0.323,95.799,215733,4,love_songs_heart
+James Arthur,Say You Won't Let Go,Say You Won't Let Go,1Pw5C4N6Fn5E4mGCxmbbVa,0.4,0.564,10,-7.444,1,0.0523,0,0.0863,0.483,99.269,211240,4,love_songs_heart
+Birdy,Birdy (Deluxe Version),Skinny Love,0HRshWRNAwQBROvxXqG3i9,0.379,0.29,4,-8.485,1,0.051,0.00106,0.118,0.169,166.467,201080,4,love_songs_heart
+John Legend,Love In The Future (Expanded Edition),All of Me,3U4isOIWM3VvDubwSI3y7a,0.422,0.264,8,-7.064,1,0.0322,0,0.132,0.331,119.93,269560,4,love_songs_heart
+High Tropics,Caroline,Caroline,72NC9kHkFA7k98dE0t4xEX,0.462,0.813,9,-4.562,1,0.0327,0.00352,0.227,0.595,129.99,206753,4,love_songs_heart
+Florence + The Machine,You've Got The Love,You've Got The Love,0fPf9CDFzVnHpcfld5XVtO,0.571,0.708,6,-4.74,1,0.0329,0,0.125,0.398,109.899,168667,4,love_songs_heart
+Calum Scott,Only Human (Deluxe),Dancing On My Own,2BOqDYLOJBiMOXShCV1neZ,0.682,0.173,1,-8.749,1,0.0314,3.26e-05,0.0983,0.236,112.663,260285,4,love_songs_heart
+Adele,19,Make You Feel My Love,0mqTcM8kuu2IYPotMt7AzS,0.559,0.172,10,-10.636,1,0.0291,0.000383,0.105,0.0955,77.025,212040,4,love_songs_heart
+Camo Columbo,Last Summer Daze,Sapphire Moonlight,23dTlZ4Y4SJJ4cpUoQeUYY,0.799,0.706,6,-7.071,0,0.134,0.00227,0.334,0.778,98.009,194694,4,love_songs_heart
+Lana Del Rey,Young And Beautiful,Young And Beautiful,5UzTtUZper0CphnqZYvsIu,0.319,0.426,11,-8.929,0,0.0382,8.23e-06,0.108,0.159,114.553,236053,4,love_songs_heart
+James Bay,Chaos And The Calm,If You Ever Want To Be In Love,02fZLz9BmmOKb5wkueM9D4,0.683,0.837,0,-5.46,1,0.0307,2.98e-05,0.0627,0.565,115.933,238973,4,love_songs_heart
+Noah Cyrus,July (feat. Leon Bridges),July (feat. Leon Bridges),3V0nnQhqvbE3JmiDdnzQFQ,0.708,0.211,9,-9.603,0,0.0424,0,0.131,0.362,72.5,152280,4,love_songs_heart
+Sam Smith,In The Lonely Hour,Stay With Me,2whoe0pPKh4JRn6eWSIqTV,0.414,0.419,0,-6.431,1,0.0388,0.000195,0.11,0.18,84.082,172724,4,love_songs_heart
+Easy Life,Sangria,Sangria,79tTcoeAq2Dt2qlH3CHm3m,0.659,0.457,0,-10.654,0,0.274,1.31e-06,0.129,0.694,76.043,190023,4,love_songs_heart
+Dean Lewis,Be Alright,Be Alright,3EPXxR3ImUwfayaurPi3cm,0.553,0.586,11,-6.319,1,0.0362,0,0.0813,0.443,126.684,196373,4,love_songs_heart
+LEFT.,Love,Love,6O7lFX7U5ZPgfGAZsikDQo,0.758,0.533,11,-9.091,0,0.128,2.38e-05,0.113,0.34,114.942,221808,4,love_songs_heart
+Alicia Keys,Show Me Love,Show Me Love,0XPlSuCVQ1nOhzTpFgnDSz,0.531,0.491,5,-5.47,0,0.042,0,0.0703,0.521,129.38,194998,4,love_songs_heart
+Various Artists,13 Reasons Why (A Netflix Original Series Soundtrack),The Night We Met,3FsBtu3gdlfZjBLXyDvmj1,0.441,0.369,2,-9.644,1,0.046,0.207,0.641,0.115,174.152,206933,3,love_songs_heart
+Harry Styles,Adore You,Adore You,1M4qEo4HE3PRaCOM7EXNJq,0.676,0.771,8,-3.675,1,0.0483,7e-06,0.102,0.569,99.048,207133,4,love_songs_heart
+Ingrid Michaelson,Be OK,You and I,4oeRfmp9XpKWym6YD1WvBP,0.697,0.298,0,-7.635,1,0.0551,0,0.0874,0.509,134.216,148707,4,love_songs_heart
+Coldplay,Ghost Stories,Magic,23khhseCLQqVMCIT1WMAns,0.738,0.483,6,-8.915,0,0.0403,0.616,0.106,0.355,93.458,285014,4,love_songs_heart
+Johnning,Sober,Sober,6vEdn7JCnvGhYQQ9yLcsJe,0.448,0.692,6,-9.937,0,0.141,1.39e-06,0.0896,0.182,199.638,181682,4,love_songs_heart
+Maren Morris,The Bones (with Hozier),The Bones - with Hozier,1yTTMcUhL7rtz08Dsgb7Qb,0.561,0.597,11,-6.0,0,0.0405,0,0.0979,0.355,76.826,197299,4,love_songs_heart
+LP,Death Valley,Lost on You,2kz40rIHjfGYxurLiuCBp9,0.433,0.724,5,-6.126,0,0.0372,0,0.0918,0.689,174.006,268105,4,love_songs_heart
+The Maccabees,Colour It In,Toothpaste Kisses,4BAWCedKFfdwxPFmFv4DMG,0.462,0.427,9,-13.333,1,0.0792,0.101,0.37,0.476,101.675,159320,3,love_songs_heart
+John Mayer,Carry Me Away,Carry Me Away,6TL3MOcVW8i1UiJkvhpDbR,0.703,0.668,4,-7.746,1,0.0289,0.000408,0.0963,0.659,120.005,156987,4,love_songs_heart
+Caravn,Hazy Memories,Hazy Memories,1jeH74UaH5xFnLo73haMQl,0.455,0.317,9,-8.031,1,0.0448,0,0.0962,0.44,71.113,177143,1,love_songs_heart
+Khalid,Suncity,Saturday Nights,7vGGAJBkHKxKtOnGjQduDV,0.54,0.439,10,-8.591,1,0.115,1.93e-05,0.0993,0.371,167.908,209547,4,love_songs_heart
+Mokita,Take It Back,Take It Back,4Q45zEpgK7xJB6KkTG23pr,0.71,0.72,1,-7.554,1,0.0409,2.49e-06,0.0936,0.429,132.99,161654,4,love_songs_heart
+Fenne Lily,On Hold,On Hold,6mCbwUSCaYRv2AlzLid3lf,0.588,0.398,1,-9.517,0,0.034,0.000173,0.176,0.117,150.049,158785,5,love_songs_heart
+Vance Joy,Dream Your Life Away,Mess Is Mine,7BVwi9cIzSc6tpyxsp47vJ,0.595,0.723,7,-8.256,1,0.0349,0.0286,0.0995,0.272,108.043,223640,1,love_songs_heart
+Camo Columbo,Cold Nights,Cold Nights,1q3AoLCoawd8Gpm9wP7sHi,0.941,0.421,11,-7.918,0,0.0583,9.34e-05,0.0967,0.787,107.011,189813,4,love_songs_heart
+Bruno Major,The Most Beautiful Thing,The Most Beautiful Thing,7EncNzyGs8uJiQittB38ef,0.806,0.362,7,-10.381,1,0.0345,0.045,0.111,0.42,127.502,235427,4,love_songs_heart
+Maggie Rogers,Love You For A Long Time,Love You For A Long Time,6QTPacyXkZWG9FMwq6L1hJ,0.707,0.67,9,-6.137,1,0.0323,0.00283,0.109,0.822,112.993,223120,4,love_songs_heart
+LEFT.,Indigo,Indigo,2qoKkOBw3dAd8AlITOQ2Ca,0.503,0.504,0,-6.843,0,0.416,1.59e-06,0.122,0.67,85.39,196589,4,love_songs_heart
+Shawn Mendes,Illuminate,Treat You Better,3QGsuHI8jO1Rx4JWLUh9jd,0.444,0.819,10,-4.078,0,0.341,0,0.107,0.747,82.695,187973,4,love_songs_heart
+Noah Kahan,Hurt Somebody,Hurt Somebody,7apizLyhMRutg3ccXvr2qv,0.633,0.559,6,-5.135,1,0.313,0,0.262,0.473,114.987,168640,4,love_songs_heart
+Jordan Parker,Sex Money Feelings Die,Sex Money Feelings Die,56mC2rMRb3tCFiFum4XfQN,0.731,0.471,11,-7.888,1,0.0425,0,0.097,0.411,111.928,143571,4,love_songs_heart
+The Beatles,1 (Remastered),All You Need Is Love - Remastered 2015,56rXurvdpjoSIVggfd5ANS,0.397,0.625,7,-5.829,1,0.0347,5.47e-06,0.263,0.676,104.54,227760,4,love_songs_heart
+Mary J. Blige,The Breakthrough,One,6KaNwZrqpYck0ym4ZsSq3C,0.344,0.874,0,-3.161,1,0.0777,0,0.129,0.269,185.888,260467,4,love_songs_heart
+Charlie Burg,Channel Orange In Your Living Room,Channel Orange In Your Living Room,27AJf1VXuh3h6QsqQBOLxf,0.698,0.604,11,-6.489,1,0.0494,0,0.07,0.832,118.692,158373,4,love_songs_heart
+The Lumineers,Ophelia,Ophelia,0IOFbRuU9O7BsRMVBT6Rbo,0.664,0.576,5,-6.429,1,0.0286,0.000198,0.0902,0.621,76.026,160097,4,love_songs_heart
+Emeli Sandé,Breathing Underwater,Breathing Underwater,4n2eqW2yhgRimam8czpH8j,0.252,0.565,3,-8.549,1,0.0581,6.46e-05,0.515,0.215,80.335,262939,4,love_songs_heart
+Valentin,Fix You,Fix You,0x4CFzoSdqVq5qTGgwZFuX,0.5,0.185,1,-13.209,1,0.0302,0,0.0827,0.159,140.148,240000,4,love_songs_heart
+Lauv,~how i'm feeling~ (the extras),Love Like That,2tSDwInMbSGmUySTeUgO5e,0.679,0.481,3,-9.045,1,0.0593,1.02e-05,0.284,0.486,80.011,184557,4,love_songs_heart
+Ben E. King,Don't Play That Song (Mono),Stand by Me,3SdTKo2uVsxFblQjpScoHy,0.65,0.306,9,-9.443,1,0.0393,7.07e-06,0.0707,0.605,118.068,180056,4,love_songs_heart
+Jeremy Zucker,comethru,comethru (with Bea Miller),0PgYPBGqF6Wm5KFHQ81nq5,0.757,0.192,0,-11.842,1,0.0515,0,0.606,0.595,94.024,181627,4,love_songs_heart
+Camo Columbo,Azul Caribe,Azul Caribe,4mcxqWjb2oNfSqeFH2kbWd,0.904,0.441,5,-5.086,1,0.0461,0.000854,0.136,0.699,107.939,183333,4,love_songs_heart
+Rihanna,Unapologetic (Deluxe),Stay - Album Version (Edited),5eOcg7yCTC8o09p6iTTcmr,0.633,0.319,9,-10.24,0,0.0273,2.77e-05,0.114,0.105,111.925,240707,4,love_songs_heart
+Paolo Nutini,These Streets,Last Request,6xM8oBy40nK1rOd8WmoOPx,0.605,0.704,5,-6.564,1,0.0476,0,0.137,0.4,80.925,220413,4,love_songs_heart
+JP Saxe,"Hey Stupid, I Love You","Hey Stupid, I Love You",5inDa3sWj8zqJBOdj7Bjqc,0.758,0.594,5,-9.63,0,0.426,5.32e-06,0.0798,0.869,91.864,181000,4,love_songs_heart
+Sonny Winnebago,Little Sun,Little Sun,6wIepGZgEottEa7JIPAs3W,0.692,0.515,7,-8.464,1,0.0301,2.92e-06,0.156,0.722,122.018,261516,4,love_songs_heart
+Queen,Queen 40 Limited Edition Collector's Box Set Vol. 2,Crazy Little Thing Called Love - Remastered 2011,6LRIeceMebqu7TmyyXCRTA,0.599,0.762,0,-6.887,1,0.0423,4.43e-06,0.35,0.715,76.961,163373,4,love_songs_heart
+Ella Mai,Trip,Trip,7noud145AHZGg74vpWOsCa,0.717,0.605,11,-5.68,0,0.075,0,0.138,0.387,81.047,217118,4,love_songs_heart
+Tiz McNamara,Falling Asleep,Falling Asleep,1FunUekKzZ9Mgt3BMYCrfF,0.537,0.201,2,-12.948,1,0.033,0.00163,0.077,0.196,134.087,202400,4,love_songs_heart
+Hozier,From Eden EP,From Eden,1yi8EOTpKeVK4cj5HS8DRp,0.484,0.528,0,-6.951,1,0.0424,2.57e-05,0.107,0.408,109.361,222427,4,love_songs_heart
+Jack Johnson,In Between Dreams,Better Together,2iXdwVdzA0KrI2Q0iZNJbX,0.871,0.346,5,-9.481,1,0.0522,9.24e-06,0.108,0.659,110.054,207680,4,love_songs_heart
+Ashe,Moral of the Story,Moral of the Story,2nC3QhMI9reBIOWutbU3Tj,0.572,0.406,10,-8.624,1,0.0427,4.48e-06,0.102,0.265,119.812,201084,4,love_songs_heart
+Valentin,Somewhere Only We Know,Somewhere Only We Know,1EwyAL8SdJpIX0M9b1ArAp,0.472,0.305,8,-11.465,1,0.0295,0,0.142,0.584,165.9,193750,4,love_songs_heart
+Niall Horan,Put A Little Love On Me,Put A Little Love On Me,1hCTxutVVYvggAQcUUUZAT,0.584,0.465,10,-4.88,1,0.0262,0,0.106,0.299,95.969,224586,4,love_songs_heart
+Leon Bridges,Beyond,Beyond,5esPpmrM2AsyDVgOKzWQwU,0.58,0.687,6,-5.4,1,0.106,0,0.109,0.187,76.014,240600,4,love_songs_heart
+Johnning,Last Time,Last Time,7v3tuzPub1Qd490tiVddwF,0.628,0.587,7,-5.195,1,0.0441,0,0.156,0.4,140.01,202480,4,love_songs_heart
+The Beach Boys,Pet Sounds (Original Mono & Stereo Mix Versions),God Only Knows - Remastered,6iGU74CwXuT4XVepjc9Emf,0.521,0.487,6,-7.525,0,0.0299,0,0.0579,0.483,117.072,173040,4,love_songs_heart
+Lukas Graham,Love Someone,Love Someone,2JqnpexlO9dmvjUMCaLCLJ,0.55,0.415,9,-6.557,0,0.052,0,0.108,0.274,172.065,205463,4,love_songs_heart
+KALEO,All the Pretty Girls,All the Pretty Girls,2eiY8qXiV6yReXSeuoplns,0.466,0.496,1,-6.606,1,0.0302,6.22e-06,0.117,0.352,74.747,269893,4,love_songs_heart
+Death Cab for Cutie,Plans,Soul Meets Body,6Wuv7MrhesuDsuGv8vcrOd,0.63,0.772,2,-8.366,0,0.0251,0.000432,0.116,0.717,128.133,230907,4,love_songs_heart
+James Blunt,Back to Bedlam,You're Beautiful,5pbajJXEPdcoXQPXoAVR1t,0.675,0.479,0,-9.87,0,0.0278,1.76e-05,0.088,0.454,81.998,209493,4,love_songs_heart
+Fiji Blue,I Should've Told You,I Should've Told You,7FNfzTdPSOA7jzlQQ7gZK2,0.725,0.66,8,-7.206,1,0.0663,0.000292,0.0848,0.456,117.009,197523,4,love_songs_heart
+Elvis Presley,Elvis 75 - Good Rockin' Tonight,Burning Love,4VK3MDt1FAP101D0mnFJkz,0.668,0.722,2,-11.641,1,0.0283,0.00662,0.345,0.969,143.547,169680,4,love_songs_heart
+Joss Stone,The Best Of Joss Stone 2003 - 2009,L-O-V-E - Long Version,4MymCsjbOkhuP2kWNSZgLo,0.527,0.78,11,-5.654,0,0.0651,8.59e-05,0.166,0.645,94.693,168973,4,love_songs_heart
+Bruno Major,A Song For Every Moon,Easily,2k9N4caeCIJLOWwWwssrEM,0.772,0.256,7,-8.545,0,0.0481,0.00612,0.144,0.357,118.902,210240,3,love_songs_heart
+Halsey,Finally // beautiful stranger,Finally // beautiful stranger,5YvcUK2eXJ2OllqDuEg18S,0.626,0.55,9,-5.105,0,0.029,0,0.118,0.123,133.976,221096,4,love_songs_heart
+Jason Mraz,We Sing. We Dance. We Steal Things.,I'm Yours,1EzrEOXmMH3G43AXT1y7pA,0.686,0.457,11,-8.322,1,0.0468,0,0.105,0.718,150.953,242187,4,love_songs_heart
+The Police,Synchronicity (Remastered),Every Breath You Take - Remastered 2003,5C0LFQARavkPpn7JgA4sLk,0.82,0.452,1,-9.796,1,0.0348,0.00294,0.0701,0.74,117.401,253250,4,love_songs_heart
+3409,Guava,Guava,0W2oiugGwD5eq2LP6ESnC6,0.745,0.319,11,-18.632,0,0.296,0,0.336,0.494,96.097,193062,4,love_songs_heart
+Lady Gaga,Million Reasons,Million Reasons,4uhlD1p3hKRI9PLH8qX0fn,0.668,0.428,0,-7.889,1,0.0433,0,0.108,0.134,129.75,205280,4,love_songs_heart
+The Beatles,1 (Remastered),Yesterday - Remastered 2015,63uskN0xLezVg4281wzeQn,0.401,0.189,0,-11.189,1,0.0287,0,0.0968,0.357,94.509,125320,4,love_songs_heart
+Kodaline,In A Perfect World (Deluxe),Brand New Day,3uP0rhZSVxKPokt6UbnzU0,0.57,0.89,3,-3.808,1,0.0322,0.000151,0.124,0.57,121.015,205280,4,love_songs_heart
+Bruno Mars,Doo-Wops & Hooligans,Just the Way You Are,47Slg6LuqLaX0VodpSCvPt,0.637,0.843,5,-5.413,1,0.0432,0,0.0876,0.434,109.012,220733,4,love_songs_heart
+Keane,Hopes and Fears (Deluxe Edition),Somewhere Only We Know,5LOaKdW9D2Gl9neAN94NbR,0.445,0.59,9,-6.747,1,0.0258,1.08e-05,0.0832,0.334,172.016,237547,4,love_songs_heart
+Maggie Rogers,Give A Little,Give A Little,4za2QYGfHlYml23pChrpXO,0.618,0.695,7,-5.415,1,0.189,3.96e-05,0.111,0.766,199.95,225512,3,love_songs_heart
+Jeremy Zucker,love is not dying,somebody loves you,4YKcx7YxznAdBefrYdCZ9P,0.717,0.474,7,-10.347,1,0.123,0.000253,0.137,0.673,94.945,206587,4,love_songs_heart
+Aretha Franklin,Aretha Now,I Say a Little Prayer,3NfxSdJnVdon1axzloJgba,0.592,0.355,9,-14.051,1,0.0352,0,0.0585,0.499,133.032,216773,4,love_songs_heart
+John Mayer,Love on the Weekend,Love on the Weekend,0j2WBxWZnWti5TpSxjJvPb,0.729,0.546,7,-9.305,1,0.0285,0.00287,0.0651,0.406,119.941,212627,4,love_songs_heart
+Leona Lewis,Spirit,Bleeding Love,7wZUrN8oemZfsEd1CGkbXE,0.638,0.656,5,-5.886,1,0.0357,0,0.146,0.225,104.036,262467,4,love_songs_heart
+Frank Sinatra,Nothing But The Best (Remastered),Fly Me To The Moon - Remastered,7FXj7Qg3YorUxdrzvrcY25,0.591,0.298,4,-12.269,0,0.06,2.22e-06,0.0797,0.372,119.954,147520,4,love_songs_heart
+Camo Columbo,Starfish,Starfish,1zGNGgfanMWYujmiHQFRrO,0.861,0.408,6,-6.632,0,0.217,4.36e-05,0.278,0.713,113.964,212632,4,love_songs_heart
+The Script,The Script,The Man Who Can't Be Moved,3nqqDo8CcCLke3ZoTgiOKf,0.605,0.629,10,-5.051,1,0.0279,0,0.097,0.308,99.894,241373,4,love_songs_heart
+Adele,21,One And Only,4I3KMa9p00MJwWbT0vi5iX,0.464,0.467,5,-5.306,1,0.0376,0,0.141,0.169,51.66,346813,4,love_songs_heart
+Sam Smith,Lay Me Down,Lay Me Down,5Nbe9vDQ1YJdreVIlhZEpP,0.463,0.198,4,-11.003,1,0.0387,0,0.106,0.369,123.63,219663,4,love_songs_heart
+Ben Howard,Every Kingdom (Deluxe Version),Only Love,3MdYFBIzPf7lSJnI8wi3Ka,0.547,0.49,8,-9.891,1,0.137,0.00174,0.118,0.365,80.305,249173,4,love_songs_heart
+Jack Vallier,Rebekah - EP,Rebekah,18RQoXcen7pcKhFreuN02y,0.531,0.461,7,-11.176,0,0.0437,1.62e-06,0.132,0.162,75.036,200747,4,love_songs_heart
+Of Monsters and Men,Beneath The Skin (Deluxe),Empire,3VHJN9R1HaJAp6SbeMT0V5,0.53,0.684,0,-6.264,0,0.0331,0.000719,0.0946,0.519,118.782,260413,4,love_songs_heart
+Isaiah Firebrace,Isaiah,It's Gotta Be You,6cAKeFFYW2aClZSUyvqAEW,0.422,0.745,8,-4.632,1,0.0378,0,0.0981,0.588,95.487,193447,4,love_songs_heart
+Sara Bareilles,Little Voice,Love Song,4E6cwWJWZw2zWf7VFbH7wf,0.583,0.786,2,-3.142,0,0.0301,0,0.188,0.573,123.055,258827,4,love_songs_heart
+Tom Odell,Real Love,Real Love - from the John Lewis Christmas Advert 2014,1Udy17gjGeZPNdmmcLjl7L,0.363,0.205,5,-9.301,1,0.0271,1.6e-06,0.105,0.18,82.932,141240,4,love_songs_heart
+Josh Krajcik,"Blindly, Lonely, Lovely",Let Me Hold You,7mCbAq08MpyvXtnIQtRYPG,0.469,0.178,7,-9.655,1,0.0298,0,0.0922,0.234,72.055,245253,3,romance_songs
+Various Artists,Fifty Shades Of Grey (Original Motion Picture Soundtrack),"Love Me Like You Do - From ""Fifty Shades Of Grey""",1ip2IGDWMrUmlaepEbWlL8,0.258,0.659,5,-5.903,0,0.0596,0,0.111,0.272,189.558,250267,4,romance_songs
+Sarah McLachlan,Surfacing,Angel,3xZMPZQYETEn4hjor3TR1A,0.532,0.0744,1,-16.092,1,0.0355,1.22e-05,0.106,0.125,117.131,270400,3,romance_songs
+Sarah McLachlan,Mirrorball: The Complete Concert,I Will Remember You - Live,0xzDbdFFnPz9CiQ0YZMq4K,0.449,0.487,9,-9.967,1,0.031,0.000129,0.691,0.389,76.487,213467,4,romance_songs
+Carrie Underwood,Play On,Look At Me,2Qjgj1yLs78G4pEVhy7myz,0.441,0.407,4,-4.782,1,0.027,0,0.366,0.103,80.51,195720,4,romance_songs
+Ed Sheeran,x (Deluxe Edition),Thinking out Loud,34gCuhDGsG4bRPIf9bb02f,0.781,0.445,2,-6.061,1,0.0295,0,0.184,0.591,78.998,281560,4,romance_songs
+Hunter Hayes,Hunter Hayes (Encore),Wanted,0p1BcEcYVO3uk4KDf3gzkY,0.421,0.476,0,-7.692,1,0.0298,0,0.0816,0.3,169.784,228840,4,romance_songs
+Birdy,Birdy,Skinny Love,4RL77hMWUq35NYnPLXBpih,0.379,0.29,4,-8.485,1,0.051,0.00106,0.118,0.169,166.467,201080,4,romance_songs
+Wiz Khalifa,See You Again (feat. Charlie Puth),See You Again (feat. Charlie Puth),7wqSzGeodspE3V6RBD5W8L,0.689,0.481,10,-7.503,1,0.0815,1.03e-06,0.0649,0.283,80.025,229526,4,romance_songs
+Miley Cyrus,Bangerz (Deluxe Version),Adore You,5AnCLGg35ziFOloEnXK4uu,0.583,0.655,0,-5.407,1,0.0315,3.57e-06,0.113,0.201,119.759,278747,4,romance_songs
+Miranda Lambert,Revolution,The House That Built Me,02eD9ymfJOJOhM97HYp5R9,0.515,0.3,5,-8.005,1,0.0289,8.46e-06,0.115,0.206,81.12,236627,4,romance_songs
+Miranda Lambert,Four The Record (Deluxe Edition),Over You,4hIqZEgvWw9Pn3kucNtq2T,0.566,0.507,6,-6.973,1,0.0279,0.00619,0.107,0.141,158.119,253373,4,romance_songs
+A Great Big World,Is There Anybody Out There?,Say Something,6Vc5wAMmXdKIAM7WUoEb7N,0.407,0.147,2,-8.822,1,0.0355,2.89e-06,0.0913,0.0765,141.284,229400,3,romance_songs
+Various Artists,The Twilight Saga: Breaking Dawn - Part 1 (Original Motion Picture Soundtrack),A Thousand Years,6z5Yh7kOKeLjqIsNdokIpU,0.421,0.407,10,-7.445,1,0.0267,0.000961,0.11,0.161,139.028,285120,3,romance_songs
+Ariana Grande,My Everything (Deluxe),Just A Little Bit Of Your Heart,5lvnGiTAH9BVlJLHc0DXZz,0.439,0.322,9,-5.959,1,0.028,0,0.103,0.16,77.963,232587,4,romance_songs
+Ariana Grande,My Everything (Deluxe),My Everything,4eumFsTnduH3zRfaASoAPs,0.54,0.265,11,-5.307,1,0.0297,0,0.131,0.423,61.975,168520,4,romance_songs
+The Goo Goo Dolls,Greatest Hits Volume One - The Singles,Iris,6vrUTGn5p8IrfTZ0J6sIVM,0.291,0.79,11,-5.683,0,0.0363,5.61e-06,0.0811,0.513,155.667,289907,3,romance_songs
+Javier Colon,The Truth-Acoustic - EP,When,2uSS0leHMU1s62xXiYo0Ln,0.389,0.3,2,-8.984,1,0.0301,0,0.118,0.314,138.801,220823,3,romance_songs
+Josh Kaufman,The Complete Season 6 Collection (The Voice Performance),I Can’t Make You Love Me - The Voice Performance,0QDfwssgneF3kVgBo13lRr,0.32,0.351,5,-7.465,0,0.027,0,0.169,0.166,84.843,186369,5,romance_songs
+Cassadee Pope,The Complete Season 3 Collection (The Voice Performance),Over You - The Voice Performance,2Z79EukuDc4ii39XeYaRi5,0.445,0.444,8,-6.017,1,0.0276,6.09e-05,0.0974,0.216,151.974,216507,4,romance_songs
+Daughtry,Daughtry,Home,2nXWKf0GXbFby4posGqEht,0.45,0.849,6,-3.881,1,0.0344,1.61e-06,0.195,0.336,143.904,255652,4,romance_songs
+Carrie Underwood,Greatest Hits: Decade #1,Inside Your Heaven,25ry9EyyRsp1dDctlAclin,0.38,0.596,7,-3.469,1,0.0315,1.46e-06,0.132,0.16,134.443,243267,4,romance_songs
+Les Misérables Cast,Les Misérables: The Motion Picture Soundtrack Deluxe (Deluxe Edition),On My Own,3Mr6ofzF6ZuYiqHh8qNud3,0.338,0.119,0,-15.714,1,0.0632,0,0.148,0.205,71.842,191067,5,romance_songs
+Jasmine Thompson,I Will Follow You Into the Dark,Will Follow You Into the Dark,3A31Rer0lC31LUGxQwmO8V,0.54,0.234,0,-10.939,1,0.0327,0,0.125,0.314,139.606,204092,4,romance_songs
+Christina Perri,head or heart,the words,0zxG0MKqXBEbwU09H7gEIs,0.505,0.413,11,-9.378,1,0.0278,0,0.138,0.209,77.023,253453,4,romance_songs
+Various Artists,Love Songs,Make You Feel My Love,4h5zl902dKpJeozG6Syfl7,0.325,0.18,10,-10.647,1,0.0311,0.000633,0.113,0.0997,72.416,212040,1,romance_songs
+Gavin DeGraw,Finest Hour: The Best of Gavin DeGraw,You Got Me,1ic2NiS8e5ryLdMK8gkdfI,0.327,0.449,6,-9.378,1,0.0296,5.77e-05,0.086,0.17,105.981,227867,4,romance_songs
+Sam Smith,In The Lonely Hour,I'm Not The Only One,0fioLzGM8ngbD1w6fMmm45,0.453,0.496,5,-5.785,1,0.0453,2.65e-05,0.0772,0.501,80.994,239317,4,romance_songs
+Sam Smith,In The Lonely Hour,Stay With Me,5Db9VIdDsN5yu3Eu7CT0i4,0.479,0.419,0,-6.517,1,0.0389,0.000217,0.11,0.186,85.014,172724,4,romance_songs
+Josh Krajcik,"Blindly, Lonely, Lovely",Close Your Eyes,4DUwaCjDL0BwvCGvBTtP0l,0.531,0.366,7,-9.236,1,0.0364,2.82e-05,0.122,0.363,79.88,162680,3,romance_songs
+Javier Colon,Come Through For You,Raise Your Hand,3TsvddJw8omfYKncjGpJo6,0.241,0.738,2,-5.36,1,0.0352,0,0.0798,0.273,155.003,263640,3,romance_songs
+Javier Colon,Come Through For You,Come Through For You,72B0ZqDp4Pt0CpF89dS3YH,0.587,0.411,9,-8.541,1,0.0383,0,0.152,0.315,143.108,255533,3,romance_songs
+Javier Colon,The Truth-Acoustic - EP,Meant To Be,3bAWbKgnQf90e3Zkeu1woS,0.552,0.369,9,-9.272,1,0.0303,0,0.121,0.408,139.748,266227,3,romance_songs
+Ellie Goulding,Halcyon Days,How Long Will I Love You - Bonus Track,0ZPfDxZn5O0L84wvPSN2iG,0.512,0.304,0,-9.19,1,0.0318,0.000622,0.118,0.172,126.078,154435,5,romance_songs
+Faith Hill,Breathe,Breathe,3y4LxiYMgDl4RethdzpmNe,0.529,0.496,7,-9.007,1,0.029,0,0.251,0.278,136.859,250547,4,romance_songs
+Various Artists,RENT (Original Motion Picture Soundtrack),Seasons of Love,5gw8HNcrqliEw0X6pPrPvG,0.475,0.579,5,-4.096,1,0.0334,0,0.0756,0.466,178.151,182747,4,romance_songs
+The Rolling Stones,The Rolling Stones Singles Box Set (1971-2006) [Sampler],Wild Horses,1hsrmBpddP05q7XvJA8ehw,0.443,0.309,7,-9.75,1,0.0267,0.000785,0.0813,0.178,140.749,344387,4,romance_songs
+Ben Haenow,Something I Need,Something I Need,64G2uKq3Snj48ppUZX1Z5t,0.619,0.77,5,-5.693,1,0.0398,0,0.317,0.402,100.972,226107,4,romance_songs
+Original Cast Recording,Ghost - The Musical,With You,3TlNI5wsoq0kH40SPod2WC,0.269,0.118,4,-13.352,0,0.0379,0,0.251,0.194,176.07,266423,4,romance_songs
+Various Artists,Love To Love,Tonight I Celebrate My Love - 1993 - Remaster,09KJFe5JEdbXm4F0CSpHoO,0.43,0.349,3,-8.997,1,0.029,4.21e-05,0.152,0.153,116.493,212293,4,romance_songs
+Josh Kaufman,The Complete Season 6 Collection (The Voice Performance),All Of Me - The Voice Performance,688B6UKJT19OrqK8U9QTLW,0.388,0.41,10,-8.496,1,0.0285,0,0.0883,0.146,125.853,218615,4,romance_songs
+Josh Kaufman,The Complete Season 6 Collection (The Voice Performance),It Will Rain - The Voice Performance,0IdKyo2ePTqFSWxlXL3uSt,0.528,0.567,0,-7.365,1,0.0305,1.95e-06,0.17,0.296,129.908,230577,4,romance_songs
+Josh Kaufman,All Of Me (The Voice Performance),All Of Me - The Voice Performance,7o7s58zmpGh3jfDzZIK0P3,0.316,0.423,10,-8.496,1,0.0289,0,0.0923,0.146,62.78,218615,4,romance_songs
+Christina Grimmie,The Complete Season 6 Collection,I Won’t Give Up - The Voice Performance,45fUnW1rYzL37AVvmRmvhd,0.531,0.478,8,-6.8,1,0.0306,0.000281,0.096,0.293,136.58,223769,3,romance_songs
+Christina Grimmie,The Complete Season 6 Collection,"Hold On, We’re Going Home - The Voice Performance",30S7ayrPfoQ2zBHlJmavTn,0.278,0.657,6,-5.118,0,0.0353,0,0.112,0.242,90.704,175219,4,romance_songs
+Christina Grimmie,The Complete Season 6 Collection,Can’t Help Falling In Love - The Voice Performance,0UpdZpqyGKwz3GRU1DvpGM,0.137,0.295,4,-6.814,1,0.0401,4.92e-06,0.138,0.158,80.477,188007,1,romance_songs
+Matt McAndrew,The Complete Season 7 Collection (The Voice Performance),A Thousand Years - The Voice Performance,6jb5adNrTwjKq2o4EMOu67,0.444,0.407,9,-7.705,1,0.0262,0,0.0862,0.219,142.479,235801,3,romance_songs
+Chris Jamison,The Complete Season 7 Collection (The Voice Performance),Gravity - The Voice Performance,2vkmvdptZR1weTsz8ErtRj,0.543,0.522,7,-7.805,1,0.036,0,0.0966,0.29,123.883,209652,3,romance_songs
+Damien,The Complete Season 7 Collection (The Voice Performance),It’s So Hard to Say Goodbye to Yesterday - The Voice Performance,5MKMeDqdHa6qm9OS9CCJPC,0.262,0.356,6,-9.901,1,0.0301,0.0031,0.0867,0.342,70.167,164417,4,romance_songs
+Damien,The Complete Season 7 Collection (The Voice Performance),How Do I Live - The Voice Performance,1nnVk3L4EJU5p9ergYKRzi,0.443,0.538,11,-6.763,1,0.0307,0,0.107,0.212,129.062,231573,4,romance_songs
+Damien,The Complete Season 7 Collection (The Voice Performance),"He Ain’t Heavy, He’s My Brother - The Voice Performance",1NoIY0eZSywDgMBqMeQkLR,0.279,0.724,7,-4.512,1,0.0319,2.24e-06,0.121,0.265,154.1,199873,4,romance_songs
+Christina Grimmie,With Love,With Love,4xtpy5lEYd3Feg17826h4d,0.429,0.445,2,-5.674,1,0.0265,0.000178,0.239,0.201,150.126,237933,4,romance_songs
+Christina Grimmie,With Love,I Bet You Don't Curse God,6PjVB3PEoiMscyw7HD2lKO,0.471,0.329,8,-7.445,1,0.0363,4.36e-06,0.0858,0.147,77.117,231547,4,romance_songs
+Christina Grimmie,With Love,Think of You,1vIHDoWHLavGdW8dJZYjbj,0.441,0.387,3,-7.546,1,0.0291,2.36e-06,0.108,0.395,144.685,225787,3,romance_songs
+Various Artists,American Idol Top 9 Season 14,Beautiful Disaster,68SFeRNJnDjSRx9zizmLB7,0.498,0.291,7,-5.798,1,0.0285,0,0.138,0.214,97.555,158293,4,romance_songs
+Various Artists,American Idol Top 9 Season 14,Catch My Breath,3DF2umL8QAkk7gm2MpZiYs,0.622,0.836,9,-5.498,0,0.0329,1.01e-05,0.132,0.351,122.016,155227,4,romance_songs
+Joshua Davis,The Complete Season 8 Collection (The Voice Performance),I Shall Be Released - The Voice Performance,0Nv2oGhDGjpEfiLcidW2JS,0.53,0.441,6,-10.55,1,0.0265,5.02e-06,0.123,0.339,138.105,202967,4,romance_songs
+Joshua Davis,The Complete Season 8 Collection (The Voice Performance),Arms Of A Woman - The Voice Performance,2bLDA6h0AEULSSRZiZ9Hmm,0.41,0.372,9,-10.98,1,0.0311,3.99e-06,0.379,0.159,74.832,192773,3,romance_songs
+Joshua Davis,The Complete Season 8 Collection (The Voice Performance),I Can’t Make You Love Me - The Voice Performance,0eGKyP7iArCbT6qExaCGlT,0.545,0.462,3,-7.825,0,0.0336,0,0.152,0.182,137.938,169863,4,romance_songs
+Chris Jamison,The Complete Season 7 Collection (The Voice Performance),I’ll Be - The Voice Performance,2moGEDftsDX4CzHyBC9axd,0.502,0.423,11,-7.132,1,0.0259,0,0.0913,0.357,138.944,173974,3,romance_songs
+Sam Bailey,The Power of Love,And I Am Telling You (with Nicole Scherzinger),7gDQdfMgNwlSkqG1YbbIvN,0.354,0.757,10,-3.764,1,0.0461,2.68e-06,0.273,0.246,118.221,260013,4,romance_songs
+Sam Bailey,The Power of Love,Treasure,1StmUTmNBzQFYjxcjrUmTZ,0.33,0.294,7,-8.982,1,0.0322,0,0.267,0.149,77.54,247013,4,romance_songs
+Matt Cardle,The Fire,The First Time Ever I Saw Your Face,1rcZeVChSSPnjHUZt4OkbQ,0.22,0.069,0,-11.856,1,0.039,0.00326,0.09,0.109,172.034,229480,3,romance_songs
+Alexandra Burke,Where Do Hearts Go,Where Do Hearts Go,0gmHyAgFfKUhNE1Y55Y0xP,0.423,0.371,8,-7.504,1,0.0288,0.000404,0.135,0.221,114.199,349715,4,romance_songs
+Kelly Clarkson,Piece by Piece (Idol Version),Piece by Piece - Idol Version,0co132mIFsQP8TlydDqCSG,0.562,0.252,1,-6.331,1,0.0351,0,0.0838,0.384,109.596,211675,4,romance_songs
+Matt McAndrew,The Complete Season 7 Collection (The Voice Performance),Lost Stars - The Voice Performance,5AtswJe6AJ2uaqwHdVIsIT,0.449,0.638,0,-6.492,1,0.0288,0,0.176,0.242,82.017,194896,4,romance_songs
+Jordan Smith,Something Beautiful,Stand In The Light,7BrvQkvxl4owj4E6UKL5O3,0.402,0.349,10,-6.708,1,0.0294,0,0.115,0.153,106.449,236382,4,romance_songs
+Jordan Smith,Something Beautiful,Angel,3oYPc7UwYaBqBqukYDCzdS,0.341,0.168,10,-9.94,1,0.033,0,0.152,0.125,110.952,282502,3,romance_songs
+Jordan Smith,Something Beautiful,Amazing Grace,0qTmZRMXPkkzJ9Jv0GQNdi,0.186,0.285,5,-8.263,1,0.0308,0,0.364,0.209,167.088,263719,4,romance_songs
+Josh Groban,Awake,You Are Loved (Don't Give Up),4ETPEEP8uDsD66ooEINjHK,0.481,0.712,2,-6.485,1,0.0314,0.205,0.108,0.122,103.993,288946,4,romance_songs
+Bruno Mars,24K Magic,Versace on the Floor,0kN8xEmgMW9mh7UmDYHlJP,0.578,0.574,2,-6.209,1,0.0454,0,0.083,0.301,174.152,261240,4,romance_songs
+Andra Day,Cheers to the Fall,Rise Up,0tV8pOpiNsKqUys0ilUcXz,0.398,0.316,1,-7.031,1,0.0368,0,0.295,0.174,118.582,253342,4,romance_songs
+Joshua Kadison,Painted Desert Serenade,Beautiful In My Eyes,5o8gWPZxr4GZFslU85YMmu,0.582,0.381,3,-10.045,1,0.0256,1.1e-05,0.132,0.283,141.947,249493,4,romance_songs
+Tori Kelly,Unbreakable Smile,I Was Made For Loving You,1Xwh83YOFQARZ3QXscP123,0.417,0.349,2,-11.984,1,0.0285,0,0.0963,0.198,145.505,188947,4,romance_songs
+Various Artists,Dreamgirls (Music from the Motion Picture),I Am Changing,7kwh6Gc7UfKQ2bgjg9rpSX,0.364,0.483,10,-6.131,1,0.0377,0,0.343,0.294,82.464,242973,3,romance_songs
+Lady Gaga,A Star Is Born Soundtrack (Without Dialogue),I'll Never Love Again - Film Version - Radio Edit,3DKpA54hrFIdPN6AtL9HXa,0.45,0.335,7,-7.464,1,0.0298,1.25e-06,0.0979,0.25,109.908,281235,4,romance_songs
+Matt Bloyd,Anything Worth Holding On To,Anything Worth Holding On To,0m1kVgw8xF9kOsKdkcSmnx,0.419,0.386,5,-7.161,1,0.0321,4.51e-06,0.0976,0.342,123.368,333601,4,romance_songs
+Kehlani,You Should Be Here,Intro,7AiMnJSODcJoKDejQ3mnoJ,0.683,0.361,6,-14.146,1,0.954,0,0.111,0.403,140.783,139262,5,khelani_complete
+Kehlani,You Should Be Here,You Should Be Here,73C4vh7W8u41Vll5HvBqv7,0.411,0.58,0,-5.988,1,0.0684,0,0.119,0.27,140.55,157860,4,khelani_complete
+Kehlani,You Should Be Here,How That Taste,5kYZbBLAGrrhFKNbOs6D95,0.437,0.873,9,-3.327,0,0.377,0,0.464,0.506,73.05,152596,4,khelani_complete
+Kehlani,You Should Be Here,Jealous (feat. Lexii Alijai),18z6OV5lknJmKnZi7aA1zH,0.559,0.462,9,-8.843,1,0.216,0,0.0997,0.65,115.587,218593,4,khelani_complete
+Kehlani,You Should Be Here,Niggas,1gHtbcRP4tz1O1NsxPpBea,0.455,0.688,8,-4.747,1,0.113,0,0.354,0.413,148.038,174765,4,khelani_complete
+Kehlani,You Should Be Here,Wanted,3kJudfRjZMItdFYVCCaSi6,0.511,0.801,1,-3.588,1,0.267,0,0.288,0.384,135.394,130588,4,khelani_complete
+Kehlani,You Should Be Here,The Way (feat. Chance the Rapper),6mzaCRuLTRiz1caGOum3zT,0.746,0.538,10,-6.479,1,0.32,0,0.139,0.516,101.018,262521,4,khelani_complete
+Kehlani,You Should Be Here,Unconditional,5h4Uqkh9RpRZwm5ADLh5uj,0.478,0.64,10,-5.417,0,0.0417,0,0.0849,0.319,100.099,156457,4,khelani_complete
+Kehlani,You Should Be Here,The Letter,3rGew9pmFEmGD9nZ12F1tN,0.448,0.241,10,-8.643,1,0.0328,0,0.124,0.131,131.259,232169,4,khelani_complete
+Kehlani,You Should Be Here,Runnin' - Interlude,0dYDmow4l5hbPs5E6QLMSC,0.571,0.515,7,-8.93,1,0.445,0,0.121,0.443,133.106,137849,4,khelani_complete
+Kehlani,You Should Be Here,Be Alright,1B3jkf6CyuiF8CQcKlUx9y,0.546,0.669,9,-6.004,1,0.0584,0,0.11,0.4,100.037,174618,4,khelani_complete
+Kehlani,You Should Be Here,Down for You (feat. BJ The Chicago Kid),6DkmFhzJrkVhDlcgcEy7Pc,0.479,0.711,6,-4.977,0,0.236,0,0.215,0.347,79.54,227755,5,khelani_complete
+Kehlani,You Should Be Here,Yet,5dKy6Cgv6xwiRY3j3AJ7Uq,0.437,0.623,4,-7.487,0,0.283,0,0.0919,0.396,152.613,149530,5,khelani_complete
+Kehlani,You Should Be Here,Bright,0oz4ZqHuUaz3uEkP2vD0u8,0.446,0.435,9,-5.874,1,0.107,0,0.107,0.232,50.176,257179,4,khelani_complete
+Kehlani,You Should Be Here,Alive (feat. Coucheron),389hKTL3ZBPPWP3VuXfEyv,0.598,0.71,5,-5.427,1,0.0554,0,0.106,0.568,93.997,187991,4,khelani_complete
+Kehlani,SweetSexySavage (Deluxe),Gangsta,5cw9s2zGrbny2M2p3WRmGm,0.465,0.446,10,-8.336,0,0.0433,0,0.321,0.131,121.801,177773,4,khelani_complete
+Kehlani,SweetSexySavage (Deluxe),CRZY,3YaMX9Cf68dxiG6RKo0pSY,0.827,0.702,6,-7.264,1,0.267,5.04e-05,0.158,0.694,130.02,191720,4,khelani_complete
+Kehlani,SweetSexySavage (Deluxe),Distraction,1cAL4sFzXXRMbpZnTPa7Zi,0.66,0.698,5,-6.266,0,0.0467,0,0.296,0.396,120.959,235693,4,khelani_complete
+Kehlani,SweetSexySavage (Deluxe),Keep On,4w5BVeKJFCj2rrrEy31s0n,0.74,0.453,5,-7.58,0,0.151,7.13e-05,0.129,0.514,98.057,209122,4,khelani_complete
+Kehlani,SweetSexySavage (Deluxe),In My Feelings,4ta2AWru6ldjg1aHzww0aK,0.556,0.723,0,-5.338,1,0.149,0,0.13,0.555,110.628,219596,4,khelani_complete
+Kehlani,SweetSexySavage (Deluxe),Personal,45DJ0PbKPdbslnyrcM80HN,0.765,0.638,11,-4.548,0,0.13,0,0.669,0.626,113.981,227187,4,khelani_complete
+Kehlani,SweetSexySavage (Deluxe),Escape,7yNu82yd6dYmGQ0H1q0jKo,0.562,0.688,4,-5.353,1,0.0794,0,0.235,0.707,79.979,201720,4,khelani_complete
+Kehlani,SweetSexySavage (Deluxe),Undercover,4v4HwTfMPslhWAnJxIXchn,0.721,0.593,0,-4.768,0,0.0397,0,0.0714,0.721,145.025,183280,4,khelani_complete
+Kehlani,SweetSexySavage (Deluxe),Piece of Mind,6XptjfnUvLfejptpjPRhCT,0.539,0.841,1,-3.613,1,0.138,0,0.0967,0.397,77.079,225080,4,khelani_complete
+Kehlani,SweetSexySavage (Deluxe),Do U Dirty,1y2SK8EjL3WSnJvJEMWOoq,0.653,0.553,8,-6.888,0,0.236,0,0.313,0.468,118.004,197541,4,khelani_complete
+Kehlani,SweetSexySavage (Deluxe),Advice,4UMp46x46Zmu9OEr8m3Gl2,0.497,0.742,8,-2.458,1,0.054,0.00128,0.217,0.324,172.007,202720,4,khelani_complete
+Kehlani,SweetSexySavage (Deluxe),Everything Is Yours,7nb50hgKYhnHJLHKZ7qiKO,0.608,0.466,6,-7.268,0,0.286,0,0.099,0.307,91.947,200621,4,khelani_complete
+Kehlani,SweetSexySavage (Deluxe),Get Like,5y5OzukBTl0yTRMEdNmApJ,0.607,0.557,1,-4.501,1,0.0345,0,0.092,0.351,180.081,170978,4,khelani_complete
+Kehlani,SweetSexySavage (Deluxe),Too Much,3Hdl3BEFb1IEbL0Jq53enx,0.691,0.769,7,-4.669,1,0.211,0,0.326,0.563,158.018,224117,4,khelani_complete
+Kehlani,SweetSexySavage (Deluxe),Not Used to It,0lsC0OkBgiLYbSsoHOzMnr,0.383,0.796,0,-4.772,0,0.23,0,0.334,0.377,100.48,235560,4,khelani_complete
+Kehlani,SweetSexySavage (Deluxe),I Wanna Be,0Pm1BZp4MpoMKkNxIXCfAu,0.564,0.568,5,-7.091,0,0.248,0.000141,0.164,0.417,191.923,211733,4,khelani_complete
+Kehlani,SweetSexySavage (Deluxe),Hold Me by the Heart,2droOB3xlZkhgfUM0owDTq,0.435,0.383,0,-5.389,0,0.0331,0,0.0968,0.209,71.376,202631,3,khelani_complete
+Kehlani,SweetSexySavage (Deluxe),Intro,2Nd2HLWrIq1DcNMiYPTQUC,0.691,0.2,1,-23.078,1,0.949,0,0.121,0.889,105.815,59827,4,khelani_complete
+Kehlani,SweetSexySavage (Deluxe),Thank You,4j644tViOFAf4i0BYT12R8,0.448,0.795,5,-5.639,1,0.359,0.00146,0.158,0.473,132.72,188844,5,khelani_complete
+Kehlani,While We Wait,Footsteps (feat. Musiq Soulchild),4k6hX9RKD096K1NCjjJZLc,0.42,0.638,2,-4.212,1,0.209,0,0.371,0.478,88.546,273349,4,khelani_complete
+Kehlani,While We Wait,Too Deep,0aSW5EMeNnQSMJQ8QN3zIW,0.516,0.638,7,-6.673,0,0.0796,0,0.099,0.642,180.216,167207,3,khelani_complete
+Kehlani,While We Wait,Nunya (feat. Dom Kennedy),0tkmYNfaEaH9HpR59ApRtE,0.675,0.71,1,-4.027,1,0.21,0,0.381,0.574,97.98,244688,4,khelani_complete
+Kehlani,While We Wait,Morning Glory,0kas95RruYRVqrOb07rgkh,0.589,0.833,0,-4.494,0,0.118,0,0.122,0.653,172.037,179337,4,khelani_complete
+Kehlani,While We Wait,Feels,4BOikd4oZjOYMde9AXfrTo,0.369,0.609,9,-4.477,0,0.184,4.1e-05,0.133,0.381,80.362,181140,1,khelani_complete
+Kehlani,While We Wait,Nights Like This (feat. Ty Dolla $ign),6ZRuF2n1CQxyxxAAWsKJOy,0.61,0.725,8,-5.131,1,0.15,0,0.154,0.291,146.163,201788,4,khelani_complete
+Kehlani,While We Wait,RPG (feat. 6lack),1EGrDTfEuAiRzRdxlblpET,0.758,0.534,7,-7.368,0,0.287,0,0.0917,0.719,132.94,236218,4,khelani_complete
+Kehlani,While We Wait,Butterfly,32s2Dn9EVvO2f85MrpRoBV,0.583,0.345,5,-8.044,0,0.0709,0,0.166,0.701,79.107,163840,4,khelani_complete
+Kehlani,While We Wait,Love Language,4jM3c9KLTO9iZPm9A7neiL,0.582,0.586,1,-4.369,0,0.0838,0,0.0866,0.698,89.599,213365,4,khelani_complete
+Kehlani,Valentine's Day (Shameful),Valentine's Day (Shameful),6GCRnf1W9OKxok9fvNp3pz,0.503,0.411,7,-10.602,0,0.387,0,0.101,0.348,134.752,291884,4,khelani_complete
+Kehlani,Toxic,Toxic,1Zm9qGPQkTAOBiVpGSnJUq,0.656,0.453,7,-5.395,0,0.0351,0.00102,0.113,0.0407,111.804,168183,4,khelani_complete
+Kehlani,All Me (feat. Keyshia Cole),All Me (feat. Keyshia Cole),3ucRKbRlikYHyoI17gfR0c,0.42,0.731,3,-2.657,0,0.0548,0,0.196,0.588,95.575,178348,4,khelani_complete
+Kehlani,You Know Wassup,You Know Wassup,6HUO25AttZZCoKAY0vUVtc,0.475,0.404,0,-8.899,1,0.0946,0,0.1,0.463,104.513,201143,4,khelani_complete
+Kehlani,Again,Again,5Qr7StTFbXhgHt9JlqJx0I,0.662,0.326,4,-5.529,1,0.0293,0,0.0985,0.634,95.926,220218,4,khelani_complete
+Kehlani,Already Won,Already Won,1QzC4y8h6WFxHE4KlokhVr,0.511,0.794,1,-3.854,0,0.268,0,0.161,0.625,119.791,164165,5,khelani_complete
+Kehlani,Touch,Touch,1xz905v9g71heS0BQQM9re,0.46,0.593,8,-7.393,1,0.0363,0.000243,0.159,0.0999,104.932,183276,4,khelani_complete
+Kehlani,Honey,Honey,5QTdOvIF2ehBMZpSIIGzIo,0.606,0.24,3,-7.102,1,0.0369,0,0.0819,0.526,96.792,199210,4,khelani_complete
+Kehlani,24/7,24/7,7IJiDYPZy2AIJn3YVHhvD4,0.662,0.532,5,-7.407,1,0.0534,0,0.0741,0.397,92.048,182257,4,khelani_complete
+Kehlani,Did I,Did I,23wuZgeX1oyJ43QYOTo9s7,0.443,0.627,1,-4.481,0,0.151,0,0.0656,0.351,128.485,215556,4,khelani_complete
+Kehlani,FWU,FWU,0tBBihoEWiWKqsO5ZlCbwS,0.626,0.698,3,-6.122,0,0.0499,0,0.165,0.809,137.919,202682,4,khelani_complete

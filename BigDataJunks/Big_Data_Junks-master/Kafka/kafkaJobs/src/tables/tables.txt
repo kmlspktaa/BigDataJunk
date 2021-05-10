@@ -1,0 +1,4 @@
+mysql=stocks
+postgresql=table
+sqlserver=table
+

@@ -1,0 +1,122 @@
+Partitioning
+-------------
+
+cat > emp
+101,aaa,1000,m,11
+102,bbb,2000,f,12
+103,ccc,3000,m,12
+104,ddd,4000,f,13
+105,eee,5000,m,11
+
+hive>create table emp(id int,name string,sal int,gender string, dno int)
+row format delimited
+fields terminated by ',';
+
+hive>load data local inpath 'emps' into table emp
+hive>select * from emp;
+101	aaa	1000	m	11
+102	bbb	2000	f	12
+103	ccc	3000	m	12
+104	ddd	4000	f	13
+105	eee	5000	m	11
+
+
+
+
+Creating Partitioned table:
+
+create table emppart(id int,name string,sal int,gender string, dno int)
+partitioned by (g string)
+row format delimited
+fields terminated by ',';
+
+here we have 5 physical columns and 1 logical column,this logical column acts as partitioning column
+but backend data file contains only 5 fields
+partitions are not created,whenever a table is created,these partitions(sub-directories) are created when data is loaded/inserted
+
+hive>insert overwrite table emppart
+     partition(g='m')
+     select * from emp where gender='m';
+
+
+hive>select * from emp;
+
+It is non-partitioned, displays all
+
+
+Bucketing
+----------
+
+gedit junesales
+p1,1000
+p2,3000
+p3,5000
+p4,7000
+p5,9000
+p1,1000
+p3,5000
+p2,3000
+p1,1000
+p4,7000
+p5,9000
+p3,5000
+p2,3000
+p1,1000
+p4,7000
+p5,9000
+p3,5000
+p2,3000
+p1,1000
+p4,7000
+p4,7000
+p5,9000
+p3,5000
+p2,3000
+p1,1000
+p4,7000
+p5,9000
+p1,1000
+p3,5000
+p2,3000
+p1,1000
+p4,7000
+
+create database bucks;
+
+use bucks;
+
+create table junesales(pid string,price int)
+row format delimited
+fields terminated by ',';
+
+
+load data local inpath 'junesales' into table junesales;
+
+
+select * from junesales;
+
+now making it bucketed table
+for bucketing set th following property, by default it is disabled, so enable it
+
+hive> set hive.enforce.bucketing=true;
+
+
+for partitioning a table based on particular column----->we say partitioned by(colname datatype)
+for bucketing a table on a particular column --------->we say clustered by(colname)
+
+create table buckstab(pid string,price int)
+clustered by(pid)
+into 3 buckets;
+
+//now loading data
+hive>insert overwrite table buckstab select * from junesales;
+
+
+Integrating Sqoop with Hive
+
+sqoop import --connect jdbc:mysql://localhost/testdb
+--username root -P
+--table table_name --hive-import --hive-table hive_table_name
+
+
+

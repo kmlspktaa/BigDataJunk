@@ -1,0 +1,6309 @@
+Spark Components:
+1)Spark Core
+2)Spark SQL
+3)Spark streaming
+4)Spark mlllib
+5)Spark Graphx
+
+
+1)Spark Core: Spark Core follows DAG model
+
+
+DAG(Directed-Acyclic-Graph) engine : It is responsible for creating the logical plans and keeps track  of the entire flow execution.
+DAG contains vertices and edges. Vertices are the RDD's and Edges are the transformations that are performed on the RDD's.
+
+
+
+
+-----------------------------------------------------------------------------------------------
+2)Spark SQL : It process spark data objects using sql statements
+
+
+-----------------------------------------------------------------------------------------------
+3)spark streaming : To capture or process streaming data
+
+
+------------------------------------------------------------------------------------------------
+4)spark mllib: provides various libraries for processing Machine learning algorithms
+
+
+------------------------------------------------------------------------------------------------
+5)spark Graphx: To process or anayze Graph data.
+
+
+------------------------------------------------------------------------------------------------
+
+
+Spark Core Programming:
+
+
+Practicals:
+
+
+word count : To count the no of occurences of each word in a file
+
+
+$ cat > comment
+spark is simple
+spark is easy
+spark is very ast
+spark is booming
+spark is faster than MR
+spark supports streaming
+
+
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -mkdir /sparklab1
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -put comment /sparklab1
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -ls /sparklab1
+Found 1 items
+-rw-r--r--   1 lenovo supergroup        114 2019-01-12 08:19 /sparklab1/comment
+
+
+step 1: Loading the file using sparkcontext(sc)------>RDD will be created
+
+
+scala> val r1=sc.textFile("hdfs://localhost:9000/sparklab1/comment")
+
+
+here r1 is a RDD ,created whenever we load data from LFS/HDFS using spark context(sc)
+
+
+
+
+
+
+scala> r1.collect()
+res5: Array[String] = Array(spark is simple, spark is easy, spark is very fast, spark is booming, spark is faster than MR, spark suppots streaming)
+
+
+--------------------------------------------------------------------
+step 2: splitting based on space 
+scala> val r2=r1.map(x=>x.split(" "))
+r2: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[4] at map at <console>:38
+
+
+whenever we perform transformation over a RDD---> the resultant is also an RDD
+here r2 is also a RDD
+
+
+scala> r2.collect()
+res6: Array[Array[String]] = Array(Array(spark, is, simple), Array(spark, is, easy), Array(spark, is, very, fast), Array(spark, is, booming), Array(spark, is, faster, than, MR), Array(spark, suppots, streaming))
+
+
+---------------------------------------------------------------------------------------
+step 3: Flattening the array
+
+
+scala> val r3=r2.flatMap(x=>x)
+here r3 is also a RDD
+
+
+scala> r3.collect()
+res7: Array[String] = Array(spark, is, simple, spark, is, easy, spark, is, very, fast, spark, is, booming, spark, is, faster, than, MR, spark, supports, streaming)
+
+
+-----------------------------------------------------------------------------------------
+combining step 2 and step 3 in a single step
+scala> val r31=r1.flatMap(x=>x.split(" "))
+r31: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[6] at flatMap at <console>:38
+
+
+scala> r31.collect()
+res8: Array[String] = Array(spark, is, simple, spark, is, easy, spark, is, very, fast, spark, is, booming, spark, is, faster, than, MR, spark, suppots, streaming)
+
+
+------------------------------------------------------------------------------------------
+step 4: Generate (k,v) pairs by adding 1 to each word
+
+
+scala>val pair=r3.map(x=>(x,1))
+pair is also a RDD
+
+
+scala> pair.collect()
+res9: Array[(String, Int)] = Array((spark,1), (is,1), (simple,1), (spark,1), (is,1), (easy,1), (spark,1), (is,1), (very,1), (fast,1), (spark,1), (is,1), (booming,1), (spark,1), (is,1), (faster,1), (than,1), (MR,1), (spark,1), (suppots,1), (streaming,1))
+
+
+
+
+---------------------------------------------------------------------------------------------
+step5 : Now Applying reduceByKey()
+scala> val res=pair.reduceByKey(_+_)
+                or
+scala> val res=pair.reduceByKey((x,y)=>x+y)
+
+
+
+
+scala> res.collect()
+res10: Array[(String, Int)] = Array((suppots,1), (is,5), (fast,1), (simple,1), (very,1), (easy,1), (streaming,1), (booming,1), (spark,6), (faster,1), (than,1), (MR,1))
+
+
+scala> res.foreach(println)
+[Stage 14:>                                                         (0 + 0) / 2](suppots,1)
+(is,5)
+(fast,1)
+(simple,1)
+(very,1)
+(easy,1)
+(streaming,1)
+(booming,1)
+(spark,6)
+(faster,1)
+(than,1)
+(MR,1)
+--------------------------------------------------------------------------------------------------
+step 6: Removing the tuples
+
+
+scala> val res1=res.map(x=>x._1+" "+x._2)
+res1: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[11] at map at <console>:46
+
+
+scala> res1.collect()
+res13: Array[String] = Array(supports 1, is 5, fast 1, simple 1, very 1, easy 1, streaming 1, booming 1, spark 6, faster 1, than 1, MR 1)
+
+
+scala> res1.foreach(println)
+[Stage 20:>                                                         (0 + 0) / 2]booming 1
+spark 6
+supports 1
+is 5
+fast 1
+simple 1
+very 1
+easy 1
+streaming 1
+faster 1
+than 1
+MR 1
+
+
+-------------------------------------------------------------------------------------------
+step 7: saving the results into HDDS
+
+
+scala> res1.saveAsTextFile("hdfs://localhost:9000/sparklab1/wordcount")
+
+
+---------------------------------------------------------------------------------------------
+Now go and check in HDFS:
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -ls /sparklab1
+Found 2 items
+-rw-r--r--   1 lenovo supergroup        114 2019-01-12 08:19 /sparklab1/comment
+drwxr-xr-x   - lenovo supergroup          0 2019-01-12 08:53 /sparklab1/wordcount
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -ls /sparklab1/wordcount
+Found 3 items
+-rw-r--r--   3 lenovo supergroup          0 2019-01-12 08:53 /sparklab1/wordcount/_SUCCESS
+-rw-r--r--   3 lenovo supergroup         57 2019-01-12 08:53 /sparklab1/wordcount/part-00000
+-rw-r--r--   3 lenovo supergroup         39 2019-01-12 08:53 /sparklab1/wordcount/part-00001
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /sparklab1/wordcount/part-00000
+suppots 1
+is 5
+fast 1
+simple 1
+very 1
+easy 1
+streaming 1
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /sparklab1/wordcount/part-00001
+booming 1
+spark 6
+faster 1
+than 1
+MR 1
+
+
+-------------------------------------------------------------------------------------------
+To see the no of partitions from spark side 
+scala> res1.getNumPartitions
+res16: Int = 2
+
+
+scala> res1.partitions.size
+res17: Int = 2
+
+
+-------------------------------------------------------------------------------------------
+
+
+
+
+Total Program:
+
+
+scala> val r1=sc.textFile("hdfs://localhost:9000/sparklab1/comment")
+r1: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/comment MapPartitionsRDD[14] at textFile at <console>:24
+
+
+scala> val r2=r1.flatMap(x=>x.split(" "))
+r2: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[15] at flatMap at <console>:38
+
+
+scala> r2.collect()
+res18: Array[String] = Array(spark, is, simple, spark, is, easy, spark, is, very, fast, spark, is, booming, spark, is, faster, than, MR, spark, suppots, streaming)
+
+
+scala> val pair=r2.map(x=>(x,1))
+pair: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[16] at map at <console>:40
+
+
+scala> pair.collect()
+res19: Array[(String, Int)] = Array((spark,1), (is,1), (simple,1), (spark,1), (is,1), (easy,1), (spark,1), (is,1), (very,1), (fast,1), (spark,1), (is,1), (booming,1), (spark,1), (is,1), (faster,1), (than,1), (MR,1), (spark,1), (suppots,1), (streaming,1))
+
+
+scala> val res=pair.reduceByKey((x,y)=>x+y)
+res: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[17] at reduceByKey at <console>:42
+
+
+scala> res1.collect()
+res20: Array[String] = Array(suppots 1, is 5, fast 1, simple 1, very 1, easy 1, streaming 1, booming 1, spark 6, faster 1, than 1, MR 1)
+
+
+scala> res.collect()
+res21: Array[(String, Int)] = Array((suppots,1), (is,5), (fast,1), (simple,1), (very,1), (easy,1), (streaming,1), (booming,1), (spark,6), (faster,1), (than,1), (MR,1))
+
+
+scala> val res1=res.map(x=>x._1+" "+x._2)
+res1: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[18] at map at <console>:44
+
+
+scala> res1.collect()
+res22: Array[String] = Array(suppots 1, is 5, fast 1, simple 1, very 1, easy 1, streaming 1, booming 1, spark 6, faster 1, than 1, MR 1)
+
+
+scala> res1.foreach(println)
+booming 1
+spark 6
+faster 1
+than 1
+MR 1
+suppots 1
+is 5
+fast 1
+simple 1
+very 1
+easy 1
+streaming 1
+
+
+scala> res1.getNumPartitions
+res24: Int = 2
+
+
+scala> res1.partitions.size
+res25: Int = 2
+
+
+scala> res1.saveAsTextFile("hdfs://localhost:9000/sparklab1/wordcount1")
+
+
+-------------------------------------------------------------------------------------------------
+
+
+
+
+ex:2
+Task: select gen,sum(sal) from emp group by gen:
+o/p : m------->totsal
+      f------->totsal
+
+
+$ cat emp7
+101,miller,10000,m,11,
+102,Blake,20000,m,12,
+103,sony,30000,f,11,
+104,sita,40000,f,12,
+105,John,50000,m,13lenovo@lenovo-Lenovo-G450:~$ 
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -put emp7 /sparklab1
+
+
+
+
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -ls /sparklab1
+Found 4 items
+-rw-r--r--   1 lenovo supergroup        114 2019-01-12 08:19 /sparklab1/comment
+-rw-r--r--   1 lenovo supergroup        106 2019-01-12 09:30 /sparklab1/emp7
+
+
+step1 :loading the file
+scala> val emp=sc.textFile("hdfs://localhost:9000/sparklab1/emp7")
+emp: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emp7 MapPartitionsRDD[21] at textFile at <console>:24
+
+
+scala> emp.collect()
+res27: Array[String] = Array(101,miller,10000,m,11,, 102,Blake,20000,m,12,, 103,sony,30000,f,11,, 104,sita,40000,f,12,, 105,John,50000,m,13)
+
+
+
+
+step 2: splitting bases on comma delimiter
+scala> val e1=emp.map(x=>x.split(","))
+e1: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[22] at map at <console>:38
+
+
+scala> e1.collect()
+res28: Array[Array[String]] = Array(Array(101, miller, 10000, m, 11), Array(102, Blake, 20000, m, 12), Array(103, sony, 30000, f, 11), Array(104, sita, 40000, f, 12), Array(105, John, 50000, m, 13))
+
+
+----------------------------------------------------------------------------------
+step 3: Extract only the required fields
+
+
+scala> val gensalpair=e1.map(x=>(x(3),x(2).toInt)
+     | )
+gensalpair: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[23] at map at <console>:40
+
+
+scala> gensalpair.collect()
+res29: Array[(String, Int)] = Array((m,10000), (m,20000), (f,30000), (f,40000), (m,50000))
+
+
+---------------------------------------------------------------------------------------------
+step 4 :Applying reduceByKey()
+scala> val res=gensalpair.reduceByKey((x,y)=>x+y)
+res: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[24] at reduceByKey at <console>:42
+
+
+scala> val res=gensalpair.reduceByKey((_+_)
+     | )
+res: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[25] at reduceByKey at <console>:42
+
+
+scala> res.collect()
+res30: Array[(String, Int)] = Array((f,70000), (m,80000))
+
+
+scala> res.foreach(println)
+(m,80000)
+(f,70000)
+
+
+-----------------------------------------------------------------------------------------
+step 5:
+Eliminating the tuples
+
+
+scala> val res1=res.map(x=>x._1+" "+x._2)
+res1: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[26] at map at <console>:44
+
+
+scala> res1.collect()
+res32: Array[String] = Array(f 70000, m 80000)
+
+
+scala> res1.getNumPartitions
+res33: Int = 2
+
+
+scala> res1.partitions.size
+res34: Int = 2
+
+
+----------------------------------------------------------------------------------------
+step 6: saving into hdfs:
+
+
+scala> res1.saveAsTextFile("hdfs://localhost:9000/sparklab1/gensal1")
+
+
+------------------------------------------------------------------------------------------
+
+
+$ hdfs dfs -ls /sparklab1/gensal1
+Found 3 items
+-rw-r--r--   3 lenovo supergroup          0 2019-01-12 09:47 /sparklab1/gensal1/_SUCCESS
+-rw-r--r--   3 lenovo supergroup          8 2019-01-12 09:47 /sparklab1/gensal1/part-00000
+-rw-r--r--   3 lenovo supergroup          8 2019-01-12 09:47 /sparklab1/gensal1/part-00001
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /sparklab1/gensal1/part-00000
+f 70000
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /sparklab1/gensal1/part-00001
+m 80000
+
+
+---------------------------------------------------------------------------------------------
+Task :making above 2 partitons into a single partition using coalesce()
+
+
+scala> res1.getNumPartitions
+res38: Int = 2
+
+
+scala> val res2=res1.coalesce(1)
+res2: org.apache.spark.rdd.RDD[String] = CoalescedRDD[29] at coalesce at <console>:46
+
+
+scala> res2.getNumPartitions
+res39: Int = 1
+
+
+scala> res2.saveAsTextFile("hdfs://localhost:9000/sparklab1/gensal2")
+
+
+------------------------------------------------------------------------------------------------
+$ hdfs dfs -ls /sparklab1/gensal2
+Found 2 items
+-rw-r--r--   3 lenovo supergroup          0 2019-01-12 09:55 /sparklab1/gensal2/_SUCCESS
+-rw-r--r--   3 lenovo supergroup         16 2019-01-12 09:55 /sparklab1/gensal2/part-00000
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /sparklab1/gensal2/part-00000
+f 70000
+m 80000
+
+
+-----------------------------------------------------------------------------------------------
+coalesce() is used to reduce the no of partitions, but using coalesce() we cannot incrase 
+the partitions
+
+
+-----------------------------------------------------------------------------------------------
+
+
+Increasing the no of partitions:
+
+
+2 ways
+way-1:
+while loading data(file) itself, we can specify the no of partitions
+
+
+scala> val emp=sc.textFile("hdfs://localhost:9000/sparklab1/emp7")
+
+
+scala> emp.getNumPartitions
+res42: Int = 2
+
+
+we can increase to 3
+scala> val emp1=sc.textFile("hdfs://localhost:9000/sparklab1/emp7",3)
+
+
+scala> emp1.getNumPartitions
+res43: Int = 3
+
+
+we can increase to 5
+scala> val emp2=sc.textFile("hdfs://localhost:9000/sparklab1/emp7",5)
+
+
+
+
+scala> emp2.getNumPartitions
+res44: Int = 5
+--------------------------------------------------------------------------------------
+way2:
+
+
+whenever we create RDD from a scala object,we can specify the no of patitions
+
+
+scala> val l=List(10,20,30,40,50,60)
+l: List[Int] = List(10, 20, 30, 40, 50, 60)
+
+
+scala> val r1=sc.parallelize(l)
+by defaut we have 2 partitions
+
+
+scala> r1.getNumPartitions
+res45: Int = 2
+
+
+scala> val r2=sc.parallelize(l,1)
+r2: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[39] at parallelize at <console>:26
+
+
+scala> r2.getNumPartitions
+res46: Int = 1
+
+
+increasing the partitions to 4
+
+
+scala> val r3=sc.parallelize(l,4)
+r3: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[40] at parallelize at <console>:26
+
+
+scala> r3.getNumPartitions
+res47: Int = 4
+
+
+--------------------------------------------------------------------------------------------------
+
+
+Creating RDD from a Scala object and computing
+
+
+scala> val l=List(10,20,30,40,50)
+l: List[Int] = List(10, 20, 30, 40, 50)
+
+
+
+
+I want to square each element of the list
+scala> val sq=l.map(x=>x*x)
+sq: List[Int] = List(100, 400, 900, 1600, 2500)
+
+
+Transformation over list(scalobject)------>returns list (scala object)
+----------------------------------------------------------------
+on a scala object (List) ,if you perform transformation, then we get scala object (List)
+on a spark object (RDD), if you perform transformation, then we get spark object(RDD)
+-----------------------------------------------------------------------------------
+now convertin the scala object list(l) into spark object(RDD).
+scala> val r1=sc.parallelize(l)
+r1: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[41] at parallelize at <console>:26
+
+
+scala> r1.collect()
+res48: Array[Int] = Array(10, 20, 30, 40, 50)
+
+
+scala> val r2=r1.filter(x=>x>20)
+on RDD r1, if u perform Transformation the resultant is a RDD(r2)
+
+
+scala> r2.collect()
+res49: Array[Int] = Array(30, 40, 50)
+
+
+---------------------------------------------------------------------------------------------------
+Local objects(scala objects) are stored in client machines
+RDDs (spark objects) are loaded and computed in cluster machines
+
+
+RDDs are declared at client side but runs at spark side
+during flow execution, one by one RDD are loaded into RAMS of cluster machines and computed.
+
+
+-when action is performed, all the partitions of Resultant RDD are collected and stored 
+ in client machine.
+
+
+----------------------------------------------------------------------------------------------- 
+
+
+Aggregations Over structured Data
+
+
+I want all aggregations:
+Step 1 : Loading data
+
+
+scala> val emp=sc.textFile("hdfs://localhost:9000/sparklab1/emp7")
+
+
+scala> emp.getNumPartitions
+res0: Int = 2
+
+
+step 2: splitting based on comma delimiter
+scala> val emparr=emp.map(x=>x.split(","))
+
+
+scala> emparr.collect()
+res1: Array[Array[String]] = Array(Array(101, miller, 10000, m, 11), Array(102, Blake, 20000, m, 12), Array(103, sony, 30000, f, 11), Array(104, sita, 40000, f, 12), Array(105, John, 50000, m, 13))
+
+
+step 3: extracting the required fields
+scala> val gensalpair=emparr.map(x=>(x(3),x(2).toInt))
+
+
+scala> gensalpair.collect()
+res2: Array[(String, Int)] = Array((m,10000), (m,20000), (f,30000), (f,40000), (m,50000))
+
+
+step 4: 
+i)sum() aggregation:
+ scala> val sum=gensalpair.reduceByKey(_+_)
+
+
+scala> sum.collect()
+res3: Array[(String, Int)] = Array((f,70000), (m,80000))                        
+
+
+scala> sum.foreach(println)
+(f,70000)
+(m,80000)
+-----------------------------------------------------------------------
+ii)count() aggregation:
+scala> val add1=emparr.map(x=>(x(3),1))
+
+
+scala> add1.collect()
+res5: Array[(String, Int)] = Array((m,1), (m,1), (f,1), (f,1), (m,1))
+
+
+scala> val cnt=add1.reduceByKey(_+_)
+
+
+scala> cnt.collect()
+res6: Array[(String, Int)] = Array((f,2), (m,3))
+
+
+                                                                       
+scala> cnt.foreach(println)
+(m,3)
+(f,2)
+--------------------------------------------------------------------------
+iii)max aggregation:
+scala> val maxsal=gensalpair.reduceByKey((x,y)=>math.max(x,y))
+
+
+scala> maxsal.collect()
+res9: Array[(String, Int)] = Array((f,40000), (m,50000))                        
+
+
+shortcut:
+scala> val maxsal=gensalpair.reduceByKey(math.max(_,_))
+
+
+scala> maxsal.collect()
+res10: Array[(String, Int)] = Array((f,40000), (m,50000))                       
+
+
+scala> maxsal.foreach(println)
+(f,40000)
+(m,50000)
+-----------------------------------------------------------------------------------
+iv) min aggregation:
+scala> val minsal=gensalpair.reduceByKey((x,y)=>math.min(x,y))
+minsal: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[9] at reduceByKey at <console>:30
+
+
+scala> minsal.collect.foreach(println)
+(f,30000)                                                                       
+(m,10000)
+
+
+---------------------------------------------------------------------------------------------
+
+
+ex:2
+Task : I want dname wise totsal generated
+
+
+select dno,sum(sal) from emp group by dno
+o/p: 11 totsal
+     12 totsal
+     13 totsal
+
+
+but i want-------->mrkt totsal
+                   HR   totsal
+                   Fin  totsal
+
+
+here transform dno--------->dname
+        i.e  dno=11-------->mrkt
+             dno=12-------->HR
+             dno=13-------->Fin
+
+
+scala> val emp=sc.textFile("hdfs://localhost:9000/sparklab1/emp7")
+emp: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emp7 MapPartitionsRDD[11] at textFile at <console>:24
+
+
+scala> val emparr=emp.map(x=>x.split(","))
+emparr: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[12] at map at <console>:26
+
+
+
+
+scala> val deptsalpair=emparr.map{x=>
+     |                            val dno=x(4).toInt
+     |                            val sal=x(2).toInt
+     |                            val dname=dno match {
+     |                                       case 11=>"mrkt"
+     |                                       case 12=>"HR"
+     |                                       case 13=>"Fin"
+     |                                       case other=>"others"
+     |                                                  }
+     |                             (dname,sal)
+     |                             }
+
+
+scala> deptsalpair.collect()
+res13: Array[(String, Int)] = Array((mrkt,10000), (HR,20000), (mrkt,30000), (HR,40000), (Fin,50000))
+
+
+scala> val deptwisesal=deptsalpair.reduceByKey(_+_)
+
+
+
+
+scala> deptwisesal.collect()
+res14: Array[(String, Int)] = Array((mrkt,40000), (HR,60000), (Fin,50000))   
+
+
+Now I want how many marketing depts
+           how many HR depts
+           how many fin depts
+
+
+scala> val deptadd1=deptsalpair.map(x=>(x._1,1))
+deptadd1: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[16] at map at <console>:30
+
+
+scala> deptadd1.collect()
+res15: Array[(String, Int)] = Array((mrkt,1), (HR,1), (mrkt,1), (HR,1), (Fin,1))
+
+
+scala> val res=deptadd1.reduceByKey(_+_)
+res: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[17] at reduceByKey at <console>:32
+
+
+scala> res.collect()
+res16: Array[(String, Int)] = Array((mrkt,2), (HR,2), (Fin,1))                  
+
+
+   
+Groupings and aggregations:
+case 1: single grouping single Aggregation
+        ex:select gen,sum(sal) from emp group by gen 
+
+
+case 2: multi grouping single Aggregation
+        ex:select dno,gen,sum(sal) from emp group by dno,gen
+
+
+case 3: single Grouping multiple Aggregation
+         ex: select dno,sum(sal),avg(sal),max(sal),min(sal),count(*) rom emp group by dno;
+
+
+case 4: Multi Grouping multiple Aggregation
+         ex: select dno,gen,sum(sal),avg(sal),max(sal),min(sal),count(*) rom emp group by dno,gen;
+
+
+----------------------------------------------------------------------------------------------
+case 1: single grouping single Aggregation
+        ex:select gen,sum(sal) from emp group by gen
+
+
+  Refer previous examples..
+
+
+
+
+----------------------------------------------------------------------------------------------
+case 2 : multi grouping single Aggregation
+        ex:select dno,gen,sum(sal) from emp group by dno,gen
+
+
+ Here spark allows grouping by single field only,
+ so here for grouping by multiple fields
+  keep multiple fields in one tuple as one key
+
+
+scala> val emp=sc.textFile("hdfs://localhost:9000/sparklab1/emp7")
+
+
+scala> val emparr=emp.map(x=>x.split(","))
+
+
+scala> val dnogensalpair=emparr.map(x=>((x(4),x(3)),x(2).toInt))
+
+
+
+
+scala> dnogensalpair.collect()
+res17: Array[((String, String), Int)] = Array(((11,m),10000), ((12,m),20000), ((11,f),30000), ((12,f),40000), ((13,m),50000))
+
+
+                 (or)
+
+
+scala> val dnogensalpair1=emparr.map{x=>
+     |                               val dno=x(4)
+     |                               val gen=x(3)
+     |                               val sal=x(2).toInt
+     |                               val pair=((dno,gen),sal)
+     |                               pair
+     |                               }
+dnogensalpair1: org.apache.spark.rdd.RDD[((String, String), Int)] = MapPartitionsRDD[22] at map at <console>:28
+
+
+scala> dnogensalpair.collect()
+res18: Array[((String, String), Int)] = Array(((11,m),10000), ((12,m),20000), ((11,f),30000), ((12,f),40000), ((13,m),50000))
+
+
+scala> val sum=dnogensalpair.reduceByKey(_+_)
+sum: org.apache.spark.rdd.RDD[((String, String), Int)] = ShuffledRDD[23] at reduceByKey at <console>:30
+
+
+scala> sum.collect()
+res19: Array[((String, String), Int)] = Array(((11,f),30000), ((13,m),50000), ((12,f),40000), ((12,m),20000), ((11,m),10000))
+
+
+But i want the ouput in this way
+(11,f,30000)
+
+
+scala> val struct=sum.map(x=>(x._1._1,x._1._2,x._2))
+struct: org.apache.spark.rdd.RDD[(String, String, Int)] = MapPartitionsRDD[24] at map at <console>:32
+
+
+scala> struct.collect()
+res20: Array[(String, String, Int)] = Array((11,f,30000), (13,m,50000), (12,f,40000), (12,m,20000), (11,m,10000))
+
+
+------------------------------------------------------------------------------------------------
+case 3: Single grouping and multiple aggregation
+ex: select dno,sum(sal),max(sal),min(sal),avg(sal),count(*) from emp group by dno;
+
+
+step 1: load data
+scala> val emp=sc.textFile("hdfs://localhost:9000/sparklab1/emp7")
+
+
+step 2: splitting based on delimiter
+scala> val emparr=emp.map(x=>x.split(","))
+
+
+step 3: Extracting the required fields i.e dno,sal
+scala> val dnosalpair=emparr.map(x=>(x(4),x(2).toInt))
+
+
+scala> dnosalpair.collect()
+res0: Array[(String, Int)] = Array((11,10000), (12,20000), (11,30000), (12,40000), (13,50000))
+
+
+for multiple aggregations we go for groupByKey()
+for single aggregation we go for reduceByKey()
+
+
+step 4: applying groupByKey() -------->for every group we get a compactBuffer
+scala> val grp=dnosalpair.groupByKey()
+
+
+scala> grp.collect()
+res1: Array[(String, Iterable[Int])] = Array((13,CompactBuffer(50000)), (11,CompactBuffer(10000, 30000)), (12,CompactBuffer(20000, 40000)))
+
+
+step 5:Performing multiple aggregations
+
+
+scala> val aggr=grp.map{x=>
+     |                  val dno=x._1
+     |                  val cb=x._2
+     |                  val sum=cb.sum
+     |                  val cnt=cb.size
+     |                  val avg=sum/cnt
+     |                  val max=cb.max
+     |                  val min=cb.min
+     |                  val res=(dno,sum,cnt,avg,max,min)
+     |                  res
+     |                 }
+aggr: org.apache.spark.rdd.RDD[(String, Int, Int, Int, Int, Int)] = MapPartitionsRDD[5] at map at <console>:32
+
+
+scala> aggr.collect()
+res2: Array[(String, Int, Int, Int, Int, Int)] = Array((13,50000,1,50000,50000,50000), (11,40000,2,20000,30000,10000), (12,60000,2,30000,40000,20000))
+
+
+(or) shorcut
+
+
+scala> val aggr1=grp.map(x=>(x._1,x._2.sum,x._2.size,x._2.sum/x._2.size,x._2.max,x._2.min))
+
+
+scala> aggr1.collect()
+res3: Array[(String, Int, Int, Int, Int, Int)] = Array((13,50000,1,50000,50000,50000), (11,40000,2,20000,30000,10000), (12,60000,2,30000,40000,20000))
+
+
+-------------------------------------------------------------------------------------------------
+case 4:Multi Grouping and Multiple Aggregations
+ex: select dno,gen,sum(sal),avg(Sal),max(sal),min(sal),count(*) from emp group by dno,gen;
+
+
+
+
+scala> val emp=sc.textFile("hdfs://localhost:9000/sparklab1/emp7")
+
+
+scala> val emparr=emp.map(x=>x.split(","))
+
+
+
+
+scala> val dnogensalpair=emparr.map(x=>((x(4),x(3)),x(2).toInt))
+
+
+          (or)
+scala> val dnogensalpair1=emparr.map{x=>
+     |                               val dno=x(4)
+     |                               val gen=x(3)
+     |                               val sal=x(2).toInt
+     |                               val pair=((dno,gen),sal)
+     |                               pair
+     |                              }
+
+
+
+
+scala> dnogensalpair.collect()
+res4: Array[((String, String), Int)] = Array(((11,m),10000), ((12,m),20000), ((11,f),30000), ((12,f),40000), ((13,m),50000))
+
+
+scala> dnogensalpair1.collect()
+res5: Array[((String, String), Int)] = Array(((11,m),10000), ((12,m),20000), ((11,f),30000), ((12,f),40000), ((13,m),50000))
+
+
+scala> val grp=dnogensalpair.groupByKey()
+
+
+If I apply reduceByKey() ,i wont get compactbuffer to perform aggregations
+
+
+scala> grp.collect()
+res6: Array[((String, String), Iterable[Int])] = Array(((11,f),CompactBuffer(30000)), ((13,m),CompactBuffer(50000)), ((12,f),CompactBuffer(40000)), ((12,m),CompactBuffer(20000)), ((11,m),CompactBuffer(10000)))
+
+
+scala> val aggr=grp.map{x=>
+     |                  val dno=x._1._1
+     |                  val gen=x._1._2
+     |                  val cb=x._2
+     |                  val sum=cb.sum
+     |                  val cnt=cb.size
+     |                  val avg=sum/cnt
+     |                  val max=cb.max
+     |                  val min=cb.min
+     |                  val range=max-min
+     |                  val res=(dno,gen,sum,cnt,avg,max,min,range)
+     |                  res
+     |                 }
+aggr: org.apache.spark.rdd.RDD[(String, String, Int, Int, Int, Int, Int, Int)] = MapPartitionsRDD[13] at map at <console>:32
+
+
+scala> aggr.collect()
+res7: Array[(String, String, Int, Int, Int, Int, Int, Int)] = Array((11,f,30000,1,30000,30000,30000,0), (13,m,50000,1,50000,50000,50000,0), (12,f,40000,1,40000,40000,40000,0), (12,m,20000,1,20000,20000,20000,0), (11,m,10000,1,10000,10000,10000,0))
+
+
+(or) shortcut
+
+
+scala> val aggr1=grp.map(x=>x._1._1+"\t"+x._1._2+"\t"+x._2.sum+"\t"+x._2.size+"\t"+x._2.sum/x._2.size+"\t"+x._2.max+"\t"+x._2.min)
+aggr1: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[14] at map at <console>:32
+
+
+scala> aggr1.collect()
+res8: Array[String] = Array(11  f       30000   1       30000   30000   30000, 13        m        50000        1        50000        50000        50000, 12        f        40000        1        40000        40000        40000, 12        m        20000        1        20000        20000        20000, 11        m        10000        1        10000        10000        10000)
+
+
+
+
+Diff between reduceByKey() and groupByKey()
+         reduceByKey()                  groupByKey
+1)Performance is good when used         1)Bad for single aggregation
+  for single aggregation
+
+
+2)Bad for multiple aggregations         2)Good for multiple aggregations
+
+
+3)less load on aggregations             3)more load on aggregations
+
+
+4)If keys are more,no of partitions     4)less no of partitons ,no n/w trafic
+  are more ,n/w traffic is increased
+
+
+----------------------------------------------------------------------------------------------
+Process of groupByKey()
+ex:
+
+
+1)gensalpair=emparr.map(x=>(x(3),x(2).toInt))
+gensalpair is a RDD divided into 2 partitions
+
+
+o/p: [ (f,10),(f,20),(f,30),(m,10),             (m,40),(f,40),(m,20),(m,30)]
+     <---partition1(slave1)------->              <----partition2(slave2)---->
+here in each partition we can have multiple keys i.e m,f
+
+
+but in reduceByKey, each partition has only one key i.e either  m (or) f
+
+
+2)val grp=gensalpair.groupByKey()
+  <---partition1 slave1--------->      <---partition2  slave2------------->
+  (f,CB(10,20,30))                     (f,CB(40))
+  (m,CB(10)                            (m,CB(40,20,30))
+
+
+3val sum=grp.map(x=>x._1,x._2.sum)
+   (f,60)                          (f,40)
+   (m,10)                          (m,90)
+ <---p1----->                    <---p2---->
+ both will be collected into another machine(s3) and computed
+              (f,CB(60,40))
+              (m,CB(10,90))
+
+
+Finally---->(f,100)
+            (m,100)
+
+
+here if we have more no of partitons(ex:10 partitions) then more load on aggregations
+i.e sum,max,min,avg,cnt
+
+
+
+
+------------------------------------------------------------------------------------------------
+Process of reduceByKey():
+1)gensalpair=emparr.map(x=>(x(3),x(2).toInt))
+o/p: [ (f,10),(f,20),(f,30),(m,10),(m,40),(f,40),(m,20),(m,30)] 
+
+
+2)val grp=gensalpair.reduceByKey(_+_)
+o/p:
+  [f <10,20,30,40>]            [m <10,20,30,40>]
+ <---all females---->          <----all males----->
+ <---partition1----->          <---partition2----->
+
+
+3)grp.saveAsTextFile(......)
+  since 2 keys------>2partitons--we get 2 part files
+  1)part-00000----------->contains males---------->stored in one machine(s1)
+  2)part-00001----------->contains females ------->stored in another machine(s2)
+
+
+ex: If 100 products------>p1,p2,p3,..........p100
+                   ------>then 100 keys
+                   ------>then 100 part files i.e 100 output files
+                   i.e file1 -----stores-------->produc1
+                       file2------stores-------->product2
+                       .
+                       .
+                       .
+                       file100-----stores-------->product100
+                    so 100partitions---stored in 100output files---->stored in 100 slave machines
+                    so here n/w traffic is increased.
+
+
+
+
+ex:for 1 Lakh products------->1 lakh partitions required
+       so for each product, a machine can't be kept.
+
+
+-------------------------------------------------------------------------------------------------
+
+
+Built-in Functions:
+
+
+1)reduce():It is a scala function to perform cummulative aggregation over an array (or) list
+           reduce() function can also be applied on a RDD
+ reduceByKey() can be applied only on a RDD but
+ reduce() can be applied on a RDD and on scala objects like list and arrays. 
+
+
+ex:
+scala> val l=List(10,20,30,40,50,60)
+here l is a scala object
+
+
+scala> val sum=l.reduce(_+_)
+sum: Int = 210
+
+
+(or)
+scala> val sum=l.reduce((x,y)=>x+y)
+sum: Int = 210
+
+
+here sum is a scala object
+
+
+now applying reduceByKey() on a list------->gives error
+scala> val sum1=l.reduceByKey(_+_)
+<console>:25: error: value reduceByKey is not a member of List[Int]
+       val sum1=l.reduceByKey(_+_)
+
+
+
+
+now convert scala object to spark object and that too reduceByKey() accepts
+only (k,v) pairs i.e paired RDD.
+
+
+scala> val pair=l.map(x=>("IBM",x))
+pair: List[(String, Int)] = List((IBM,10), (IBM,20), (IBM,30), (IBM,40), (IBM,50), (IBM,60))
+
+
+scala> val r1=sc.parallelize(pair)
+r1: org.apache.spark.rdd.RDD[(String, Int)] = ParallelCollectionRDD[15] at parallelize at <console>:28
+
+
+scala> val sum2=r1.reduceByKey(_+_)
+sum2: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[16] at reduceByKey at <console>:30
+
+
+scala> sum2.collect()
+res9: Array[(String, Int)] = Array((IBM,210))
+
+
+Q)can we apply reduce() function on a (k,v)pair i.e paired RDD
+Ans: No
+
+
+scala> val sum3=r1.reduce(_+_)
+<console>:30: error: type mismatch;
+ found   : (String, Int)
+ required: String
+       val sum3=r1.reduce(_+_)
+                            ^
+
+
+-reduce() can be applied on a RDD
+scala> l
+res10: List[Int] = List(10, 20, 30, 40, 50, 60)
+
+
+scala> val lr=sc.parallelize(l)
+lr: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[17] at parallelize at <console>:26
+
+
+scala> val sum4=lr.reduce(_+_)
+sum4: Int = 210
+
+
+---------------------------------------------------------------------------------------------
+reduce Vs reduceByKey()
+
+
+              reduce                             reduceByKey 
+1)can be applied on scala objects(list,arrays)   1)can be applied only on RDDs
+  and spark object(RDD)
+
+
+2)can't be applied on (k,v) pairs               2)can be applied only on (k,v) pairs i.e paired RDD
+
+
+3)It is a action                                3)It is a Transformation (grouping)
+
+
+-------------------------------------------------------------------------------------------------
+
+
+ex:Performing all aggregations (sum,avg,max,min,count) using reduce() function 
+
+
+ex: select sum(sal),avg(sal),max(sal),min(sal),count(*) from emp;
+    here no grouping since reduce() wont work for (k,v) pair
+
+
+
+
+step 1: Loading data
+scala> val emp=sc.textFile("hdfs://localhost:9000/sparklab1/emp7")
+
+
+step 2: splitting based on delimiter
+
+
+step 3: extracting only sal
+
+
+step 2 and step 3 combined together using funcctions
+
+
+scala> val emp=sc.textFile("hdfs://localhost:9000/sparklab1/emp7")
+emp: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emp7 MapPartitionsRDD[19] at textFile at <console>:24
+
+
+scala> def extractsal(x:String):Int={
+     |                               val emparr=x.split(",")
+     |                               val sal=emparr(2).toInt
+     |                               sal
+     |                               }
+extractsal: (x: String)Int
+
+
+
+
+scala> val sals=emp.map(x=>extractsal(x))
+sals: org.apache.spark.rdd.RDD[Int] = MapPartitionsRDD[20] at map at <console>:30
+
+
+scala> sals.collect()
+res11: Array[Int] = Array(10000, 20000, 30000, 40000, 50000)                    
+
+
+scala> sals.sum
+res12: Double = 150000.0  --->here summation at client level and stored at client
+                          --->here no parallelism
+scala> sals.reduce(_+_)   ---->summation at cluster level and storing at client
+res13: Int = 150000       ----->here parallelism
+
+
+here both are collecting results into client but reduce(_+_) is best bcoz of parallelism
+
+
+now aggregations:  (using reduce())
+
+
+1)Sum :
+scala> val sum1=sals.reduce(_+_)
+sum1: Int = 150000
+(or)
+val sum1=sals.sum
+sum1: Int = 150000
+
+
+
+
+2)count :
+scala> val cnt=sals.count()
+cnt: Long = 5
+
+
+3)avg:
+scala> val avg=sum1/cnt
+avg: Long = 30000
+
+
+4)max:
+scala> val max=sals.reduce(math.max(_,_))
+max: Int = 50000
+(or)
+scala> val max=sals.max
+max: Int = 50000
+
+
+
+
+5)min:
+scala> val min=sals.reduce(math.min(_,_))
+min: Int = 10000
+
+
+(or)
+scala> val min=sals.min
+min: Int = 10000
+
+
+scala> val res=(sum1,cnt,avg,max,min)
+res: (Int, Long, Long, Int, Int) = (150000,5,30000,50000,10000)
+
+
+--------------------------------------------------------------------------------------------------
+
+
+scala> val l=List(10,20,30,40,50)
+l----->scala object
+
+
+scala> val lr1=sc.parallelize(l)
+lr1----->spark object
+
+
+scala> l.sum     ------------>sum on a scala object ,here summation happens at client level
+res14: Int = 150 ------------->here no parallelism
+
+
+scala> lr1.sum   ------------>sum on spark object(RDD), here internally reduce() fn is called
+res15: Double = 150.0 ------->here summation happens at cluster level ,
+                       ------->here we see parallelism
+
+
+sum can be applied on both spark and scala objects
+
+
+scala> lr1.count()
+res16: Long = 5
+
+
+scala> l.count
+<console>:26: error: missing argument list for method count in trait TraversableOnce
+Unapplied methods are only converted to functions when a function type is expected.
+You can make this conversion explicit by writing `count _` or `count(_)` instead of `count`.
+       l.count
+         ^
+
+
+scala> l.size
+res18: Int = 5
+
+
+-----------------------------------------------------------------------------------------------
+Reduce()  Vs  Aggregated Functions
+            reduce()                     Aggregated functions
+1)sum------>sals.reduce(_+_)  -------------->sals.sum
+2)max------>sals.reduce(math.max(_,_))------>sals.max
+3)min------>sals.reduce(math.min(_,_))------>sals.min
+4)count---->sals.count()             ------->sals.size
+<---computation at cluster level-->  <---computed at client level---->
+
+
+sals.reduce(_+_)                                               sals.sum
+
+
+sals------>partion1,partition2                   sals------>partition1,partition2
+
+
+<1000,20000>    <3000,4000>                      <1000,2000>      <3000,4000>
+sum--> 30000    sum--->7000                      <----p1---->     <----p2---->
+<---p1----->    <--p2------>
+<---s1----->    <---s2----->
+individual results of each partition             here all partitions are collected and computed
+will be collected and aggregated  in             at client level 
+another machine(s3) of spark cluster             
+<3000,70000>                                     <1000,2000,3000,4000)  
+<----s3----->                                    <-----client-------->
+sum--->10000                                     sum----->10000
+
+
+final result(10000) is collected into           final result(10000) is stored in client machine
+client machine
+
+
+here parallelism while performing sum            Here no parallelism while performing sum
+hence it is faster                               slower as compared to reuce()
+
+
+------------------------------------------------------------------------------------------
+
+
+
+
+Various Actions and Transformations:
+1)collect() : collects all the partitions into client machine
+  RDD.collect()
+2)count() : counts the no of elements in a rdd
+  RDD.count()
+3)take(n) : retrieves the first 'n' of elements in a RDD
+  RDD.take(5)
+4)saveAsTextFile("path") : To save the results into hdfs
+
+
+ all the above 4 are the actions
+-------------------------------------------------------------------------------------------------
+ex:
+scala> val r1=sc.parallelize(List(10,20,30,40,50,60))
+r1: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[0] at parallelize at <console>:24
+
+
+scala> r1.collect()
+res0: Array[Int] = Array(10, 20, 30, 40, 50, 60)                                
+
+
+scala> r1.count()
+res1: Long = 6
+
+
+scala> r1.take(3)
+res2: Array[Int] = Array(10, 20, 30)
+
+
+Note: If Action appied on a RDD-------------->Returns a scala object
+      If Transformation applied on a RDD----->Returns a spark object(RDD)
+
+
+------------------------------------------------------------------------------------------------
+5)CountByKey(): counts the no of similar keys and returns map object
+                It should be applied only on a paired RDD
+
+
+ex:1
+
+
+scala> val gensalpair=sc.parallelize(List(("m",10000),("m",20000),("f",30000),("f",40000),("m",50000)))
+
+
+scala> val res=gensalpair.countByKey()
+res: scala.collection.Map[String,Long] = Map(f -> 2, m -> 3)
+
+
+ex:2
+scala> val branch=sc.parallelize(List(("CSE",92),("ECE",90),("CSE",89),("EEE",87),("ECE",85),("MECH",84),("CSE",82)))
+
+
+
+
+scala> val res=branch.countByKey()
+res: scala.collection.Map[String,Long] = Map(EEE -> 1, MECH -> 1, CSE -> 3, ECE -> 2)
+
+
+
+
+Here countByKey() returning a scala object(Map) ,so it is an action
+
+
+--------------------------------------------------------------------------------------------------
+6)countByValue(): It is also an action ,it retuns map object(scala object)
+ex:
+
+
+
+
+scala> val words=sc.parallelize(List("java","hadoop","spark","python","hadoop","spark","java","python","hadoop","java"))
+words: org.apache.spark.rdd.RDD[String] = ParallelCollectionRDD[7] at parallelize at <console>:24
+
+
+scala> val res=words.countByValue()
+res: scala.collection.Map[String,Long] = Map(python -> 2, java -> 3, spark -> 2, hadoop -> 3)
+
+
+
+
+-------------------------------------------------------------------------------------------------
+7)sortByKey() : sorting based on key
+                Applied on a pair RDD.
+ex:
+
+
+scala> val ratings=sc.parallelize(List((3,"AUS"),(4,"PAK"),(1,"IND"),(2,"SA"),(5,"NZ"),(7,"SL"),(6,"ENG")))
+ratings: org.apache.spark.rdd.RDD[(Int, String)] = ParallelCollectionRDD[11] at parallelize at <console>:24
+
+
+scala> val res=ratings.sortByKey()
+res: org.apache.spark.rdd.RDD[(Int, String)] = ShuffledRDD[14] at sortByKey at <console>:26
+
+
+scala> res.collect()
+res3: Array[(Int, String)] = Array((1,IND), (2,SA), (3,AUS), (4,PAK), (5,NZ), (6,ENG), (7,SL))
+
+
+
+
+sortByKey() is returning spark object(RDD), so it is a transformation
+
+
+------------------------------------------------------------------------------------------------
+8)distinct() :for Eliminating duplicates
+              It is a Transformation
+ex:
+scala> val l=sc.parallelize(List(10,20,30,10,20,30,40,50))
+l: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[15] at parallelize at <console>:24
+
+
+scala> val res=l.distinct()
+res: org.apache.spark.rdd.RDD[Int] = MapPartitionsRDD[18] at distinct at <console>:26
+
+
+scala> res.collect()
+res4: Array[Int] = Array(30, 50, 40, 20, 10)      
+
+
+distinct() returning a spark object ,so it is a Transformation
+
+
+
+
+
+
+ex:2 applying on a pair RDD
+     Eliminating duplicate (k,v) pairs
+
+
+scala> val s=sc.parallelize(List(("m",10000),("m",20000),("f",30000),("m",10000),("m",20000),("f",30000)))
+s: org.apache.spark.rdd.RDD[(String, Int)] = ParallelCollectionRDD[19] at parallelize at <console>:24
+
+
+scala> val res=s.distinct()
+res: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[22] at distinct at <console>:26
+
+
+scala> res.collect()
+res5: Array[(String, Int)] = Array((m,20000), (f,30000), (m,10000))
+
+
+
+
+ex:3 distinct() can also be applied on non (k,v) pairs
+
+
+scala> val words=sc.parallelize(List("java","hadoop","spark","python","java","spark","hadoop","python"))
+words: org.apache.spark.rdd.RDD[String] = ParallelCollectionRDD[23] at parallelize at <console>:24
+
+
+scala> val res=words.distinct()
+res: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[26] at distinct at <console>:26
+
+
+scala> res.collect()
+res6: Array[String] = Array(python, java, spark, hadoop)            
+
+
+---------------------------------------------------------------------------------------------------
+9)Zip: can be applied on both scala objects and spark objects
+
+
+ex 1: zip applied on scala objects(List)
+
+
+scala> val l1=List(10,20,30,40,50)
+l1: List[Int] = List(10, 20, 30, 40, 50)
+
+
+scala> val l2=List(60,70,80,90,95)
+l2: List[Int] = List(60, 70, 80, 90, 95)
+
+
+scala> val l12=l1.zip(l2)
+l12: List[(Int, Int)] = List((10,60), (20,70), (30,80), (40,90), (50,95))
+
+
+scala> val l3=List(15,25,35,45,55)
+l3: List[Int] = List(15, 25, 35, 45, 55)
+
+
+scala> val l123=l1.zip(l2).zip(l3)
+l123: List[((Int, Int), Int)] = List(((10,60),15), ((20,70),25), ((30,80),35), ((40,90),45), ((50,95),55))
+
+
+ex:2 Zip applied on RDDs
+
+
+scala> val r1=sc.parallelize(l1)
+r1: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[27] at parallelize at <console>:26
+
+
+scala> val r2=sc.parallelize(l2)
+r2: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[28] at parallelize at <console>:26
+
+
+scala> val r12=r1.zip(r2)
+r12: org.apache.spark.rdd.RDD[(Int, Int)] = ZippedPartitionsRDD2[29] at zip at <console>:32
+
+
+scala> r12.collect()
+res7: Array[(Int, Int)] = Array((10,60), (20,70), (30,80), (40,90), (50,95))
+
+
+
+
+ex 3: zip is used for constructing (k,v) pairs
+scala> val gen=List("m","f","m","f","m")
+gen: List[String] = List(m, f, m, f, m)
+
+
+scala> val sal=List(10000,20000,30000,400000,50000)
+sal: List[Int] = List(10000, 20000, 30000, 400000, 50000)
+
+
+scala> val gensalpair=gen.zip(sal)
+gensalpair: List[(String, Int)] = List((m,10000), (f,20000), (m,30000), (f,400000), (m,50000))
+
+
+scala> val gen=List("m","f","m","f","m")
+gen: List[String] = List(m, f, m, f, m)
+
+
+scala> val sal=List(10000,20000,30000,400000,50000)
+sal: List[Int] = List(10000, 20000, 30000, 400000, 50000)
+
+
+scala> val gensalpair=gen.zip(sal)
+gensalpair: List[(String, Int)] = List((m,10000), (f,20000), (m,30000), (f,400000), (m,50000))
+
+
+scala> val salgenpair=sal.zip(gen)
+salgenpair: List[(Int, String)] = List((10000,m), (20000,f), (30000,m), (400000,f), (50000,m))
+
+
+scala> val salpair=sal.zip(sal)
+salpair: List[(Int, Int)] = List((10000,10000), (20000,20000), (30000,30000), (400000,400000), (50000,50000))
+
+
+
+
+ex:4  for zipping, the no of elements should be same ,otherwise the elments will be ignored
+
+
+scala> val gen=List("m","f","m")
+gen: List[String] = List(m, f, m)
+
+
+scala> val sal=List(10000,20000,30000,400000,50000)
+sal: List[Int] = List(10000, 20000, 30000, 400000, 50000)
+
+
+scala> val gensalpair=gen.zip(sal)
+gensalpair: List[(String, Int)] = List((m,10000), (f,20000), (m,30000))
+
+
+---------------------------------------------------------------------------------------------------
+Performing different types of count aggregation
+using
+i)reduceByKey()
+ii)groupByKey()
+iii)countByValue()
+
+
+i)reduceByKey():
+  counting the no of males and females
+
+
+scala> val gen=sc.parallelize(List("m","f","m","f","m","f"))
+gen: org.apache.spark.rdd.RDD[String] = ParallelCollectionRDD[30] at parallelize at <console>:24
+
+
+reduceByKey() can be applied only on (k,v) pairs i.e paired RDD
+
+
+now make a pair
+scala> val gen=sc.parallelize(List("m","f","m","f","m","f"))
+gen: org.apache.spark.rdd.RDD[String] = ParallelCollectionRDD[30] at parallelize at <console>:24
+
+
+scala> val pair=gen.map((_,1))
+pair: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[31] at map at <console>:26
+
+
+scala> val pair=gen.map(x=>(x,1))
+pair: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[32] at map at <console>:26
+
+
+scala> val cnt1=pair.reduceByKey(_+_)
+cnt1: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[33] at reduceByKey at <console>:28
+
+
+scala> cnt1.collect()
+res8: Array[(String, Int)] = Array((f,3), (m,3))     
+
+
+-------------------------------------------------------------------------------------------------
+ii)using groupByKey():
+scala> val gen=sc.parallelize(List("m","f","m","f","m","f"))
+gen: org.apache.spark.rdd.RDD[String] = ParallelCollectionRDD[34] at parallelize at <console>:24
+
+
+scala> val pair=gen.map(x=>(x,1))
+pair: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[35] at map at <console>:26
+
+
+scala> val grp=pair.groupByKey()
+grp: org.apache.spark.rdd.RDD[(String, Iterable[Int])] = ShuffledRDD[36] at groupByKey at <console>:28
+
+
+scala> grp.collect()
+res9: Array[(String, Iterable[Int])] = Array((f,CompactBuffer(1, 1, 1)), (m,CompactBuffer(1, 1, 1)))
+
+
+scala> val cnt2=grp.map(x=>(x._1,x._2.size))
+cnt2: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[37] at map at <console>:30
+
+
+scala> cnt2.collect()
+res10: Array[(String, Int)] = Array((f,3), (m,3))
+
+
+---------------------------------------------------------------------------------------------
+iii)using countByValue():
+scala> val gen=sc.parallelize(List("m","f","m","f","m","f"))
+gen: org.apache.spark.rdd.RDD[String] = ParallelCollectionRDD[38] at parallelize at <console>:24
+
+
+scala> val cnt3=gen.countByValue()
+cnt3: scala.collection.Map[String,Long] = Map(f -> 3, m -> 3)
+
+
+-------------------------------------------------------------------------------------------------
+
+
+Merging RDDS(union) :
+
+
+scala> val l1=sc.parallelize(List(10,20,30,40))
+l1: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[42] at parallelize at <console>:24
+
+
+scala> val l2=sc.parallelize(List(50,60,70,80))
+l2: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[43] at parallelize at <console>:24
+
+
+scala> val l12=l1.union(l2)
+l12: org.apache.spark.rdd.RDD[Int] = UnionRDD[44] at union at <console>:28
+
+
+scala> l12.collect()
+res11: Array[Int] = Array(10, 20, 30, 40, 50, 60, 70, 80)
+
+
+scala> val l3=sc.parallelize(List(85,90,95,97,98))
+l3: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[45] at parallelize at <console>:24
+
+
+scala> val l123=l1.union(l2).union(l3)
+l123: org.apache.spark.rdd.RDD[Int] = UnionRDD[47] at union at <console>:30
+
+
+scala> l123.collect()
+res12: Array[Int] = Array(10, 20, 30, 40, 50, 60, 70, 80, 85, 90, 95, 97, 98)
+
+
+-----------------------------------------------------------------------------------------------
+case 1: If schema of merging RDDs is same
+
+
+enovo@lenovo-Lenovo-G450:~$ cat emps1
+101,aaa,1000,m,11
+102,bbb,2000,f,12
+103,ccc,3000,m,12
+104,ddd,4000,f,13
+105,eee,5000,m,11
+106,fff,6000,f,14
+107,ggg,7000,m,15
+108,hhh,8000,f,16
+lenovo@lenovo-Lenovo-G450:~$ cat emps2
+201,ddd,20000,m,11
+202,eee,30000,f,12
+203,fff,40000,m,11
+204,ggg,50000,f,12
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -put emps1 /sparklab1
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -put emps2 /sparklab1
+
+
+scala> val e1=sc.textFile("hdfs://localhost:9000/sparklab1/emps1")
+e1: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emps1 MapPartitionsRDD[49] at textFile at <console>:24
+
+
+scala> val e2=sc.textFile("hdfs://localhost:9000/sparklab1/emps2")
+e2: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emps2 MapPartitionsRDD[51] at textFile at <console>:24
+
+
+scala> val res=e1.union(e2)
+res: org.apache.spark.rdd.RDD[String] = UnionRDD[52] at union at <console>:28
+
+
+scala> res.collect.foreach(println)
+101,aaa,1000,m,11                                                               
+102,bbb,2000,f,12
+103,ccc,3000,m,12
+104,ddd,4000,f,13
+105,eee,5000,m,11
+106,fff,6000,f,14
+107,ggg,7000,m,15
+108,hhh,8000,f,16
+201,ddd,20000,m,11
+202,eee,30000,f,12
+203,fff,40000,m,11
+204,ggg,50000,f,12
+
+
+-----------------------------------------------------------------------------------------------
+case 2: If field positions are different in the RDDs 
+
+
+lenovo@lenovo-Lenovo-G450:~$ cat emps1
+101,aaa,1000,m,11
+102,bbb,2000,f,12
+103,ccc,3000,m,12
+104,ddd,4000,f,13
+105,eee,5000,m,11
+106,fff,6000,f,14
+107,ggg,7000,m,15
+108,hhh,8000,f,16
+lenovo@lenovo-Lenovo-G450:~$ cat emps2
+201,ddd,20000,m,11
+202,eee,30000,f,12
+203,fff,40000,m,11
+204,ggg,50000,f,12
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -put emps1 /sparklab1
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -put emps2 /sparklab1
+lenovo@lenovo-Lenovo-G450:~$ cat emps3
+301,miller,150000,11,m
+302,Ajay,25000,12,m
+303,Anu,35000,11,f
+304,Aksha,45000,12,f
+305,Anil,55000,13,mlenovo@lenovo-Lenovo-G450:~$ hdfs dfs -put emps3 /sparklab1
+
+
+
+
+scala> val e1=sc.textFile("hdfs://localhost:9000/sparklab1/emps1")
+e1: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emps1 MapPartitionsRDD[54] at textFile at <console>:24
+
+
+scala> val e2=sc.textFile("hdfs://localhost:9000/sparklab1/emps2")
+e2: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emps2 MapPartitionsRDD[56] at textFile at <console>:24
+
+
+scala> val e3=sc.textFile("hdfs://localhost:9000/sparklab1/emps3")
+e3: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emps3 MapPartitionsRDD[58] at textFile at <console>:24
+
+
+scala> def toemp1(x:String)={
+     |                      val w=x.split(",")
+     |                      val eid=w(0)
+     |                      val ename=w(1)
+     |                      val sal=w(2).toInt
+     |                      val gen=w(3)
+     |                      val dno=w(4)
+     |                      val e=(eid,ename,sal,gen,dno)
+     |                      e
+     |                      }
+toemp1: (x: String)(String, String, Int, String, String)
+
+
+scala> def toemp2(x:String)={
+     |                      val w=x.split(",")
+     |                      val eid=w(0)
+     |                      val ename=w(1)
+     |                      val sal=w(2).toInt
+     |                      val gen=w(4)
+     |                      val dno=w(3)
+     |                      val e=(eid,ename,sal,gen,dno)
+     |                      e
+     |                      }
+toemp2: (x: String)(String, String, Int, String, String)
+
+
+scala> val emp1=e1.map(x=>toemp1(x))
+emp1: org.apache.spark.rdd.RDD[(String, String, Int, String, String)] = MapPartitionsRDD[59] at map at <console>:32
+
+
+scala> emp1.collect()
+res14: Array[(String, String, Int, String, String)] = Array((101,aaa,1000,m,11), (102,bbb,2000,f,12), (103,ccc,3000,m,12), (104,ddd,4000,f,13), (105,eee,5000,m,11), (106,fff,6000,f,14), (107,ggg,7000,m,15), (108,hhh,8000,f,16))
+
+
+scala> val emp2=e2.map(x=>toemp1(x))
+emp2: org.apache.spark.rdd.RDD[(String, String, Int, String, String)] = MapPartitionsRDD[60] at map at <console>:32
+
+
+scala> emp2.collect()
+res15: Array[(String, String, Int, String, String)] = Array((201,ddd,20000,m,11), (202,eee,30000,f,12), (203,fff,40000,m,11), (204,ggg,50000,f,12))
+
+
+scala> val emp3=e3.map(x=>toemp2(x))
+emp3: org.apache.spark.rdd.RDD[(String, String, Int, String, String)] = MapPartitionsRDD[61] at map at <console>:32
+
+
+scala> emp3.collect()
+res16: Array[(String, String, Int, String, String)] = Array((301,miller,150000,m,11), (302,Ajay,25000,m,12), (303,Anu,35000,f,11), (304,Aksha,45000,f,12), (305,Anil,55000,m,13))
+
+
+scala> val res=emp1.union(emp2).union(emp3)
+res: org.apache.spark.rdd.RDD[(String, String, Int, String, String)] = UnionRDD[63] at union at <console>:44
+
+
+scala> res.collect.foreach(println)
+(101,aaa,1000,m,11)
+(102,bbb,2000,f,12)
+(103,ccc,3000,m,12)
+(104,ddd,4000,f,13)
+(105,eee,5000,m,11)
+(106,fff,6000,f,14)
+(107,ggg,7000,m,15)
+(108,hhh,8000,f,16)
+(201,ddd,20000,m,11)
+(202,eee,30000,f,12)
+(203,fff,40000,m,11)
+(204,ggg,50000,f,12)
+(301,miller,150000,m,11)
+(302,Ajay,25000,m,12)
+(303,Anu,35000,f,11)
+(304,Aksha,45000,f,12)
+(305,Anil,55000,m,13)
+
+
+scala> res.saveAsTextFile("hdfs://localhost:9000/sparklab1/empres")
+
+
+scala> res.getNumPartitions
+res19: Int = 6
+
+
+scala> val res1=res.coalesce(1)
+res1: org.apache.spark.rdd.RDD[(String, String, Int, String, String)] = CoalescedRDD[65] at coalesce at <console>:46
+
+
+scala> res1.getNumPartitions
+res20: Int = 1
+
+
+scala> res1.saveAsTextFile("hdfs://localhost:9000/sparklab1/empres1")
+
+
+lenovo@lenovo-Lenovo-G450:~$ hadoop fs -ls /sparklab1/empres1
+Found 2 items
+-rw-r--r--   3 lenovo supergroup          0 2019-01-20 09:31 /sparklab1/empres1/_SUCCESS
+-rw-r--r--   3 lenovo supergroup        357 2019-01-20 09:31 /sparklab1/empres1/part-00000
+
+
+-------------------------------------------------------------------------------------------------
+case 3: If No of fields in each RDD are different then neutralize them
+
+
+lenovo@lenovo-Lenovo-G450:~$ cat emps1
+101,aaa,1000,m,11
+102,bbb,2000,f,12
+103,ccc,3000,m,12
+104,ddd,4000,f,13
+105,eee,5000,m,11
+106,fff,6000,f,14
+107,ggg,7000,m,15
+108,hhh,8000,f,16
+lenovo@lenovo-Lenovo-G450:~$ cat emps4
+401,miller,10000,m,hyd
+402,Blake ,20000,m,pune
+403,Amar,30000,m,hydlenovo@lenovo-Lenovo-G450:~$ cat emps5
+501,Kalyan,25000,m,11,manager
+502,Venkatesh,35000,m,12,HR
+503,Anisha,40000,f,13,Accountantlenovo@lenovo-Lenovo-G450:~$ 
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -put emps4 /sparklab1
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -put emps5 /sparklab1
+
+
+
+
+scala> val e1=sc.textFile("hdfs://localhost:9000/sparklab1/emps1")
+e1: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emps1 MapPartitionsRDD[68] at textFile at <console>:24
+
+
+scala> val e4=sc.textFile("hdfs://localhost:9000/sparklab1/emps4")
+e4: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emps4 MapPartitionsRDD[70] at textFile at <console>:24
+
+
+scala> val e5=sc.textFile("hdfs://localhost:9000/sparklab1/emps5")
+e5: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emps5 MapPartitionsRDD[72] at textFile at <console>:24
+
+
+
+
+now define  3 functions to neutralize the schema
+                 (or)
+
+
+scala> val e1=sc.textFile("hdfs://localhost:9000/sparklab1/emps1")
+e1: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emps1 MapPartitionsRDD[76] at textFile at <console>:24
+
+
+scala> val e4=sc.textFile("hdfs://localhost:9000/sparklab1/emps4")
+e4: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emps4 MapPartitionsRDD[78] at textFile at <console>:24
+
+
+scala> val e5=sc.textFile("hdfs://localhost:9000/sparklab1/emps5")
+e5: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emps5 MapPartitionsRDD[80] at textFile at <console>:24
+
+
+scala> val emparr1=e1.map(x=>x.split(","))
+emparr1: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[81] at map at <console>:26
+
+
+scala> val emparr4=e4.map(x=>x.split(","))
+emparr4: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[82] at map at <console>:26
+
+
+scala> val emparr5=e5.map(x=>x.split(","))
+emparr5: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[83] at map at <console>:26
+
+
+scala> emparr1.collect()
+res22: Array[Array[String]] = Array(Array(101, aaa, 1000, m, 11), Array(102, bbb, 2000, f, 12), Array(103, ccc, 3000, m, 12), Array(104, ddd, 4000, f, 13), Array(105, eee, 5000, m, 11), Array(106, fff, 6000, f, 14), Array(107, ggg, 7000, m, 15), Array(108, hhh, 8000, f, 16))
+
+
+scala> val emp1=emparr1.map(x=>(x(0),x(1),x(2).toInt,x(3),x(4),"xxxxxx","******"))
+emp1: org.apache.spark.rdd.RDD[(String, String, Int, String, String, String, String)] = MapPartitionsRDD[84] at map at <console>:28
+
+
+scala> emp1.collect()
+res23: Array[(String, String, Int, String, String, String, String)] = Array((101,aaa,1000,m,11,xxxxxx,******), (102,bbb,2000,f,12,xxxxxx,******), (103,ccc,3000,m,12,xxxxxx,******), (104,ddd,4000,f,13,xxxxxx,******), (105,eee,5000,m,11,xxxxxx,******), (106,fff,6000,f,14,xxxxxx,******), (107,ggg,7000,m,15,xxxxxx,******), (108,hhh,8000,f,16,xxxxxx,******))
+
+
+scala> emparr2.collect()
+res24: Array[Array[String]] = Array(Array(201, ddd, 20000, m, 11), Array(202, eee, 30000, f, 12), Array(203, fff, 40000, m, 11), Array(204, ggg, 50000, f, 12))
+
+
+scala> emparr4.collect()
+res25: Array[Array[String]] = Array(Array(401, miller, 10000, m, hyd), Array(402, "Blake ", 20000, m, pune), Array(403, Amar, 30000, m, hyd))
+
+
+scala> val emp4=emparr4.map(x=>(x(0),x(1),x(2).toInt,x(3),0,"xxxxxx",x(4)))
+emp4: org.apache.spark.rdd.RDD[(String, String, Int, String, Int, String, String)] = MapPartitionsRDD[85] at map at <console>:28
+
+
+scala> emp4.collect()
+res26: Array[(String, String, Int, String, Int, String, String)] = Array((401,miller,10000,m,0,xxxxxx,hyd), (402,"Blake ",20000,m,0,xxxxxx,pune), (403,Amar,30000,m,0,xxxxxx,hyd))
+
+
+scala> emparr5.collect()
+res27: Array[Array[String]] = Array(Array(501, Kalyan, 25000, m, 11, manager), Array(502, Venkatesh, 35000, m, 12, HR), Array(503, Anisha, 40000, f, 13, Accountant))
+
+
+scala> val emp5=emparr5.map(x=>(x(0),x(1),x(2).toInt,x(3),x(4),x(5),"******"))
+emp5: org.apache.spark.rdd.RDD[(String, String, Int, String, String, String, String)] = MapPartitionsRDD[86] at map at <console>:28
+
+
+scala> emp5.collect()
+res28: Array[(String, String, Int, String, String, String, String)] = Array((501,Kalyan,25000,m,11,manager,******), (502,Venkatesh,35000,m,12,HR,******), (503,Anisha,40000,f,13,Accountant,******))
+
+
+scala> val res=emp1.union(emp4).union(emp5)
+<console>:42: error: type mismatch;
+ found   : org.apache.spark.rdd.RDD[(String, String, Int, String, Int, String, String)]
+ required: org.apache.spark.rdd.RDD[(String, String, Int, String, String, String, String)]
+       val res=emp1.union(emp4).union(emp5)
+                          ^
+
+
+scala> val emp1=emparr1.map(x=>(x(0),x(1),x(2).toInt,x(3),x(4).toInt,"xxxxxx","******"))
+emp1: org.apache.spark.rdd.RDD[(String, String, Int, String, Int, String, String)] = MapPartitionsRDD[87] at map at <console>:28
+
+
+scala> val emp5=emparr5.map(x=>(x(0),x(1),x(2).toInt,x(3),x(4).toInt,x(5),"******"))
+emp5: org.apache.spark.rdd.RDD[(String, String, Int, String, Int, String, String)] = MapPartitionsRDD[88] at map at <console>:28
+
+
+scala> val res=emp1.union(emp4).union(emp5)
+res: org.apache.spark.rdd.RDD[(String, String, Int, String, Int, String, String)] = UnionRDD[90] at union at <console>:42
+
+
+scala> res.collect.foreach(println)
+(101,aaa,1000,m,11,xxxxxx,******)
+(102,bbb,2000,f,12,xxxxxx,******)
+(103,ccc,3000,m,12,xxxxxx,******)
+(104,ddd,4000,f,13,xxxxxx,******)
+(105,eee,5000,m,11,xxxxxx,******)
+(106,fff,6000,f,14,xxxxxx,******)
+(107,ggg,7000,m,15,xxxxxx,******)
+(108,hhh,8000,f,16,xxxxxx,******)
+(401,miller,10000,m,0,xxxxxx,hyd)
+(402,Blake ,20000,m,0,xxxxxx,pune)
+(403,Amar,30000,m,0,xxxxxx,hyd)
+(501,Kalyan,25000,m,11,manager,******)
+(502,Venkatesh,35000,m,12,HR,******)
+(503,Anisha,40000,f,13,Accountant,******)
+
+
+---------------------------------------------------------------------------------------------------
+
+
+JOINS in spark:
+
+
+Joins -->2 types
+
+
+i)Inner join
+ii)Outer join------->3 types
+                     i)leftOuterJoin
+                     ii)rightOuterJoin
+                    iii)fullOuterJoin
+
+
+
+
+A=1    B=1
+  2      2
+  3      3
+  4      7   
+  5      8
+  6      9
+
+
+1)Inner join : only matching tuples
+  (1,1)
+  (2,2)
+  (3,3)
+
+
+2)Left outer join :Matchings +unmatched tuples of leftside i.e total presence of leftside
+  (1,1)
+  (2,2)
+  (3,3)
+  (4, )
+  (5, )
+  (6, )
+
+
+3)Right outer join :Matchings +
+
+
+  (1,1)
+  (2,2)
+  (3,3)
+  ( ,7)
+  ( ,8)
+  ( ,9)
+
+
+4)Full outer join :Matchings +unmatched tuples of leftside i.e total presence of leftside
+                             +unmatched tuples of Rightside i.e total presence of Rightside
+  (1,1)
+  (2,2)
+  (3,3)
+  (4, )
+  (5, )
+  (6, )
+  ( ,7)
+  ( ,8)
+  ( ,9
+
+
+Here in joining happens based on key , 
+here to perfroms joins, the RDDS should be  paired RDDs.
+
+
+Ex:1
+
+
+scala> val r1=sc.parallelize(List(("CSE",60),("ECE",60),("CSE",120),("ECE",120),("IT",90)))
+
+
+
+
+scala> val r2=sc.parallelize(List(("CSE",1),("ECE",2),("MECH",3),("CIVIL",4)))
+
+
+1)Inner Join :
+scala> val ij=r1.join(r2)
+ij: org.apache.spark.rdd.RDD[(String, (Int, Int))] = MapPartitionsRDD[4] at join at <console>:28
+
+
+scala> ij.collect()
+res0: Array[(String, (Int, Int))] = Array((CSE,(60,1)), (CSE,(120,1)), (ECE,(60,2)), (ECE,(120,2)))
+------------------------------------------------------------------------------------------------
+2)leftOuterJoin:
+scala> val loj=r1.leftOuterJoin(r2)
+loj: org.apache.spark.rdd.RDD[(String, (Int, Option[Int]))] = MapPartitionsRDD[7] at leftOuterJoin at <console>:28
+
+
+scala> loj.collect()
+res1: Array[(String, (Int, Option[Int]))] = Array((IT,(90,None)), (CSE,(60,Some(1))), (CSE,(120,Some(1))), (ECE,(60,Some(2))), (ECE,(120,Some(2))))
+-----------------------------------------------------------------------------------------------
+3)rightOuterJoin:
+scala> val roj=r1.rightOuterJoin(r2)
+roj: org.apache.spark.rdd.RDD[(String, (Option[Int], Int))] = MapPartitionsRDD[10] at rightOuterJoin at <console>:28
+
+
+scala> roj.collect()
+res2: Array[(String, (Option[Int], Int))] = Array((MECH,(None,3)), (CSE,(Some(60),1)), (CSE,(Some(120),1)), (ECE,(Some(60),2)), (ECE,(Some(120),2)), (CIVIL,(None,4)))
+-----------------------------------------------------------------------------------------------
+4)fullOuterJoin:
+scala> val foj=r1.fullOuterJoin(r2)
+foj: org.apache.spark.rdd.RDD[(String, (Option[Int], Option[Int]))] = MapPartitionsRDD[13] at fullOuterJoin at <console>:28
+
+
+scala> foj.collect.foreach(println)
+(IT,(Some(90),None))
+(MECH,(None,Some(3)))
+(CSE,(Some(60),Some(1)))
+(CSE,(Some(120),Some(1)))
+(ECE,(Some(60),Some(2)))
+(ECE,(Some(120),Some(2)))
+(CIVIL,(None,Some(4)))
+
+
+
+
+---------------------------------------------------------------------------------------------------
+TASK : I want city wise--------->totsal generated
+       city------->present in dept
+       sal ------->present in emp
+
+
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /sparklab1/emps1
+101,aaa,1000,m,11
+102,bbb,2000,f,12
+103,ccc,3000,m,12
+104,ddd,4000,f,13
+105,eee,5000,m,11
+106,fff,6000,f,14
+107,ggg,7000,m,15
+108,hhh,8000,f,16
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /sparklab1/dept1
+11,mrkt,hyd
+12,HR,delhi
+13,fin,pune
+17,HR,hyd
+18,fin,pune
+19,mrkt,delhi
+
+
+scala> val emp=sc.textFile("hdfs://localhost:9000/sparklab1/emps1")
+emp: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emps1 MapPartitionsRDD[17] at textFile at <console>:24
+
+
+scala> val dept=sc.textFile("hdfs://localhost:9000/sparklab1/dept1")
+dept: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/dept1 MapPartitionsRDD[19] at textFile at <console>:24
+
+
+scala> val emparr=emp.map(x=>x.split(","))
+emparr: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[20] at map at <console>:26
+
+
+scala> val dnosalpair=emparr.map(x=>(x(4).toInt,x(2).toInt))
+dnosalpair: org.apache.spark.rdd.RDD[(Int, Int)] = MapPartitionsRDD[21] at map at <console>:28
+
+
+scala> val deptarr=dept.map(x=>x.split(","))
+deptarr: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[22] at map at <console>:26
+
+
+scala> val dnocitypair=deptarr.map(x=>(x(0).toInt,x(2)))
+dnocitypair: org.apache.spark.rdd.RDD[(Int, String)] = MapPartitionsRDD[23] at map at <console>:28
+
+
+
+
+Now data is ready to perform join---->(k,v) pairs
+
+
+Now apply inner join
+
+
+scala> val ij=dnosalpair.join(dnocitypair)
+
+
+scala> ij.collect()
+res4: Array[(Int, (Int, String))] = Array((12,(2000,delhi)), (12,(3000,delhi)), (13,(4000,pune)), (11,(1000,hyd)), (11,(5000,hyd)))
+
+
+Now data is ready for aggregation
+
+
+Now i want (city,sal) pair
+
+
+scala> val citysalpair=ij.map{x=>
+     |                        val city=x._2._2
+     |                        val sal=x._2._1
+     |                        (city,sal)
+     |                        }
+citysalpair: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[27] at map at <console>:38
+
+
+scala> citysalpair.collect()
+res5: Array[(String, Int)] = Array((delhi,2000), (delhi,3000), (pune,4000), (hyd,1000), (hyd,5000))
+
+
+scala> val res=citysalpair.reduceByKey(_+_)
+res: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[28] at reduceByKey at <console>:40
+
+
+scala> res.collect.foreach(println)
+(delhi,5000)                                                                    
+(pune,4000)
+(hyd,6000)
+
+
+--------------------------------------------------------------------------------------------------
+
+
+
+
+Cross Joins: used to perform Cartesian product
+
+
+Cartesian product: Here each element of leftside RDD will Join with each element of Rightside RDD
+
+
+ex: dnos=11  sals=10000
+         12       20000
+         13       30000
+
+
+cartesian product--->(11,10000),(11,20000),(11,30000),(12,10000),(12,20000),(12,30000),(13,10000)
+                     (13,20000),(13,30000)
+
+
+
+
+ex:1
+scala> val dnos=sc.parallelize(List(11,12,13))
+dnos: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[29] at parallelize at <console>:24
+
+
+scala> val sals=sc.parallelize(List(10000,20000,30000))
+sals: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[30] at parallelize at <console>:24
+
+
+scala> val cp=dnos.cartesian(sals)
+cp: org.apache.spark.rdd.RDD[(Int, Int)] = CartesianRDD[31] at cartesian at <console>:28
+
+
+scala> cp.collect.foreach(println)
+(11,10000)
+(11,20000)
+(11,30000)
+(12,10000)
+(13,10000)
+(12,20000)
+(12,30000)
+(13,20000)
+(13,30000)
+
+
+-----------------------------------------------------------------------------------------------
+Task: 
+Find out the employess
+ i)how many employees are below the avgsalary
+ii)how many employees are above the avgsalary
+
+
+we do this task in 2 ways
+i)Using Cartesian product
+ii)without using Cartesian Product
+
+
+I-way (Using Cartesian Product)
+
+
+Step 1: Loading data
+scala> val emp=sc.textFile("hdfs://localhost:9000/sparklab1/emps1")
+emp: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emps1 MapPartitionsRDD[33] at textFile at <console>:24
+
+
+step 2: splitting and extracting sal
+Combining step 2 and step 3
+scala> val sals=emp.map(x=>x.split(",")(2).toInt)
+sals: org.apache.spark.rdd.RDD[Int] = MapPartitionsRDD[34] at map at <console>:26
+
+
+scala> sals.collect()
+res8: Array[Int] = Array(1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000)
+
+
+step 3:calculate avg
+
+
+scala> val avg=sals.reduce(_+_)/sals.count
+avg: Long = 4500                                                                
+
+
+Now convert this avg to RDD
+
+
+scala> val avg1=sc.parallelize(avg)
+<console>:30: error: type mismatch;
+ found   : Long
+ required: Seq[?]
+Error occurred in an application involving default arguments.
+       val avg1=sc.parallelize(avg)
+
+
+
+
+Here error bcoz, we cannot parallelize a variable
+we can only parallelize a sequence i.e a collection i.e like list or arraye
+
+
+scala> val avg1=sc.parallelize(Array(avg))
+avg1: org.apache.spark.rdd.RDD[Long] = ParallelCollectionRDD[35] at parallelize at <console>:30
+
+
+scala> avg1.collect()
+res9: Array[Long] = Array(4500)
+
+
+Now perform cartesian product
+
+
+scala> val cp=sals.cartesian(avg1)
+cp: org.apache.spark.rdd.RDD[(Int, Long)] = CartesianRDD[36] at cartesian at <console>:32
+
+
+scala> cp.collect()
+res10: Array[(Int, Long)] = Array((1000,4500), (2000,4500), (3000,4500), (4000,4500), (5000,4500), (6000,4500), (7000,4500), (8000,4500))
+
+
+scala> val belowaboveavg=cp.map(x=>if(x._1>x._2) "AboveAvg" else "BelowAvg")
+belowaboveavg: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[37] at map at <console>:34
+
+
+scala> belowaboveavg.collect()
+res11: Array[String] = Array(BelowAvg, BelowAvg, BelowAvg, BelowAvg, AboveAvg, AboveAvg, AboveAvg, AboveAvg)
+
+
+scala> val no=belowaboveavg.countByValue()
+no: scala.collection.Map[String,Long] = Map(AboveAvg -> 4, BelowAvg -> 4)
+
+
+here if no countByValue()
+
+
+scala> val pair=belowaboveavg.map(x=>(x,1))
+pair: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[41] at map at <console>:36
+
+
+scala> val cnt=pair.reduceByKey(_+_)
+cnt: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[42] at reduceByKey at <console>:38
+
+
+scala> cnt.collect.foreach(println)
+(AboveAvg,4)                                                                    
+(BelowAvg,4)
+
+
+-------------------------------------------------------------------------------------------------
+II-way : without cartesian product
+
+
+scala> val emp=sc.textFile("hdfs://localhost:9000/sparklab1/emps1")
+emp: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emps1 MapPartitionsRDD[44] at textFile at <console>:24
+
+
+scala> val sals=emp.map(x=>x.split(",")(2).toInt)
+sals: org.apache.spark.rdd.RDD[Int] = MapPartitionsRDD[45] at map at <console>:26
+
+
+scala> sals.collect()
+res14: Array[Int] = Array(1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000)
+
+
+scala> val avg=sals.reduce(_+_)/sals.count
+avg: Long = 4500                                                                
+
+
+scala> val avg1=sc.parallelize(Array(avg))
+avg1: org.apache.spark.rdd.RDD[Long] = ParallelCollectionRDD[46] at parallelize at <console>:30
+
+
+scala> avg1.collect()
+res15: Array[Long] = Array(4500)
+
+
+scala> val pair=sals.map(x=>if(x>=avg) ("Above",1) else ("Below",1))
+pair: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[47] at map at <console>:30
+
+
+scala> pair.collect()
+res16: Array[(String, Int)] = Array((Below,1), (Below,1), (Below,1), (Below,1), (Above,1), (Above,1), (Above,1), (Above,1))
+
+
+scala> val cnt=pair.reduceByKey(_+_)
+cnt: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[48] at reduceByKey at <console>:32
+
+
+scala> cnt.collect.foreach(println)
+(Above,4)
+(Below,4)
+
+
+------------------------------------------------------------------------------------------------
+
+
+Cogroup:
+single dataset----------->single branch------------->group
+multiple datasets-------->multiple branches--------->cogroup
+
+
+scala> val a=sc.parallelize(List(11,12,11,12,13))
+
+
+Here no key to performing grouping, so to group we require paired RDD(k,v)
+
+
+scala> val a=sc.parallelize(List(11,12,11,12,13))
+a: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[49] at parallelize at <console>:24
+
+
+scala> val b=a.map((_,"b1"))
+b: org.apache.spark.rdd.RDD[(Int, String)] = MapPartitionsRDD[50] at map at <console>:26
+
+
+scala> val b=a.map(x=>(x,"b1"))
+b: org.apache.spark.rdd.RDD[(Int, String)] = MapPartitionsRDD[51] at map at <console>:26
+
+
+scala> b.collect()
+res18: Array[(Int, String)] = Array((11,b1), (12,b1), (11,b1), (12,b1), (13,b1))
+
+
+scala> val c=a.map((_,"b2"))
+c: org.apache.spark.rdd.RDD[(Int, String)] = MapPartitionsRDD[52] at map at <console>:26
+
+
+scala> c.collect()
+res19: Array[(Int, String)] = Array((11,b2), (12,b2), (11,b2), (12,b2), (13,b2))
+
+
+scala> val cg=b.cogroup(c)
+cg: org.apache.spark.rdd.RDD[(Int, (Iterable[String], Iterable[String]))] = MapPartitionsRDD[56] at cogroup at <console>:30
+
+
+scala> cg.collect.foreach(println)
+(12,(CompactBuffer(b1, b1),CompactBuffer(b2, b2)))                              
+(13,(CompactBuffer(b1),CompactBuffer(b2)))
+(11,(CompactBuffer(b1, b1),CompactBuffer(b2, b2)))
+
+
+
+
+cala> val d=a.map((_,"b3"))
+d: org.apache.spark.rdd.RDD[(Int, String)] = MapPartitionsRDD[57] at map at <console>:26
+
+
+scala> val cg1=b.cogroup(c,d)
+cg1: org.apache.spark.rdd.RDD[(Int, (Iterable[String], Iterable[String], Iterable[String]))] = MapPartitionsRDD[59] at cogroup at <console>:32
+
+
+scala> cg1.collect.foreach(println)
+(12,(CompactBuffer(b1, b1),CompactBuffer(b2, b2),CompactBuffer(b3, b3)))        
+(13,(CompactBuffer(b1),CompactBuffer(b2),CompactBuffer(b3)))
+(11,(CompactBuffer(b1, b1),CompactBuffer(b2, b2),CompactBuffer(b3, b3)))
+     <---branch1---------> <------branch2------> <-----branch3-------->
+
+
+-------------------------------------------------------------------------------------------------
+
+
+ex:2
+
+
+     Branch1                Branch2                 Branch3
+     10--->males            20--->males             70---->males
+     20--->females          40--->females           30---->females
+     
+     (m,10)                 (m,20)                  (m,70)
+     (f,20)                 (f,40)                  (f,30)
+
+
+
+
+val cg=Branch1.cogroup(Branch2,Branch3)
+        <--b1->  <-b2->  <--b3-->
+o/p: (m,(CB(10) ,CB(20) ,CB(70)))
+     (f,(CB(20) ,CB(40) ,CB(30)))
+
+
+-------------------------------------------------------------------------------------------
+ex:3
+
+
+TasK: performing seperate aggregations on each branch
+
+
+HERE in emp2, the field positions are different
+
+
+lenovo@lenovo-Lenovo-G450:~$ cat emp1
+101,miller,10000,m,11
+102,Blake,20000,m,12
+103,sony,30000,f,11
+104,sita,40000,f,12
+105,John,50000,m,13lenovo@lenovo-Lenovo-G450:~$ 
+lenovo@lenovo-Lenovo-G450:~$ cat emp2
+201,aaa,11,m,90000
+202,bbb,12,f,10000
+203,ccc,13,m,20000
+lenovo@lenovo-Lenovo-G450:~$ cat emp3
+301,aaa,2000,m,15
+302,bbb,5000,f,16
+303,ccc,6000,m,17
+lenovo@lenovo-Lenovo-G450:~$ 
+
+
+novo@lenovo-Lenovo-G450:~$ hdfs dfs -put emp1 /sparklab1
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -put emp2 /sparklab1
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -put emp3 /sparklab1
+
+
+step 1: Loading emp1,emp2,emp3
+scala> val e1=sc.textFile("hdfs://localhost:9000/sparklab1/emp1")
+e1: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emp1 MapPartitionsRDD[61] at textFile at <console>:24
+
+
+scala> val e2=sc.textFile("hdfs://localhost:9000/sparklab1/emp2")
+e2: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emp2 MapPartitionsRDD[63] at textFile at <console>:24
+
+
+scala> val e3=sc.textFile("hdfs://localhost:9000/sparklab1/emp3")
+e3: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emp3 MapPartitionsRDD[65] at textFile at <console>:24
+
+
+
+
+step 2: splitting e1,e2 and e3
+scala> val emparr1=e1.map(x=>x.split(","))
+emparr1: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[66] at map at <console>:26
+
+
+scala> val emparr2=e2.map(x=>x.split(","))
+emparr2: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[67] at map at <console>:26
+
+
+scala> val emparr3=e3.map(x=>x.split(","))
+emparr3: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[68] at map at <console>:26
+
+
+step 3: Generating gensal pairs
+scala> val gensal1=emparr1.map(x=>(x(3),x(2).toInt))
+gensal1: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[69] at map at <console>:28
+
+
+scala> val gensal2=emparr2.map(x=>(x(3),x(4).toInt))
+gensal2: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[74] at map at <console>:28
+
+
+scala> val gensal3=emparr3.map(x=>(x(3),x(2).toInt))
+gensal3: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[71] at map at <console>:28
+
+
+step 4: Performing cogroup
+
+
+scala> val cg=gensal1.cogroup(gensal2,gensal3)
+cg: org.apache.spark.rdd.RDD[(String, (Iterable[Int], Iterable[Int], Iterable[Int]))] = MapPartitionsRDD[76] at cogroup at <console>:42
+
+
+scala> cg.collect()
+res25: Array[(String, (Iterable[Int], Iterable[Int], Iterable[Int]))] = Array((f,(CompactBuffer(30000, 40000),CompactBuffer(10000),CompactBuffer(5000))), (m,(CompactBuffer(10000, 20000, 50000),CompactBuffer(90000, 20000),CompactBuffer(2000, 6000))))
+
+
+step 5: performing sum aggregation
+scala> val res=cg.map(x=>x._1+"\t"+x._2._1.sum+"\t"+x._2._2.sum+"\t"+x._2._3.sum)
+res: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[77] at map at <console>:44
+
+
+scala> res.collect.foreach(println)
+f        70000        10000        5000
+m        80000        110000        8000
+
+
+
+
+Now applying all the aggregations
+scala> val res2=cg.map(x=>(x._1,(x._2._1.sum,
+     |                           x._2._1.size,
+     |                           x._2._1.sum/x._2._1.size,
+     |                           x._2._1.max,
+     |                           x._2._1.min),
+     |                          (x._2._2.sum,
+     |                           x._2._2.size,
+     |                           x._2._2.sum/x._2._2.size,
+     |                           x._2._2.max,
+     |                           x._2._2.min),
+     |                          (x._2._3.sum,
+     |                           x._2._3.size,
+     |                           x._2._3.sum/x._2._3.size,
+     |                           x._2._3.max,
+     |                           x._2._3.min)))
+res2: org.apache.spark.rdd.RDD[(String, (Int, Int, Int, Int, Int), (Int, Int, Int, Int, Int), (Int, Int, Int, Int, Int))] = MapPartitionsRDD[78] at map at <console>:44
+
+
+scala> res2.collect.foreach(println)
+    <----branch1------------>   <------branch2----------->  <------branch3-------->
+(f,(70000,2,35000,40000,30000),(10000,1,10000,10000,10000),(5000,1,5000,5000,5000))
+(m,(80000,3,26666,50000,10000),(110000,2,55000,90000,20000),(8000,2,4000,6000,2000))
+
+
+
+
+---------------------------------------------------------------------------------------------------------
+
+
+
+
+controlling the no of partitions:
+
+
+scala> val x=sc.parallelize(1 to 10,10)
+x: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[79] at parallelize at <console>:24
+
+
+scala> x.getNumPartitions
+res29: Int = 10
+
+
+scala> x.partitions.size
+res30: Int = 10
+
+
+scala> x.partitions.length
+res31: Int = 10
+
+
+Making this 10 partitions into 2 partitions
+
+
+scala> val y=x.coalesce(2)
+y: org.apache.spark.rdd.RDD[Int] = CoalescedRDD[80] at coalesce at <console>:26
+
+
+scala> y.getNumPartitions
+res32: Int = 2
+--------------------------------------------------------------------
+scala> val z=x.collect()
+z: Array[Int] = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) 
+
+
+scala> val z1=sc.parallelize(z)
+z1: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[81] at parallelize at <console>:28
+
+
+scala> z1.getNumPartitions
+res34: Int = 2
+
+
+scala> val z2=sc.parallelize(z,4)
+z2: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[82] at parallelize at <console>:28
+
+
+scala> z2.getNumPartitions
+res35: Int = 4
+
+
+
+
+Spark SQL
+
+
+-Spark Sql is used to process spark data obects using SQL statements.
+
+
+-Till spark 1.2, only RDD's are avaialble.
+
+
+-But from spark 1.3 onwards, on top of RDD's ,Dataframes were introduced , i.e RDD's to be converted
+ as Dataframes and these Dataframs should be registered as tables to execute sql stmts.
+
+
+-Dataframes are equivalent to temporary tables of sql.
+
+
+-From spark 1.6 onwards,Datasets were introduced.
+
+
+-Datasets contains combined features of both RDD and Dataframe.
+
+
+Datasets=Dataframe + RDD
+         features    features
+
+
+Spark sql follows mysql standard sql
+
+
+Spark core provides sparkcontext object.
+
+
+Spark sql provides SQLcontext, to perform Datasets,Dataframes and sql operations.
+
+
+Spark sql has a sub-component called sparkhql, which provides one more context object called hivecontext object.
+here spark can be integrated with hive ,so that from spark itself,we can perform DDL and DML operations 
+with in-memory computing feature. 
+
+
+Sparkcontext--------->RDD
+SqlContext----------->DF,DS
+HiveContext---------->Hive tables
+------------------------------------------------------------------------------------------------------------------
+Case Classes:
+
+
+Making Data structured:
+using 2 ways
+1)using tuples
+2)using case classes
+
+
+
+
+ex:ename,dno,sal,city
+   ename,city,dno,sal 
+
+
+now bringing into structured format
+   ename,dno,sal,city
+   ename,dno,sal,city
+
+
+1)Tuples:
+  Here using map (or) using functions, we can extract the required columns and place it in a tuple.
+  but the disadvantage of tuple is
+  -it doesnt have schema
+  -we need to remember the position of each field
+
+
+ so, to provide schema to a RDD ,we have case classes , so that we can access data using atributes names.
+
+
+2) Case Classes: These are used to provide schema to a RDD
+                           (0r)
+                 These are used to construct Schema RDD
+
+
+
+
+ex:
+scala> val l=sc.parallelize(List("11,10000","12,20000","13,30000","11,40000","12,50000"))
+
+
+In sql, we create table as 
+             create table sample(dno number(2),sal number(6))
+
+
+but here we create case class
+
+
+step 1: create case class to provide schema to a RDD.
+scala> case class sample(dno:Int,sal:Int)
+defined class sample
+
+
+step 2: creating objects of case class sample
+
+
+scala> val s1=sample(13,70000)
+s1: sample = sample(13,70000)
+
+
+scala> val s2=sample(12,60000)
+s2: sample = sample(12,60000)
+
+
+scala> val s3=sample(11,50000)
+s3: sample = sample(11,50000)
+
+
+step 3: List of case class objects
+scala> val samples=List(s1,s3,s3)
+samples: List[sample] = List(sample(13,70000), sample(11,50000), sample(11,50000))
+
+
+step4:
+here samples is a List(scala object), so convert to RDD
+scala> val samples1=sc.parallelize(samples)
+samples1: org.apache.spark.rdd.RDD[sample] = ParallelCollectionRDD[1] at parallelize at <console>:32
+
+
+scala> samples1.collect.foreach(println)
+sample(13,70000)                                                                
+sample(11,50000)
+sample(11,50000)
+
+
+here each element is a sample class object
+
+
+
+
+step 5: in step 2, instead of creating case class objects one by one, we can define a function
+ 
+        The function converts each line(string) or record into sample class object
+
+
+
+
+scala> def tosample(x:String)={
+     |                          val w=x.split(",")
+     |                          val dno=w(0).toInt
+     |                          val sal=w(1).toInt
+     |                          val s=sample(dno,sal)
+     |                          s
+     |                         }
+
+
+
+
+step 6: Testing with a value
+
+
+cala> val x=tosample("13,11000")
+x: sample = sample(13,11000)
+
+
+now using attribute names like dno,sal, we can acces the fields instead of field positions 
+
+
+scala> x.dno
+res1: Int = 13
+
+
+scala> x.sal
+res2: Int = 11000
+
+
+step 7: Applying to the each element of RDD
+scala> val y=l.map(x=>tosample(x))
+
+
+Here each element converted to sample class object.
+
+
+scala> y.collect.foreach(println)
+sample(11,10000)
+sample(12,20000)
+sample(13,30000)
+sample(11,40000)
+sample(12,50000)
+
+
+-----------------------------------------------------------------------------------------------------------------
+Task : dname wise--------->totsal
+
+
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /sparklab1/emp7
+101,miller,10000,m,11,
+102,Blake,20000,m,12,
+103,sony,30000,f,11,
+104,sita,40000,f,12,
+105,John,50000,m,13
+
+
+step 1: Loading file from HDFS
+scala> val emp=sc.textFile("hdfs://localhost:9000/sparklab1/emp7")
+
+
+previously we used to split based on delimiter and extract required fields in a tuple,
+but tuple doest have schema, so create case class to provide schema to a RDD.
+
+
+step 2: creating case class
+scala> case class employee(eid:Int,ename:String,sal:Int,gen:String,dname:String)
+defined class employee
+
+
+step 3: define function to convert each string(record) into case class object
+
+
+scala> def toemployee(x:String):employee={
+     |       
+     |                                         val w=x.split(",")
+     |                                         val eid=w(0).toInt
+     |                                         val ename=w(1)
+     |                                         val sal=w(2).toInt
+     |                                         val gen=w(3)
+     |                                         val dno=w(4).toInt
+     |                                         val dname=dno match {
+     |                                                              case 11=>"mrkt"
+     |                                                              case 12=>"HR"
+     |                                                              case 13=>"Fin"
+     |                                                              case other=>"others"
+     |                                                              }
+     |                                         val e=employee(eid,ename,sal,gen,dname)
+     |                                             e
+     |                                         }
+
+
+
+
+step 4: now testing the function with a sample string
+
+
+scala> val x=toemployee("106,Arjun,70000,m,13")
+x: employee = employee(106,Arjun,70000,m,Fin)
+
+
+now accessing the values using field names
+scala> val p=toemployee("106,Arjun,70000,m,13")
+p: employee = employee(106,Arjun,70000,m,Fin)
+
+
+scala> p.ename
+res7: String = Arjun
+
+
+scala> p.sal
+res8: Int = 70000
+
+
+scala> p.eid
+res9: Int = 106
+
+
+scala> p.dno
+<console>:36: error: value dno is not a member of employee
+       p.dno
+         ^
+
+
+scala> p.dname
+res11: String = Fin
+
+
+step 5:now applying on the records
+
+
+scala> val emp1=emp.map(x=>toemployee(x))
+emp1: org.apache.spark.rdd.RDD[employee] = MapPartitionsRDD[5] at map at <console>:36
+
+
+scala> emp1.collect()
+res12: Array[employee] = Array(employee(101,miller,10000,m,mrkt), employee(102,Blake,20000,m,HR), employee(103,sony,30000,f,mrkt), employee(104,sita,40000,f,HR), employee(105,John,50000,m,Fin))
+
+
+
+
+
+
+step 6: I want dname--------->totsal
+        so extract dname and sal
+
+
+scala> val dnamesal=emp1.map(x=>(x.dname,x.sal))
+dnamesal: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[6] at map at <console>:38
+
+
+scala> dnamesal.collect()
+res13: Array[(String, Int)] = Array((mrkt,10000), (HR,20000), (mrkt,30000), (HR,40000), (Fin,50000))
+
+
+step 7: Apply reduceByKey()
+scala> val sum=dnamesal.reduceByKey(_+_)
+sum: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[7] at reduceByKey at <console>:40
+
+
+scala> sum.collect()
+res14: Array[(String, Int)] = Array((mrkt,40000), (HR,60000), (Fin,50000))      
+
+
+scala> sum.collect.foreach(println)
+(mrkt,40000)
+(HR,60000)
+(Fin,50000)
+
+
+step 9: Tommorrow  I want multigrouping i.e dnamewise,gen wise------------->totsal
+
+
+scala> val dnamegensal=emp1.map(x=>((x.dname,x.gen),x.sal))
+dnamegensal: org.apache.spark.rdd.RDD[((String, String), Int)] = MapPartitionsRDD[8] at map at <console>:38
+
+
+scala> val sum1=dnamegensal.reduceByKey(_+_)
+sum1: org.apache.spark.rdd.RDD[((String, String), Int)] = ShuffledRDD[9] at reduceByKey at <console>:40
+
+
+scala> sum1.collect.foreach(println)
+((HR,f),40000)
+((mrkt,f),30000)
+((Fin,m),50000)
+((mrkt,m),10000)
+((HR,m),20000)
+
+
+Note: case class has limit-------->supports only 22 fields
+      i.e only 22 fields allowed in a case class
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+
+
+
+Dataframes:
+
+
+From spark1.3 onwards, on top of RDDs, Dataframes were intoduced.
+To work with sql operations,RDDs to be converted as DataFrames.
+
+
+Converting RDD to a DataFrame---->RDD.toDF
+
+
+To convert a RDD into Dataframe ,RDD should have schema 
+
+
+To provide schema to RDDS,case class is used. 
+
+
+-------------------------------------------------------------------------------------------------------------
+various steps in Dataframe creation:
+1)Loading data
+2)Creating case class to provide schema to RDD
+3)defining a function to create case class objects
+4)Applying the function on the i/p data to create case class objects
+5)Converting the schema RDD to Dataframe as---->RDD.toDF
+-------------------------------------------------------------------------------------------------------------
+ex:
+
+
+lenovo@lenovo-Lenovo-G450:~$ cat > students
+501,Ajay,CSE,95
+401,Amar,ECE,82
+502,John,CSE,75
+402,sony,ECE,70
+201,Ajith,EEE,68
+301,James,mech,65
+
+
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -copyFromLocal students /sparklab1
+
+
+
+
+step 1: Loading the file from HDFS
+scala> val std=sc.textFile("hdfs://localhost:9000/sparklab1/students")
+
+
+step 2: Creating case class to provide schema to a RDD
+scala> case class student(rollno:Int,name:String,branch:String,marks:Int)
+defined class student
+
+
+step 3: Defining a function to create case class objects
+scala> def tostudent(x:String):student={
+     |                                 val w=x.split(",")
+     |                                 val rollno=w(0).toInt
+     |                                 val name=w(1)
+     |                                 val branch=w(2)
+     |                                 val marks=w(3).toInt
+     |                                 val s=student(rollno,name,branch,marks)
+     |                                  s
+     |                                 }
+tostudent: (x: String)student
+
+
+step 4: making a function call or applying fn on the records to create student class objects 
+scala> val s1=std.map(x=>tostudent(x))
+s1: org.apache.spark.rdd.RDD[student] = MapPartitionsRDD[12] at map at <console>:40
+
+
+scala> s1.collect.foreach(println)
+student(501,Ajay,CSE,95)
+student(401,Amar,ECE,82)
+student(502,John,CSE,75)
+student(402,sony,ECE,70)
+student(201,Ajith,EEE,68)
+student(301,James,mech,65)
+
+
+step 5: Converting Schema RDD(s1) into DF
+
+
+scala> val s2=s1.toDF
+s2: org.apache.spark.sql.DataFrame = [rollno: int, name: string ... 2 more fields]
+
+
+scala> s2.show()
++------+-----+------+-----+
+|rollno| name|branch|marks|
++------+-----+------+-----+
+|   501| Ajay|   CSE|   95|
+|   401| Amar|   ECE|   82|
+|   502| John|   CSE|   75|
+|   402| sony|   ECE|   70|
+|   201|Ajith|   EEE|   68|
+|   301|James|  mech|   65|
++------+-----+------+-----+
+
+
+
+
+scala> s2.select("name","marks").show()
++-----+-----+
+| name|marks|
++-----+-----+
+| Ajay|   95|
+| Amar|   82|
+| John|   75|
+| sony|   70|
+|Ajith|   68|
+|James|   65|
++-----+-----+
+
+
+Transformation over a RDD----------->returns a RDD
+Transformation over a DF------------>returns a DF
+ex
+scala> val s3=s2.select("name","branch")
+s3: org.apache.spark.sql.DataFrame = [name: string, branch: string]
+
+
+scala> s3.show()
++-----+------+
+| name|branch|
++-----+------+
+| Ajay|   CSE|
+| Amar|   ECE|
+| John|   CSE|
+| sony|   ECE|
+|Ajith|   EEE|
+|James|  mech|
++-----+------+
+
+
+-------------------------------------------------------------------------------------------------------------------
+3 ways to extract case class objects 
+1)using function
+2)using map with multiple exressions
+3)using map with single expression
+
+
+case 2: using map with multiple expressions
+
+
+instead of step 3 and step4 in above flow i.e instead of defining function and calling function,
+we can use map
+
+
+step 1: Loading data
+scala> val std=sc.textFile("hdfs://localhost:9000/sparklab1/students")
+std: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/students MapPartitionsRDD[23] at textFile at <console>:24
+
+
+step 2: Creating case class
+scala> case class student(rollno:Int,name:String,branch:String,marks:Int)
+defined class student
+
+
+step 3: using map ,extracting case class objects
+scala> val stds=std.map{x=>
+     |                  val w=x.split(",")
+     |                  val rollno=w(0).toInt
+     |                  val name=w(1)
+     |                  val branch=w(2)
+     |                  val marks=w(3).toInt
+     |                  val s=student(rollno,name,branch,marks)
+     |                  s
+     |                  }
+stds: org.apache.spark.rdd.RDD[student] = MapPartitionsRDD[24] at map at <console>:38
+
+
+scala> stds.collect.foreach(println)
+student(501,Ajay,CSE,95)
+student(401,Amar,ECE,82)
+student(502,John,CSE,75)
+student(402,sony,ECE,70)
+student(201,Ajith,EEE,68)
+student(301,James,mech,65)
+
+
+step 4: Creating DF from RDD
+
+
+scala> val s1=stds.toDF
+s1: org.apache.spark.sql.DataFrame = [rollno: int, name: string ... 2 more fields]
+
+
+scala> s1.show()
++------+-----+------+-----+
+|rollno| name|branch|marks|
++------+-----+------+-----+
+|   501| Ajay|   CSE|   95|
+|   401| Amar|   ECE|   82|
+|   502| John|   CSE|   75|
+|   402| sony|   ECE|   70|
+|   201|Ajith|   EEE|   68|
+|   301|James|  mech|   65|
++------+-----+------+-----+
+
+
+-----------------------------------------------------------------------------------------------------------------
+case 3 : using map with single expression
+
+
+step 1: Loading data from HDFS
+scala> val std=sc.textFile("hdfs://localhost:9000/sparklab1/students")
+
+
+step 2: creating a case class to provide schema t a RDD
+scala> case class student(rollno:Int,name:String,branch:String,marks:Int)
+defined class student
+
+
+step 3: splitting based on deleimiter
+scala> val stdarr=std.map(x=>x.split(","))
+stdarr: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[30] at map at <console>:36
+
+
+step 4: Extracting student class objects
+scala> val stds1=stdarr.map(x=>student(x(0).toInt,x(1),x(2),x(3).toInt))
+stds1: org.apache.spark.rdd.RDD[student] = MapPartitionsRDD[31] at map at <console>:40
+
+
+step 5: Converting to DF
+scala> val s1=stds1.toDF
+s1: org.apache.spark.sql.DataFrame = [rollno: int, name: string ... 2 more fields]
+
+
+scala> s1.show()
++------+-----+------+-----+
+|rollno| name|branch|marks|
++------+-----+------+-----+
+|   501| Ajay|   CSE|   95|
+|   401| Amar|   ECE|   82|
+|   502| John|   CSE|   75|
+|   402| sony|   ECE|   70|
+|   201|Ajith|   EEE|   68|
+|   301|James|  mech|   65|
++------+-----+------+-----+
+
+
+---------------------------------------------------------------------------------------------------------------
+ex: 2
+
+
+lenovo@lenovo-Lenovo-G450:~$ cat > mobilesales
+t001,p001,Samsung,9000
+t002,p002,Lenovo,11000
+t003,p003,Redmi,12000
+t004,p004,appo,16000 
+t005,p005,motoG,18000
+t006,p006,sony,20000
+
+
+step 1:
+Loading data from LFS:
+scala> val data=sc.textFile("mobilesales")
+data: org.apache.spark.rdd.RDD[String] = mobilesales MapPartitionsRDD[36] at textFile at <console>:24
+
+
+scala> data.collect()
+res24: Array[String] = Array(t001,p001,Samsung,9000, t002,p002,Lenovo,11000, t003,p003,Redmi,12000, t004,p004,appo,16000, t005,p005,motoG,18000, t006,p006,sony,20000)
+
+
+step 2: creating case class to provide schema to RDD
+scala> case class sales(tid:String,pid:String,prod:String,price:Int)
+defined class sales
+
+
+step 3: Extracting case class objects
+I)using Functions
+
+
+scala> def tosales(x:String):sales={
+     |                             val w=x.split(",")
+     |                             val tid=w(0)
+     |                             val pid=w(1)
+     |                             val prod=w(2)
+     |                             val price=w(3).toInt
+     |                             val s=sales(tid,pid,prod,price)
+     |                             s
+     |                             }
+tosales: (x: String)sales
+
+
+scala> val prods=data.map(x=>tosales(x))
+prods: org.apache.spark.rdd.RDD[sales] = MapPartitionsRDD[37] at map at <console>:40
+
+
+scala> prods.collect.foreach(println)
+sales(t001,p001,Samsung,9000)                                                   
+sales(t002,p002,Lenovo,11000)
+sales(t003,p003,Redmi,12000)
+sales(t004,p004,appo,16000)
+sales(t005,p005,motoG,18000)
+sales(t006,p006,sony,20000)
+
+
+II)using map with multiple expressions:
+scala> val prods=data.map{x=>
+     |                    val w=x.split(",")
+     |                    val tid=w(0)
+     |                    val pid=w(1)
+     |                    val prod=w(2)
+     |                    val price=w(3).toInt
+     |                    val s1=sales(tid,pid,prod,price)
+     |                    s1
+     |                   }
+prods: org.apache.spark.rdd.RDD[sales] = MapPartitionsRDD[38] at map at <console>:48
+
+
+scala> prods.collect.foreach(println)
+sales(t001,p001,Samsung,9000)
+sales(t002,p002,Lenovo,11000)
+sales(t003,p003,Redmi,12000)
+sales(t004,p004,appo,16000)
+sales(t005,p005,motoG,18000)
+sales(t006,p006,sony,20000)
+
+
+
+
+III) using map with single expression
+scala> val salearr=data.map(x=>x.split(","))
+salearr: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[39] at map at <console>:36
+
+
+scala> val prods1=salearr.map(x=>sales(x(0),x(1),x(2),x(3).toInt))
+prods1: org.apache.spark.rdd.RDD[sales] = MapPartitionsRDD[40] at map at <console>:40
+
+
+scala> prods1.collect.foreach(println)
+sales(t001,p001,Samsung,9000)
+sales(t002,p002,Lenovo,11000)
+sales(t003,p003,Redmi,12000)
+sales(t004,p004,appo,16000)
+sales(t005,p005,motoG,18000)
+sales(t006,p006,sony,20000)
+
+
+
+
+All the above three are returning the same objects
+
+
+step 4: Creating DF from RDD
+scala> val sales1=prods.toDF
+sales1: org.apache.spark.sql.DataFrame = [tid: string, pid: string ... 2 more fields]
+
+
+scala> sales1.show()
++----+----+-------+-----+
+| tid| pid|   prod|price|
++----+----+-------+-----+
+|t001|p001|Samsung| 9000|
+|t002|p002| Lenovo|11000|
+|t003|p003|  Redmi|12000|
+|t004|p004|   appo|16000|
+|t005|p005|  motoG|18000|
+|t006|p006|   sony|20000|
++----+----+-------+-----+
+
+
+
+
+scala> sales1.select("prod","price").show()
++-------+-----+
+|   prod|price|
++-------+-----+
+|Samsung| 9000|
+| Lenovo|11000|
+|  Redmi|12000|
+|   appo|16000|
+|  motoG|18000|
+|   sony|20000|
++-------+-----+
+-------------------------------------------------------------------------------------------------------------------
+
+
+
+
+Various DataFrame API:
+
+
+scala> val emp=sc.textFile("hdfs://localhost:9000/sparklab1/emp7")
+emp: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab1/emp7 MapPartitionsRDD[1] at textFile at <console>:24
+
+
+scala> case class emp1(eid:Int,ename:String,sal:Int,gen:String,dno:Int);
+defined class emp1
+
+
+scala> val emps=emp.map{x=>
+     |                  val w=x.split(",")
+     |                  val eid=w(0).toInt
+     |                  val ename=w(1)
+     |                  val sal=w(2).toInt
+     |                  val gen=w(3)
+     |                  val dno=w(4).toInt
+     |                  val e=emp1(eid,ename,sal,gen,dno)
+     |                  e
+     |                 }
+emps: org.apache.spark.rdd.RDD[emp1] = MapPartitionsRDD[2] at map at <console>:28
+
+
+scala> emps.collect()
+res0: Array[emp1] = Array(emp1(101,miller,10000,m,11), emp1(102,Blake,20000,m,12), emp1(103,sony,30000,f,11), emp1(104,sita,40000,f,12), emp1(105,John,50000,m,13))
+
+
+scala> val emps1=emps.toDF
+emps1: org.apache.spark.sql.DataFrame = [eid: int, ename: string ... 3 more fields]
+
+
+scala> emps1.show()
++---+------+-----+---+---+
+|eid| ename|  sal|gen|dno|
++---+------+-----+---+---+
+|101|miller|10000|  m| 11|
+|102| Blake|20000|  m| 12|
+|103|  sony|30000|  f| 11|
+|104|  sita|40000|  f| 12|
+|105|  John|50000|  m| 13|
++---+------+-----+---+---+
+
+
+
+
+Various DataFrame API's are:
+1)df.printSchema() : prints or displays the schema of a DataFrame
+cala> emps1.printSchema()
+root
+ |-- eid: integer (nullable = true)
+ |-- ename: string (nullable = true)
+ |-- sal: integer (nullable = true)
+ |-- gen: string (nullable = true)
+ |-- dno: integer (nullable = true)
+
+
+
+
+2)df.describe("col") : Displays various aggregations of a particular column
+scala> emps1.describe("sal").show()
++-------+------------------+                                                    
+|summary|               sal|
++-------+------------------+
+|  count|                 5|
+|   mean|           30000.0|
+| stddev|15811.388300841896|
+|    min|             10000|
+|    max|             50000|
++-------+------------------+
+
+
+ scala> emps1.describe( ).show() :Displays aggregations for all the columns
+
+
++-------+------------------+-----+------------------+----+------------------+   
+|summary|               eid|ename|               sal| gen|               dno|
++-------+------------------+-----+------------------+----+------------------+
+|  count|                 5|    5|                 5|   5|                 5|
+|   mean|             103.0| null|           30000.0|null|              11.8|
+| stddev|1.5811388300841898| null|15811.388300841896|null|0.8366600265340753|
+|    min|               101|Blake|             10000|   f|                11|
+|    max|               105| sony|             50000|   m|                13|
++-------+------------------+-----+------------------+----+------------------+
+
+
+----------------------------------------------------------------------------------------------------------------------
+3)df.collect():
+scala> emps1.collect()
+res6: Array[org.apache.spark.sql.Row] = Array([101,miller,10000,m,11], [102,Blake,20000,m,12], [103,sony,30000,f,11], [104,sita,40000,f,12], [105,John,50000,m,13])
+
+
+--------------------------------------------------------------------------------------------------------------------
+4)df.count() : To count the no elements
+
+
+scala> emps1.count()
+res7: Long = 5
+
+
+-------------------------------------------------------------------------------------------------------------------
+5)df.show():
+scala> emps1.show()
++---+------+-----+---+---+
+|eid|  l|gen|dno|
++---+------+-----+---+---+
+|101|miller|10000|  m| 11|
+|102| Blake|20000|  m| 12|
+|103|  sony|30000|  f| 11|
+|104|  sita|40000|  f| 12|
+|105|  John|50000|  m| 13|
++---+------+-----+---+---+
+
+
+---------------------------------------------------------------------------------------------------------------------
+6)df.columns: displays the column names
+scala> emps1.columns
+res10: Array[String] = Array(eid, ename, sal, gen, dno)
+
+
+-------------------------------------------------------------------------------------------------------------------
+7)df.select() :for selecting particular column/columns
+
+
+scala> emps1.select("ename","sal").show()
++------+-----+
+| ename|  sal|
++------+-----+
+|miller|10000|
+| Blake|20000|
+|  sony|30000|
+|  sita|40000|
+|  John|50000|
++------+-----+
+
+
+Note: when Transformation applied on a DF returns DF only 
+
+
+scala> val e1=emps1.select("ename","sal")
+e1: org.apache.spark.sql.DataFrame = [ename: string, sal: int]
+
+
+scala> e1.show()
++------+-----+
+| ename|  sal|
++------+-----+
+|miller|10000|
+| Blake|20000|
+|  sony|30000|
+|  sita|40000|
+|  John|50000|
++------+-----+
+
+
+--------------------------------------------------------------------------------------------------------------------
+8)Transformations over a DataFrame:
+
+
+ex:Adding 5000 to sal of each employee as hike
+
+
+scala> val e2=emps1.select("sal")+5000
+<console>:32: error: type mismatch;
+ 
+
+
+error bcoz while working with expressions, use DF seperately
+
+
+scala> emps1.select(emps1("sal")+5000).show()
++------------+
+|(sal + 5000)|
++------------+
+|       15000|
+|       25000|
+|       35000|
+|       45000|
+|       55000|
++------------+
+
+
+-------------------------------------------------------------------------------------------------------------------
+9)Filtering over a DataFrame:
+scala> emps1.filter(emps1("sal")>20000).show()
++---+-----+-----+---+---+
+|eid|ename|  sal|gen|dno|
++---+-----+-----+---+---+
+|103| sony|30000|  f| 11|
+|104| sita|40000|  f| 12|
+|105| John|50000|  m| 13|
++---+-----+-----+---+---+
+
+
+scala> emps1.filter(emps1("gen")=="m").show()
+
+
+error bcoz, filter cant be applied on boolean expressions
+
+
+Note:
+
+
+-Transformation/Filter on scala objects------------>scala object
+-Transformation/Filter on RDD---------------------->RDD
+-Transformation/Filter on DF----------------------->DF
+
+
+But I cant apply if conditions on a DF, can be applied only on a RDD
+
+
+I want grades based on sal
+if(sal>=50000)---------> say Grade"A"
+  (sal>=40000)---------> say Grade"B"
+  (sal>=30000)---------> say Grade"C"
+
+
+here if conditions cant be applied on DF. so convert DF to RDD -------->DF.rdd and apply if condition and again
+convert to DF.
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------
+10)converting DF to RDD:---->DF.rdd
+
+
+
+
+scala> val r1=emps1.rdd
+r1: org.apache.spark.rdd.RDD[org.apache.spark.sql.Row] = MapPartitionsRDD[53] at rdd at <console>:32
+
+
+scala> r1.collect()
+res15: Array[org.apache.spark.sql.Row] = Array([101,miller,10000,m,11], [102,Blake,20000,m,12], [103,sony,30000,f,11], [104,sita,40000,f,12], [105,John,50000,m,13])
+
+
+-----------------------------------------------------------------------------------------------------------------
+11)Dataframes supports both Logical and(&&) and logical or(||)-------->these are lazy
+   but scala supports---->logical and(&) and logical or(|)  ---------->these are active
+                                                                       but lazy is only prefered
+
+
+
+
+ex:
+I want those salaries in between 20000 and 60000
+
+
+scala> emps1.filter(emps1("sal")>20000 && emps1("sal")<60000).show()
++---+-----+-----+---+---+
+|eid|ename|  sal|gen|dno|
++---+-----+-----+---+---+
+|103| sony|30000|  f| 11|
+|104| sita|40000|  f| 12|
+|105| John|50000|  m| 13|
++---+-----+-----+---+---+
+
+
+-------------------------------------------------------------------------------------------------------------------
+12)Groupings and Aggregations:
+df.groupBy("col")
+
+
+case 1: single grouping and single aggregation
+ex:1---->select gen,count(*) from emp group by gen;
+
+
+scala> emps1.groupBy("gen").count().show()
++---+-----+                                                                     
+|gen|count|
++---+-----+
+|  m|    3|
+|  f|    2|
++---+-----+
+
+
+ex:2----->select gen,sum(sal) from emp group by gen
+
+
+scala> val e1=emps1.groupBy("gen")agg(sum("sal"))
+e1: org.apache.spark.sql.DataFrame = [gen: string, sum(sal): bigint]
+
+
+scala> e1.show()
++---+--------+                                                                  
+|gen|sum(sal)|
++---+--------+
+|  m|   80000|
+|  f|   70000|
++---+--------+
+
+
+ex:3------->select gen,max(sal) fron emp group by gen
+
+
+scala> val e2=emps1.groupBy("gen")agg(max("sal"))
+e2: org.apache.spark.sql.DataFrame = [gen: string, max(sal): int]
+
+
+scala> e2.show()
++---+--------+                                                                  
+|gen|max(sal)|
++---+--------+
+|  m|   50000|
+|  f|   40000|
++---+--------+
+
+
+
+
+scala> val e3=emps1.groupBy("gen")agg(min("sal"))
+e3: org.apache.spark.sql.DataFrame = [gen: string, min(sal): int]
+
+
+scala> e3.show()
++---+--------+                                                                  
+|gen|min(sal)|
++---+--------+
+|  m|   10000|
+|  f|   30000|
++---+--------+
+
+
+
+
+scala> val e4=emps1.groupBy("gen")agg(avg("sal"))
+e4: org.apache.spark.sql.DataFrame = [gen: string, avg(sal): double]
+
+
+scala> e4.show()
++---+------------------+                                                        
+|gen|          avg(sal)|
++---+------------------+
+|  m|26666.666666666668|
+|  f|           35000.0|
++---+------------------+
+
+
+
+
+scala> val e5=emps1.groupBy("gen")agg(count("sal"))
+e5: org.apache.spark.sql.DataFrame = [gen: string, count(sal): bigint]
+
+
+scala> e5.show()
++---+----------+                                                                
+|gen|count(sal)|
++---+----------+
+|  m|         3|
+|  f|         2|
++---+----------+
+
+
+-------------------------------------------------------------------------------------------------------------------
+Case 2: Multi-Grouping Sigle Aggregation
+
+
+ex: select dno,gen,sum(sal) from emp group by dno,gen
+
+
+scala> val s1=emps1.groupBy("dno","gen")agg(sum("sal"))
+s1: org.apache.spark.sql.DataFrame = [dno: int, gen: string ... 1 more field]
+
+
+scala> s1.show()
++---+---+--------+                                                              
+|dno|gen|sum(sal)|
++---+---+--------+
+| 11|  m|   10000|
+| 13|  m|   50000|
+| 11|  f|   30000|
+| 12|  m|   20000|
+| 12|  f|   40000|
++---+---+--------+
+
+
+-----------------------------------------------------------------------------------------------------------------
+Case 3: single Grouping Multiple Aggregations
+ex: select dno,sum(sal),avg(sal),max(sal),min(sal),count(*) from emp group by dno
+
+
+scala> val e1=emps1.groupBy("dno")agg(sum("sal"),avg("sal"),max("sal"),min("sal"),count("sal"))
+e1: org.apache.spark.sql.DataFrame = [dno: int, sum(sal): bigint ... 4 more fields]
+
+
+scala> e1.show()
++---+--------+--------+--------+--------+----------+                            
+|dno|sum(sal)|avg(sal)|max(sal)|min(sal)|count(sal)|
++---+--------+--------+--------+--------+----------+
+| 12|   60000| 30000.0|   40000|   20000|         2|
+| 13|   50000| 50000.0|   50000|   50000|         1|
+| 11|   40000| 20000.0|   30000|   10000|         2|
++---+--------+--------+--------+--------+----------+
+
+
+-----------------------------------------------------------------------------------------------------------------
+case 4:Multi Grouping Multiple Aggregations
+ex: select dno,gen,sum(sal),avg(sal),max(sal),min(sal),count(*) from emp group by dno,gen;
+
+
+scala> val e1=emps1.groupBy("dno","gen")agg(sum("sal"),avg("sal"),max("sal"),min("sal"),count("ename"))
+e1: org.apache.spark.sql.DataFrame = [dno: int, gen: string ... 5 more fields]
+
+
+scala> e1.show()
++---+---+--------+--------+--------+--------+------------+                      
+|dno|gen|sum(sal)|avg(sal)|max(sal)|min(sal)|count(ename)|
++---+---+--------+--------+--------+--------+------------+
+| 11|  m|   10000| 10000.0|   10000|   10000|           1|
+| 13|  m|   50000| 50000.0|   50000|   50000|           1|
+| 11|  f|   30000| 30000.0|   30000|   30000|           1|
+| 12|  m|   20000| 20000.0|   20000|   20000|           1|
+| 12|  f|   40000| 40000.0|   40000|   40000|           1|
++---+---+--------+--------+--------+--------+------------+
+
+
+----------------------------------------------------------------------------------------------------------------
+13) without using agg()
+
+
+i)sum aggregation
+
+
+scala> val e1=emps1.groupBy("gen").sum("sal").show()
++---+--------+                                                                  
+|gen|sum(sal)|
++---+--------+
+|  m|   80000|
+|  f|   70000|
++---+--------+
+
+
+e1: Unit = ()
+
+
+scala> val e2=emps1.groupBy("gen").avg("sal").show()
++---+------------------+                                                        
+|gen|          avg(sal)|
++---+------------------+
+|  m|26666.666666666668|
+|  f|           35000.0|
++---+------------------+
+
+
+e2: Unit = ()
+
+
+scala> val e3=emps1.groupBy("gen").max("sal").show()
++---+--------+                                                                  
+|gen|max(sal)|
++---+--------+
+|  m|   50000|
+|  f|   40000|
++---+--------+
+
+
+e3: Unit = ()
+
+
+scala> val e3=emps1.groupBy("gen").min("sal").show()
++---+--------+                                                                  
+|gen|min(sal)|
++---+--------+
+|  m|   10000|
+|  f|   30000|
++---+--------+
+
+
+e3: Unit = ()
+
+
+scala> val e5=emps1.groupBy("gen").count().show()
++---+-----+                                                                     
+|gen|count|
++---+-----+
+|  m|    3|
+|  f|    2|
++---+-----+
+
+
+e5: Unit = ()
+
+
+-------------------------------------------------------------------------------------------------------------------
+14)Multi groupings:
+scala> val e6=emps1.groupBy("dno","gen").sum("sal").show()
++---+---+--------+                                                              
+|dno|gen|sum(sal)|
++---+---+--------+
+| 11|  m|   10000|
+| 13|  m|   50000|
+| 11|  f|   30000|
+| 12|  m|   20000|
+| 12|  f|   40000|
++---+---+--------+
+
+
+e6: Unit = ()
+
+
+-----------------------------------------------------------------------------------------------------------------
+15)agg():
+
+
+scala> val e7=emps1.agg(sum("sal")).show()
++--------+                                                                      
+|sum(sal)|
++--------+
+|  150000|
++--------+
+
+
+e7: Unit = ()
+
+
+scala> val e8=emps1.agg(sum("sal"),avg("sal"),max("sal"),min("sal"),count("sal")).show()
++--------+--------+--------+--------+----------+
+|sum(sal)|avg(sal)|max(sal)|min(sal)|count(sal)|
++--------+--------+--------+--------+----------+
+|  150000| 30000.0|   50000|   10000|         5|
++--------+--------+--------+--------+----------+
+
+
+e8: Unit = ()
+
+
+--------------------------------------------------------------------------------------------------------------------
+16)distinct(): eliminates the duplicates
+
+
+I want distinct dnos
+
+
+scala> val dnos=emps1.select("dno")
+dnos: org.apache.spark.sql.DataFrame = [dno: int]
+
+
+scala> dnos.show()
++---+
+|dno|
++---+
+| 11|
+| 12|
+| 11|
+| 12|
+| 13|
++---+
+
+
+
+
+scala> val d1=dnos.distinct()
+d1: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] = [dno: int]
+
+
+scala> d1.show()
++---+                                                                           
+|dno|
++---+
+| 12|
+| 13|
+| 11|
++---+
+-----------------------------------------------------------------------------------------------------------------
+17)drop(): dropping a particular field/fields
+
+
+scala> val e1=emps1.drop("gen")
+e1: org.apache.spark.sql.DataFrame = [eid: int, ename: string ... 2 more fields]
+
+
+scala> e1.show()
++---+------+-----+---+
+|eid| ename|  sal|dno|
++---+------+-----+---+
+|101|miller|10000| 11|
+|102| Blake|20000| 12|
+|103|  sony|30000| 11|
+|104|  sita|40000| 12|
+|105|  John|50000| 13|
++---+------+-----+---+
+
+
+
+
+dropping multiple fields
+scala> val e2=emps1.drop("dno","gen").show()
++---+------+-----+
+|eid| ename|  sal|
++---+------+-----+
+|101|miller|10000|
+|102| Blake|20000|
+|103|  sony|30000|
+|104|  sita|40000|
+|105|  John|50000|
++---+------+-----+
+
+
+e2: Unit = ()
+---------------------------------------------------------------------------------------------------------
+18)orderBy():
+
+
+scala> val e1=emps1.orderBy("ename").show()
++---+------+-----+---+---+                                                      
+|eid| ename|  sal|gen|dno|
++---+------+-----+---+---+
+|102| Blake|20000|  m| 12|
+|105|  John|50000|  m| 13|
+|101|miller|10000|  m| 11|
+|104|  sita|40000|  f| 12|
+|103|  sony|30000|  f| 11|
++---+------+-----+---+---+
+
+
+e1: Unit = ()
+
+
+-----------------------------------------------------------------------------------------------------------------
+19)first(): It is an action which returns 1st Record
+
+
+scala> emps1.first()
+res31: org.apache.spark.sql.Row = [101,miller,10000,m,11]
+
+
+----------------------------------------------------------------------------------------------------------------
+20)limit(n):
+scala> val e1=emps1.limit(3).show()
++---+------+-----+---+---+
+|eid| ename|  sal|gen|dno|
++---+------+-----+---+---+
+|101|miller|10000|  m| 11|
+|102| Blake|20000|  m| 12|
+|103|  sony|30000|  f| 11|
++---+------+-----+---+---+
+
+
+e1: Unit = ()
+
+
+---------------------------------------------------------------------------------------------------------------
+
+
+21)sort():
+
+
+scala> val e1=emps1.sort("dno").show()
++---+------+-----+---+---+
+|eid| ename|  sal|gen|dno|
++---+------+-----+---+---+
+|101|miller|10000|  m| 11|
+|103|  sony|30000|  f| 11|
+|102| Blake|20000|  m| 12|
+|104|  sita|40000|  f| 12|
+|105|  John|50000|  m| 13|
++---+------+-----+---+---+
+
+
+e1: Unit = ()
+
+
+scala> val e1=emps1.orderBy("dno").show()
++---+------+-----+---+---+                                                      
+|eid| ename|  sal|gen|dno|
++---+------+-----+---+---+
+|103|  sony|30000|  f| 11|
+|101|miller|10000|  m| 11|
+|104|  sita|40000|  f| 12|
+|102| Blake|20000|  m| 12|
+|105|  John|50000|  m| 13|
++---+------+-----+---+---+
+
+
+e1: Unit = ()
+
+
+scala> val e1=emps1.sort(emps1("dno").desc).show()
++---+------+-----+---+---+
+|eid| ename|  sal|gen|dno|
++---+------+-----+---+---+
+|105|  John|50000|  m| 13|
+|102| Blake|20000|  m| 12|
+|104|  sita|40000|  f| 12|
+|101|miller|10000|  m| 11|
+|103|  sony|30000|  f| 11|
++---+------+-----+---+---+
+
+
+e1: Unit = ()
+
+
+scala> val e2=emps1.sort(emps1("dno").asc,emps1("sal"),emps1("gen").desc).show()
++---+------+-----+---+---+                                                      
+|eid| ename|  sal|gen|dno|
++---+------+-----+---+---+
+|101|miller|10000|  m| 11|
+|103|  sony|30000|  f| 11|
+|102| Blake|20000|  m| 12|
+|104|  sita|40000|  f| 12|
+|105|  John|50000|  m| 13|
++---+------+-----+---+---+
+
+
+e2: Unit = ()
+
+
+-------------------------------------------------------------------------------------------------------------------
+22)intersect() : The common rows will be returned
+                 The DFs should have same schema
+
+
+scala> emps1.intersect(emps1).show()
++---+------+-----+---+---+                                                      
+|eid| ename|  sal|gen|dno|
++---+------+-----+---+---+
+|104|  sita|40000|  f| 12|
+|103|  sony|30000|  f| 11|
+|105|  John|50000|  m| 13|
+|102| Blake|20000|  m| 12|
+|101|miller|10000|  m| 11|
++---+------+-----+---+---+
+
+
+------------------------------------------------------------------------------------------------------------------
+23)union() :merging the rows
+            merging DFs should have same schema
+
+
+scala> emps1.union(emps1).show()
++---+------+-----+---+---+
+|eid| ename|  sal|gen|dno|
++---+------+-----+---+---+
+|101|miller|10000|  m| 11|
+|102| Blake|20000|  m| 12|
+|103|  sony|30000|  f| 11|
+|104|  sita|40000|  f| 12|
+|105|  John|50000|  m| 13|
+|101|miller|10000|  m| 11|
+|102| Blake|20000|  m| 12|
+|103|  sony|30000|  f| 11|
+|104|  sita|40000|  f| 12|
+|105|  John|50000|  m| 13|
++---+------+-----+---+---+
+
+
+----------------------------------------------------------------------------------------------------------------
+24)withColumnRenamed() :
+scala> val e1=emps1.withColumnRenamed("sal","income")
+e1: org.apache.spark.sql.DataFrame = [eid: int, ename: string ... 3 more fields]
+
+
+scala> e1.show()
++---+------+------+---+---+
+|eid| ename|income|gen|dno|
++---+------+------+---+---+
+|101|miller| 10000|  m| 11|
+|102| Blake| 20000|  m| 12|
+|103|  sony| 30000|  f| 11|
+|104|  sita| 40000|  f| 12|
+|105|  John| 50000|  m| 13|
++---+------+------+---+---+
+
+
+---------------------------------------------------------------------------------------------------------------
+25)changing schema while converting to DF from a schema RDD
+ emps is my schema RDD
+now I want to change the schema while converting to DF
+
+
+emps------->schema RDD------>eid,ename,sal,gen,dno as schema
+change schema as 
+emps2------->DF------------>ecode,ename,income,gender
+
+
+scala> val emps2=emps.toDF("ecode","ename","income","Gender","dno")
+emps2: org.apache.spark.sql.DataFrame = [ecode: int, ename: string ... 3 more fields]
+
+
+scala> emps2.show()
++-----+------+------+------+---+
+|ecode| ename|income|Gender|dno|
++-----+------+------+------+---+
+|  101|miller| 10000|     m| 11|
+|  102| Blake| 20000|     m| 12|
+|  103|  sony| 30000|     f| 11|
+|  104|  sita| 40000|     f| 12|
+|  105|  John| 50000|     m| 13|
++-----+------+------+------+---+
+
+
+
+
+---------------------------------------------------------------------------------------------------------------
+26)persist
+
+
+scala> emps1.persist
+res35: emps1.type = [eid: int, ename: string ... 3 more fields]
+
+
+--------------------------------------------------------------------------------------------------------------
+27)DF to DF copy:
+scala> val emps3=emps1
+emps3: org.apache.spark.sql.DataFrame = [eid: int, ename: string ... 3 more fields]
+
+
+scala> emps3.show()
++---+------+-----+---+---+
+|eid| ename|  sal|gen|dno|
++---+------+-----+---+---+
+|101|miller|10000|  m| 11|
+|102| Blake|20000|  m| 12|
+|103|  sony|30000|  f| 11|
+|104|  sita|40000|  f| 12|
+|105|  John|50000|  m| 13|
++---+------+-----+---+---+
+
+
+------------------------------------------------------------------------------------------------------------------
+28) Converting a DF to RDD
+scala> val r1=emps1.rdd
+r1: org.apache.spark.rdd.RDD[org.apache.spark.sql.Row] = MapPartitionsRDD[53] at rdd at <console>:32
+
+
+scala> r1.collect()
+res38: Array[org.apache.spark.sql.Row] = Array([101,miller,10000,m,11], [102,Blake,20000,m,12], [103,sony,30000,f,11], [104,sita,40000,f,12], [105,John,50000,m,13])
+
+
+-------------------------------------------------------------------------------------------------------------------
+29)Converting DF to JSON
+
+
+scala> val e1=emps1.toJSON
+e1: org.apache.spark.sql.Dataset[String] = [value: string]
+
+
+scala> e1.collect()
+res39: Array[String] = Array({"eid":101,"ename":"miller","sal":10000,"gen":"m","dno":11}, {"eid":102,"ename":"Blake","sal":20000,"gen":"m","dno":12}, {"eid":103,"ename":"sony","sal":30000,"gen":"f","dno":11}, {"eid":104,"ename":"sita","sal":40000,"gen":"f","dno":12}, {"eid":105,"ename":"John","sal":50000,"gen":"m","dno":13})
+
+
+scala> e1.show()
++--------------------+
+|               value|
++--------------------+
+|{"eid":101,"ename...|
+|{"eid":102,"ename...|
+|{"eid":103,"ename...|
+|{"eid":104,"ename...|
+|{"eid":105,"ename...|
++--------------------+
+
+
+-----------------------------------------------------------------------------------------------------------------
+30)Joins:
+
+
+syntax:
+
+
+df1.join(df2,condition,"types of join")
+
+
+Various joins:
+1)inner
+2)left_outer
+3)right_outer
+4)full_outer
+
+
+Creating emp anf dept Dataframes
+
+
+
+
+1)creating emp Dataframe
+scala> case class emp(eid:Int,ename:String,sal:Int,gen:String,dno:Int)
+defined class emp
+
+
+
+
+Creating List of case class objects
+scala> val emps=List(emp(101,"miller",10000,"m",11),
+     |               emp(102,"Blake",20000,"m",12),
+     |               emp(103,"sony",30000,"f",11),
+     |               emp(104,"sita",40000,"f",12),
+     |               emp(105,"John",50000,"m",13),
+     |               emp(106,"James",60000,"m",14),
+     |               emp(107,"George",70000,"m",15))
+emps: List[emp] = List(emp(101,miller,10000,m,11), emp(102,Blake,20000,m,12), emp(103,sony,30000,f,11), emp(104,sita,40000,f,12), emp(105,John,50000,m,13), emp(106,James,60000,m,14), emp(107,George,70000,m,15))
+
+
+scala> val emp1=sc.parallelize(emps).toDF
+emp1: org.apache.spark.sql.DataFrame = [eid: int, ename: string ... 3 more fields]
+
+
+scala> emp1.show()
++---+------+-----+---+---+
+|eid| ename|  sal|gen|dno|
++---+------+-----+---+---+
+|101|miller|10000|  m| 11|
+|102| Blake|20000|  m| 12|
+|103|  sony|30000|  f| 11|
+|104|  sita|40000|  f| 12|
+|105|  John|50000|  m| 13|
+|106| James|60000|  m| 14|
+|107|George|70000|  m| 15|
++---+------+-----+---+---+
+
+
+
+
+2)create dept Dataframe:
+
+
+scala> case class dept(dno:Int,dname:String,city:String)
+defined class dept
+
+
+scala> val depts=List(dept(11,"mrkt","hyd"),
+     |                dept(12,"HR","pune"),
+     |                dept(13,"Fin","hyd"),
+     |                dept(15,"sales","pune"),
+     |                dept(18,"Account","hyd"))
+depts: List[dept] = List(dept(11,mrkt,hyd), dept(12,HR,pune), dept(13,Fin,hyd), dept(15,sales,pune), dept(18,Account,hyd))
+
+
+scala> val dept1=sc.parallelize(depts).toDF
+dept1: org.apache.spark.sql.DataFrame = [dno: int, dname: string ... 1 more field]
+
+
+scala> dept1.show()
++---+-------+----+
+|dno|  dname|city|
++---+-------+----+
+| 11|   mrkt| hyd|
+| 12|     HR|pune|
+| 13|    Fin| hyd|
+| 15|  sales|pune|
+| 18|Account| hyd|
++---+-------+----+
+
+
+
+
+i)inner join:
+
+
+scala> val ij=emp1.join(dept1,emp1("dno")===dept1("dno"),"inner")
+ij: org.apache.spark.sql.DataFrame = [eid: int, ename: string ... 6 more fields]
+
+
+scala> ij.show()
++---+------+-----+---+---+---+-----+----+                                       
+|eid| ename|  sal|gen|dno|dno|dname|city|
++---+------+-----+---+---+---+-----+----+
+|102| Blake|20000|  m| 12| 12|   HR|pune|
+|104|  sita|40000|  f| 12| 12|   HR|pune|
+|105|  John|50000|  m| 13| 13|  Fin| hyd|
+|107|George|70000|  m| 15| 15|sales|pune|
+|101|miller|10000|  m| 11| 11| mrkt| hyd|
+|103|  sony|30000|  f| 11| 11| mrkt| hyd|
++---+------+-----+---+---+---+-----+----+
+
+
+ii)leftouter join:
+
+
+scala> val loj=emp1.join(dept1,emp1("dno")===dept1("dno"),"left_outer")
+loj: org.apache.spark.sql.DataFrame = [eid: int, ename: string ... 6 more fields]
+
+
+scala> loj.show()
++---+------+-----+---+---+----+-----+----+                                      
+|eid| ename|  sal|gen|dno| dno|dname|city|
++---+------+-----+---+---+----+-----+----+
+|102| Blake|20000|  m| 12|  12|   HR|pune|
+|104|  sita|40000|  f| 12|  12|   HR|pune|
+|105|  John|50000|  m| 13|  13|  Fin| hyd|
+|107|George|70000|  m| 15|  15|sales|pune|
+|101|miller|10000|  m| 11|  11| mrkt| hyd|
+|103|  sony|30000|  f| 11|  11| mrkt| hyd|
+|106| James|60000|  m| 14|null| null|null|
++---+------+-----+---+---+----+-----+----+
+
+
+iii)rightouter join:
+
+
+scala> val roj=emp1.join(dept1,emp1("dno")===dept1("dno"),"right_outer")
+roj: org.apache.spark.sql.DataFrame = [eid: int, ename: string ... 6 more fields]
+
+
+scala> roj.show()
++----+------+-----+----+----+---+-------+----+                                  
+| eid| ename|  sal| gen| dno|dno|  dname|city|
++----+------+-----+----+----+---+-------+----+
+| 102| Blake|20000|   m|  12| 12|     HR|pune|
+| 104|  sita|40000|   f|  12| 12|     HR|pune|
+| 105|  John|50000|   m|  13| 13|    Fin| hyd|
+| 107|George|70000|   m|  15| 15|  sales|pune|
+| 101|miller|10000|   m|  11| 11|   mrkt| hyd|
+| 103|  sony|30000|   f|  11| 11|   mrkt| hyd|
+|null|  null| null|null|null| 18|Account| hyd|
++----+------+-----+----+----+---+-------+----+
+
+
+
+
+iv)Fullouter join:
+
+
+scala> val foj=emp1.join(dept1,emp1("dno")===dept1("dno"),"full_outer")
+foj: org.apache.spark.sql.DataFrame = [eid: int, ename: string ... 6 more fields]
+
+
+scala> foj.show()
++----+------+-----+----+----+----+-------+----+                                 
+| eid| ename|  sal| gen| dno| dno|  dname|city|
++----+------+-----+----+----+----+-------+----+
+| 102| Blake|20000|   m|  12|  12|     HR|pune|
+| 104|  sita|40000|   f|  12|  12|     HR|pune|
+| 105|  John|50000|   m|  13|  13|    Fin| hyd|
+| 107|George|70000|   m|  15|  15|  sales|pune|
+| 101|miller|10000|   m|  11|  11|   mrkt| hyd|
+| 103|  sony|30000|   f|  11|  11|   mrkt| hyd|
+| 106| James|60000|   m|  14|null|   null|null|
+|null|  null| null|null|null|  18|Account| hyd|
++----+------+-----+----+----+----+-------+----+
+
+
+
+
+---------------------------------------------------------------------------------------------
+working with sql statements:
+
+
+step 1: Loading data from HDFS
+step 2: create case class to provide schema to RDD
+step 3: create objects of case class
+step 4: Converting Schema RDD to DF
+step 5: Register the DF as temp Table and performing sql operations
+       syntax for rgistering DF as temp Table
+       df.registerTempTable("tablename")
+
+
+       for performing the sql operations then
+       spark.sqlContext.sql("query")
+
+
+-------------------------------------------------------------------------------------------------------------------
+ex:1
+
+
+$ hdfs dfs -cat /sparklab/customer.txt
+c01,Miller,A50960,HDFC,50000,Hyd,
+c02,John,A51326,ICICI,90000,pune
+c03,Sita,A51333,SBI,75000,Hyd
+c04,Rama,A62222,SBI,95000,Hyd
+c05,Laxman,A53333,Axis,15000,pune
+c06,Blake,A409654,HDFC,85000,pune
+c07,sony,A98764,ICICI,65000,Hyd
+c08,Kumar,A876453,Axis,45000,pune
+
+
+
+
+scala> val custdata=sc.textFile("hdfs://localhost:9000/sparklab/customer.txt")
+custdata: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab/customer.txt MapPartitionsRDD[58] at textFile at <console>:24
+
+
+scala> case class cust(cid:String,cname:String,accno:String,bank:String,bal:Int,city:String)
+defined class cust
+
+
+scala> val cust1=custdata.map{x=>
+     |                        val w=x.split(",")
+     |                        val cid=w(0)
+     |                        val cname=w(1)
+     |                        val accno=w(2)
+     |                        val bank=w(3)
+     |                        val bal=w(4).toInt
+     |                        val city=w(5)
+     |                        val c=cust(cid,cname,accno,bank,bal,city)
+     |                        c
+     |                       }
+cust1: org.apache.spark.rdd.RDD[cust] = MapPartitionsRDD[59] at map at <console>:28
+
+
+scala> cust1.collect()
+res6: Array[cust] = Array(cust(c01,Miller,A50960,HDFC,50000,Hyd), cust(c02,John,A51326,ICICI,90000,pune), cust(c03,Sita,A51333,SBI,75000,Hyd), cust(c04,Rama,A62222,SBI,95000,Hyd), cust(c05,Laxman,A53333,Axis,15000,pune), cust(c06,Blake,A409654,HDFC,85000,pune), cust(c07,sony,A98764,ICICI,65000,Hyd), cust(c08,Kumar,A876453,Axis,45000,pune))
+
+
+scala> val cust2=cust1.toDF
+cust2: org.apache.spark.sql.DataFrame = [cid: string, cname: string ... 4 more fields]
+
+
+scala> cust2.show()
++---+------+-------+-----+-----+----+
+|cid| cname|  accno| bank|  bal|city|
++---+------+-------+-----+-----+----+
+|c01|Miller| A50960| HDFC|50000| Hyd|
+|c02|  John| A51326|ICICI|90000|pune|
+|c03|  Sita| A51333|  SBI|75000| Hyd|
+|c04|  Rama| A62222|  SBI|95000| Hyd|
+|c05|Laxman| A53333| Axis|15000|pune|
+|c06| Blake|A409654| HDFC|85000|pune|
+|c07|  sony| A98764|ICICI|65000| Hyd|
+|c08| Kumar|A876453| Axis|45000|pune|
++---+------+-------+-----+-----+----+
+
+
+converting DF to temp table
+
+
+scala> cust2.registerTempTable("cust3")
+warning: there was one deprecation warning; re-run with -deprecation for details
+
+
+scala> val p=spark.sqlContext.sql("select * from cust3")
+p: org.apache.spark.sql.DataFrame = [cid: string, cname: string ... 4 more fields]
+
+
+The result of sql stmt is also a dataframe
+
+
+scala> p.show()
++---+------+-------+-----+-----+----+
+|cid| cname|  accno| bank|  bal|city|
++---+------+-------+-----+-----+----+
+|c01|Miller| A50960| HDFC|50000| Hyd|
+|c02|  John| A51326|ICICI|90000|pune|
+|c03|  Sita| A51333|  SBI|75000| Hyd|
+|c04|  Rama| A62222|  SBI|95000| Hyd|
+|c05|Laxman| A53333| Axis|15000|pune|
+|c06| Blake|A409654| HDFC|85000|pune|
+|c07|  sony| A98764|ICICI|65000| Hyd|
+|c08| Kumar|A876453| Axis|45000|pune|
++---+------+-------+-----+-----+----+
+
+
+Here
+    cust1--------->RDD
+    cust2--------->DF
+    cust3--------->Temp Table
+
+
+i)I want citywise total revenue
+
+
+scala> val p1=spark.sqlContext.sql("select city,sum(bal) from cust3 group by city").show()
++----+--------+                                                                 
+|city|sum(bal)|
++----+--------+
+| Hyd|  285000|
+|pune|  235000|
++----+--------+
+
+
+ii) I want bank wise total revenue
+scala> val p2=spark.sqlContext.sql("select bank,sum(bal) from cust3 group by bank").show()
++-----+--------+                                                                
+| bank|sum(bal)|
++-----+--------+
+| HDFC|  135000|
+|  SBI|  170000|
+| Axis|   60000|
+|ICICI|  155000|
++-----+--------+
+
+
+p2: Unit = ()
+
+
+iii)bankwise,citywise------->total revenue
+
+
+scala> val p3=spark.sqlContext.sql("select bank,city,sum(bal) from cust3 group by bank,city").show()
++-----+----+--------+                                                           
+| bank|city|sum(bal)|
++-----+----+--------+
+|ICICI| Hyd|   65000|
+| HDFC| Hyd|   50000|
+| HDFC|pune|   85000|
+| Axis|pune|   60000|
+|ICICI|pune|   90000|
+|  SBI| Hyd|  170000|
++-----+----+--------+
+
+
+---------------------------------------------------------------------------------------------------------------------
+ex:2
+
+
+$ hdfs dfs -cat /sparklab/sales2
+1/2/2017 60000
+2/2/2017 45000
+3/2/2017 95000
+4/2/2017 77000
+1/3/2017 56000
+2/3/2017 34000
+3/3/2017 43000
+1/6/2016 13000
+2/6/2016 34000
+3/6/2016 19000
+1/8/2015 87000
+2/8/2015 93000
+3/8/2015 33000
+1/9/2015 11000
+2/9/2015 22000
+3/9/2015 44000
+
+
+Task: yearwise,monthwise totalamt generated
+
+
+scala> val salesdata=sc.textFile("hdfs://localhost:9000/sparklab/sales2")
+salesdata: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab/sales2 MapPartitionsRDD[86] at textFile at <console>:24
+
+
+scala> case class sales(day:Int,month:Int,year:Int,amt:Int)
+defined class sales
+
+
+scala> val sales1=salesdata.map{x=>
+     |                          val w=x.split(" ")
+     |                          val dt=w(0)
+     |                          val amt=w(1).toInt
+     |                          val arr=dt.split("/")
+     |                          val day=arr(0).toInt
+     |                          val month=arr(1).toInt
+     |                          val year=arr(2).toInt
+     |                          val s=sales(day,month,year,amt)
+     |                            s
+     |                          }
+sales1: org.apache.spark.rdd.RDD[sales] = MapPartitionsRDD[87] at map at <console>:28
+
+
+scala> sales1.collect()
+res10: Array[sales] = Array(sales(1,2,2017,60000), sales(2,2,2017,45000), sales(3,2,2017,95000), sales(4,2,2017,77000), sales(1,3,2017,56000), sales(2,3,2017,34000), sales(3,3,2017,43000), sales(1,6,2016,13000), sales(2,6,2016,34000), sales(3,6,2016,19000), sales(1,8,2015,87000), sales(2,8,2015,93000), sales(3,8,2015,33000), sales(1,9,2015,11000), sales(2,9,2015,22000), sales(3,9,2015,44000))
+
+
+scala> val sales2=sales1.toDF
+sales2: org.apache.spark.sql.DataFrame = [day: int, month: int ... 2 more fields]
+
+
+scala> sales2.show()
++---+-----+----+-----+
+|day|month|year|  amt|
++---+-----+----+-----+
+|  1|    2|2017|60000|
+|  2|    2|2017|45000|
+|  3|    2|2017|95000|
+|  4|    2|2017|77000|
+|  1|    3|2017|56000|
+|  2|    3|2017|34000|
+|  3|    3|2017|43000|
+|  1|    6|2016|13000|
+|  2|    6|2016|34000|
+|  3|    6|2016|19000|
+|  1|    8|2015|87000|
+|  2|    8|2015|93000|
+|  3|    8|2015|33000|
+|  1|    9|2015|11000|
+|  2|    9|2015|22000|
+|  3|    9|2015|44000|
++---+-----+----+-----+
+
+
+
+
+scala> sales2.registerTempTable("sales3")
+warning: there was one deprecation warning; re-run with -deprecation for details
+
+
+scala> val q1=spark.sqlContext.sql("select * from sales3")
+q1: org.apache.spark.sql.DataFrame = [day: int, month: int ... 2 more fields]
+
+
+scala> q1.show()
++---+-----+----+-----+
+|day|month|year|  amt|
++---+-----+----+-----+
+|  1|    2|2017|60000|
+|  2|    2|2017|45000|
+|  3|    2|2017|95000|
+|  4|    2|2017|77000|
+|  1|    3|2017|56000|
+|  2|    3|2017|34000|
+|  3|    3|2017|43000|
+|  1|    6|2016|13000|
+|  2|    6|2016|34000|
+|  3|    6|2016|19000|
+|  1|    8|2015|87000|
+|  2|    8|2015|93000|
+|  3|    8|2015|33000|
+|  1|    9|2015|11000|
+|  2|    9|2015|22000|
+|  3|    9|2015|44000|
++---+-----+----+-----+
+
+
+
+
+scala> val q2=spark.sqlContext.sql("select year,sum(amt) from sales3 group by year").show()
++----+--------+                                                                 
+|year|sum(amt)|
++----+--------+
+|2015|  290000|
+|2016|   66000|
+|2017|  410000|
++----+--------+
+
+
+q2: Unit = ()
+
+
+scala> val q3=spark.sqlContext.sql("select year,month,sum(amt) from sales3 group by year,month").show()
++----+-----+--------+                                                           
+|year|month|sum(amt)|
++----+-----+--------+
+|2017|    3|  133000|
+|2015|    8|  213000|
+|2015|    9|   77000|
+|2016|    6|   66000|
+|2017|    2|  277000|
++----+-----+--------+
+
+
+q3: Unit = ()
+
+
+--------------------------------------------------------------------------------------------------------------------
+ex:3
+citywise--------->totsal generated
+
+
+city------>present in dept
+sal------->present in emp
+
+
+
+
+$ hdfs dfs -cat /sparklab/emps1
+101,aaa,1000,m,11
+102,bbb,2000,f,12
+103,ccc,3000,m,12
+104,ddd,4000,f,13
+105,eee,5000,m,11
+106,fff,6000,f,14
+107,ggg,7000,m,15
+108,hhh,8000,f,16
+
+
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /sparklab/dept1
+11,mrkt,hyd
+12,HR,delhi
+13,fin,pune
+17,HR,hyd
+18,fin,pune
+19,mrkt,delhi
+
+
+
+
+scala> val empdata=sc.textFile("hdfs://localhost:9000/sparklab/emps1")
+empdata: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab/emps1 MapPartitionsRDD[108] at textFile at <console>:24
+
+
+scala> val deptdata=sc.textFile("hdfs://localhost:9000/sparklab/dept1")
+deptdata: org.apache.spark.rdd.RDD[String] = hdfs://localhost:9000/sparklab/dept1 MapPartitionsRDD[110] at textFile at <console>:24
+
+
+scala> case class emp(eid:Int,ename:String,sal:Int,gen:String,dno:Int)
+defined class emp
+
+
+scala> case class dept(dno:Int,dname:String,city:String)
+defined class dept
+
+
+scala> val emp1=empdata.map{x=>
+     |                      val w=x.split(",")
+     |                      val eid=w(0).toInt
+     |                      val ename=w(1)
+     |                      val sal=w(2).toInt
+     |                      val gen=w(3)
+     |                      val dno=w(4).toInt
+     |                      val e=emp(eid,ename,sal,gen,dno)
+     |                      e
+     |                     }
+emp1: org.apache.spark.rdd.RDD[emp] = MapPartitionsRDD[111] at map at <console>:28
+
+
+scala> emp1.collect()
+res14: Array[emp] = Array(emp(101,aaa,1000,m,11), emp(102,bbb,2000,f,12), emp(103,ccc,3000,m,12), emp(104,ddd,4000,f,13), emp(105,eee,5000,m,11), emp(106,fff,6000,f,14), emp(107,ggg,7000,m,15), emp(108,hhh,8000,f,16))
+
+
+scala> val dept1=deptdata.map{
+     |                        x=>
+     |                        val w=x.split(",")
+     |                        val dno=w(0).toInt
+     |                        val dname=w(1)
+     |                        val city=w(2)
+     |                        val d=dept(dno,dname,city)
+     |                        d
+     |                       }
+dept1: org.apache.spark.rdd.RDD[dept] = MapPartitionsRDD[112] at map at <console>:28
+
+
+scala> dept1.collect()
+res15: Array[dept] = Array(dept(11,mrkt,hyd), dept(12,HR,delhi), dept(13,fin,pune), dept(17,HR,hyd), dept(18,fin,pune), dept(19,mrkt,delhi))
+
+
+scala> val emp2=emp1.toDF
+emp2: org.apache.spark.sql.DataFrame = [eid: int, ename: string ... 3 more fields]
+
+
+scala> val dept2=dept1.toDF
+dept2: org.apache.spark.sql.DataFrame = [dno: int, dname: string ... 1 more field]
+
+
+scala> emp2.show()
++---+-----+----+---+---+
+|eid|ename| sal|gen|dno|
++---+-----+----+---+---+
+|101|  aaa|1000|  m| 11|
+|102|  bbb|2000|  f| 12|
+|103|  ccc|3000|  m| 12|
+|104|  ddd|4000|  f| 13|
+|105|  eee|5000|  m| 11|
+|106|  fff|6000|  f| 14|
+|107|  ggg|7000|  m| 15|
+|108|  hhh|8000|  f| 16|
++---+-----+----+---+---+
+
+
+
+
+scala> dept2.show()
++---+-----+-----+
+|dno|dname| city|
++---+-----+-----+
+| 11| mrkt|  hyd|
+| 12|   HR|delhi|
+| 13|  fin| pune|
+| 17|   HR|  hyd|
+| 18|  fin| pune|
+| 19| mrkt|delhi|
++---+-----+-----+
+
+
+
+
+scala> emp2.registerTempTable("emp3")
+warning: there was one deprecation warning; re-run with -deprecation for details
+
+
+scala> dept2.registerTempTable("dept3")
+warning: there was one deprecation warning; re-run with -deprecation for details
+
+
+
+
+
+
+scala> val q=spark.sqlContext.sql("select city,sum(sal) from emp3 e join dept3 d on (e.dno=d.dno) group by city")
+q: org.apache.spark.sql.DataFrame = [city: string, sum(sal): bigint]
+
+
+scala> q.show()
++-----+--------+                                                                
+| city|sum(sal)|
++-----+--------+
+|delhi|    5000|
+|  hyd|    6000|
+| pune|    4000|
++-----+--------+
+
+
+
+
+reading data(table) from mysql database and converting to data frame
+
+
+open mysql Prompt
+
+
+$ mysql -u root -p
+Enter password: 
+
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| db1                |
+| db3                |
+| hive_meta          |
+| mysql              |
+| performance_schema |
+| sqoopdb            |
+| sqoopdb1           |
+| sqoopdb2           |
+| sqoopdb3           |
+| sqoopdb4           |
+| sqoopdb5           |
++--------------------+
+
+
+mysql> use sqoopdb1;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+
+Database changed
+mysql> show tables;
++--------------------+
+| Tables_in_sqoopdb1 |
++--------------------+
+| customer           |
+| customer1          |
+| customer2          |
+| dept               |
+| dept1              |
+| emp                |
+| emp2               |
+| empdept            |
+| hbasecust7         |
+| samp1              |
+| samp2              |
+| std1               |
+| stdmarks           |
++--------------------+
+
+
+mysql> describe customer1;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| cid   | int(11)     | NO   | PRI | NULL    |       |
+| cname | varchar(10) | YES  |     | NULL    |       |
+| accno | int(11)     | YES  |     | NULL    |       |
+| addr  | varchar(10) | YES  |     | NULL    |       |
+| bal   | int(11)     | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+
+mysql> select * from customer1;
++-----+--------+--------+----------+-------+
+| cid | cname  | accno  | addr     | bal   |
++-----+--------+--------+----------+-------+
+| 101 | pavan  | 312567 | Ameerpet | 17000 |
+| 102 | sravan | 312464 | Begumpet | 29000 |
+| 103 | sony   | 312893 | LBNagar  | 57000 |
+| 104 | sachin | 312793 | mumbai   | 99000 |
++-----+--------+--------+----------+-------+
+4 rows in set (0.01 sec)
+
+
+
+
+
+
+Now Reading this customer1 table from mysql using sqlContext and converting
+
+
+into DF.
+
+
+
+
+scala> val df1 = spark.sqlContext.read.format("jdbc").option("url", "jdbc:mysql://localhost/sqoopdb1").option("driver", "com.mysql.jdbc.Driver").option("dbtable", "customer1").option("user", "root").option("password", "hadoop").load()
+data1: org.apache.spark.sql.DataFrame = [cid: int, cname: string ... 3 more fields]
+
+
+scala> df1.show()
++---+------+------+--------+-----+
+|cid| cname| accno|    addr|  bal|
++---+------+------+--------+-----+
+|101| pavan|312567|Ameerpet|17000|
+|102|sravan|312464|Begumpet|29000|
+|103|  sony|312893| LBNagar|57000|
+|104|sachin|312793|  mumbai|99000|
++---+------+------+--------+-----+
+
+
+scala> df.registerTempTable("customer")
+
+
+scala> val c=spark.sqlContext.sql("select * from customer").show()
++---+------+------+--------+-----+
+|cid| cname| accno|    addr|  bal|
++---+------+------+--------+-----+
+|101| pavan|312567|Ameerpet|17000|
+|102|sravan|312464|Begumpet|29000|
+|103|  sony|312893| LBNagar|57000|
+|104|sachin|312793|  mumbai|99000|
++---+------+------+--------+-----+
+
+
+-------------------------------------------------------------------------------------------------
+Ex:2
+
+
+scala> val data1 = spark.sqlContext.read.format("jdbc").option("url", "jdbc:mysql://localhost/sqoopdb1").option("driver", "com.mysql.jdbc.Driver").option("dbtable", "emp").option("user", "root").option("password", "hadoop").load()
+data1: org.apache.spark.sql.DataFrame = [id: int, name: string ... 3 more fields]
+
+
+scala> data1.show()
++---+------+-----+---+---+
+| id|  name|  sal|gen|dno|
++---+------+-----+---+---+
+|101|miller|10000|  m| 11|
+|102|jyothi|20000|  f| 12|
+|103| Blake|30000|  m| 12|
+|104| sonia|40000|  f| 13|
+|105|  Ajay|50000|  m| 11|
+|106| varun|60000|  m| 11|
++---+------+-----+---+---+
+
+
+scala> data1.registerTempTable("emps")
+
+
+scala> val e=spark.sqlContext.sql("select * from emps")
+p: org.apache.spark.sql.DataFrame = [id: int, name: string ... 3 more fields]
+
+
+scala> e.show()
++---+------+-----+---+---+
+| id|  name|  sal|gen|dno|
++---+------+-----+---+---+
+|101|miller|10000|  m| 11|
+|102|jyothi|20000|  f| 12|
+|103| Blake|30000|  m| 12|
+|104| sonia|40000|  f| 13|
+|105|  Ajay|50000|  m| 11|
+|106| varun|60000|  m| 11|
++---+------+-----+---+---+
+
+
+scala> val p2=spark.sqlContext.sql("select gen,sum(sal) from emps group by gen").show()
++---+--------+                                                                  
+|gen|sum(sal)|
++---+--------+
+|  m|  150000|
+|  f|   60000|
++---+--------+
+
+
+
+
+2)Multi grouping-single Aggregation
+
+
+scala> val dnogensumsal=spark.sqlContext.sql("select dno,gen,sum(sal) from emps group by dno,gen").show()
++---+---+--------+                                                              
+|dno|gen|sum(sal)|
++---+---+--------+
+| 13|  f|   40000|
+| 11|  m|  120000|
+| 12|  m|   30000|
+| 12|  f|   20000|
++---+---+--------+
+
+
+scala> val aggr=spark.sqlContext.sql("select gen,sum(sal),avg(sal),max(sal),min(sal),count(*) from emps group by gen").show()
++---+--------+--------+--------+--------+--------+                              
+|gen|sum(sal)|avg(sal)|max(sal)|min(sal)|count(1)|
++---+--------+--------+--------+--------+--------+
+|  m|  150000| 37500.0|   60000|   10000|       4|
+|  f|   60000| 30000.0|   40000|   20000|       2|
++---+--------+--------+--------+--------+--------+
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+Task 2:
+
+
+mysql+sqoop+spark
+
+
+Flow:
+mysql------>sqoop------>HDFS------->Spark------>HDFS
+
+
+open mysql Prompt
+
+
+$ mysql -u root -p
+Enter password: 
+
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| db1                |
+| db3                |
+| hive_meta          |
+| mysql              |
+| performance_schema |
+| sqoopdb            |
+| sqoopdb1           |
+| sqoopdb2           |
+| sqoopdb3           |
+| sqoopdb4           |
+| sqoopdb5           |
++--------------------+
+
+
+mysql> use sqoopdb1;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+
+Database changed
+mysql> show tables;
++--------------------+
+| Tables_in_sqoopdb1 |
++--------------------+
+| customer           |
+| customer1          |
+| customer2          |
+| dept               |
+| dept1              |
+| emp                |
+| emp2               |
+| empdept            |
+| hbasecust7         |
+| samp1              |
+| samp2              |
+| std1               |
+| stdmarks           |
++--------------------+
+
+
+mysql> describe emp;
++-------+----------+------+-----+---------+-------+
+| Field | Type     | Null | Key | Default | Extra |
++-------+----------+------+-----+---------+-------+
+| id    | int(11)  | NO   | PRI | NULL    |       |
+| name  | char(15) | YES  |     | NULL    |       |
+| sal   | int(11)  | YES  |     | NULL    |       |
+| gen   | char(1)  | YES  |     | NULL    |       |
+| dno   | int(11)  | YES  |     | NULL    |       |
++-------+----------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+
+mysql> select * from emp;
++-----+--------+-------+------+------+
+| id  | name   | sal   | gen  | dno  |
++-----+--------+-------+------+------+
+| 101 | miller | 10000 | m    |   11 |
+| 102 | jyothi | 20000 | f    |   12 |
+| 103 | Blake  | 30000 | m    |   12 |
+| 104 | sonia  | 40000 | f    |   13 |
+| 105 | Ajay   | 50000 | m    |   11 |
+| 106 | varun  | 60000 | m    |   11 |
++-----+--------+-------+------+------+
+
+
+
+
+ii)
+
+
+lenovo@lenovo-Lenovo-G450:~$ sqoop import \
+> --connect jdbc:mysql://localhost/sqoopdb1 \
+> --username root \
+> --password hadoop \
+> --table emp -m 1 \
+> --target-dir /sparklab1/sqemp
+
+
+
+
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -ls /sparklab1/sqemp
+Found 2 items
+-rw-r--r--   1 lenovo supergroup          0 2018-06-22 15:36 /sparklab1/sqemp/_SUCCESS
+-rw-r--r--   1 lenovo supergroup        127 2018-06-22 15:36 /sparklab1/sqemp/part-m-00000
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /sparklab1/sqemp/part-m-00000
+101,miller,10000,m,11
+102,jyothi,20000,f,12
+103,Blake,30000,m,12
+104,sonia,40000,f,13
+105,Ajay,50000,m,11
+106,varun,60000,m,11
+
+
+
+
+
+
+iii)using spark loading and processing
+
+
+scala> val emps1=sc.textFile("hdfs://localhost:9000/sparklab1/sqemp/part-m-00000")
+e
+scala> val emparr=emps1.map(x=>x.split(","))
+emparr: org.apache.spark.rdd.RDD[Array[String]] = MapPartitionsRDD[37] at map at <console>:26
+
+
+scala> val gensalpair=emparr.map(x=>(x(3),x(2).toInt))
+gensalpair: org.apache.spark.rdd.RDD[(String, Int)] = MapPartitionsRDD[38] at map at <console>:28
+
+
+scala> val gensumsal=gensalpair.reduceByKey(_+_)
+gensumsal: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[39] at reduceByKey at <console>:30
+
+
+scala> gensumsal.collect.foreach(println)
+(f,60000)
+(m,150000)
+
+
+
+
+spark and Hive Integration:
+
+
+For spark and Hive Integration, we need to bring the following files into spark conf directory
+i)hdfs-site.xml from hadoop directory
+ii)core-site.xml from hadoop directory
+iii)hive-site.xml from hive directory
+
+
+$ cp $HADOOP_HOME/etc/hadoop/hdfs-site.xml $SPARK_HOME/conf
+$ cp $HADOOP_HOME/etc/hadoop/core-site.xml $SPARK_HOME/conf
+$ cp $HIVE_HOME/conf/hive-site.xml $SPARK_HOME/conf
+
+
+Now Restart spark for the integration to happen
+
+
+step 1: import HiveContext
+import org.apache.spark.sql.hive.HiveContext
+
+
+step 2: Create HiveContext object
+scala> val hc=new HiveContext(sc)
+
+
+step 3: Now using hivecontext(hc),we can perform any hql operation, that will be reflected in hive
+        i.e if u create table in spark, u can see it in hive and vice-versa
+
+
+scala> val q=hc.sql("show databases")
+q: org.apache.spark.sql.DataFrame = [databaseName: string]
+
+
+The result of a hql opeation is also a DF
+
+
+scala> q.show()
++------------+
+|databaseName|
++------------+
+|       amith|
+|     buckdb1|
+|       bucks|
+|     default|
+|    durgait1|
+|  durgasoft1|
+|  durgasoft2|
+|     goutham|
+|   goverdhan|
+|     hivedb1|
+|    hivedb10|
+|    hivedb11|
+|    hivedb12|
+|    hivedb13|
+|    hivedb14|
+|    hivedb15|
+|    hivedb16|
+|    hivedb17|
+|    hivedb18|
+|    hivedb19|
++------------+
+only showing top 20 rows
+
+
+scala> val q1=hc.sql("use hivedb15")
+q1: org.apache.spark.sql.DataFrame = []
+
+
+scala> val q1=hc.sql("show tables").show()
++--------+-----------+-----------+
+|database|  tableName|isTemporary|
++--------+-----------+-----------+
+|hivedb15|   avrotab1|      false|
+|hivedb15|       buck|      false|
+|hivedb15| buck_sales|      false|
+|hivedb15|buckpartemp|      false|
+|hivedb15|   bucktab1|      false|
+|hivedb15|      dept1|      false|
+|hivedb15|  dupestab1|      false|
+|hivedb15|  dupestab2|      false|
+|hivedb15|  dupestab3|      false|
+|hivedb15|  dupestab4|      false|
+|hivedb15|  dupestab5|      false|
+|hivedb15| dynpartemp|      false|
+|hivedb15|        emp|      false|
+|hivedb15|       emp1|      false|
+|hivedb15|       emp2|      false|
+|hivedb15|       emp3|      false|
+|hivedb15|       emp4|      false|
+|hivedb15|       emp5|      false|
+|hivedb15|       emp6|      false|
+|hivedb15|    empdept|      false|
++--------+-----------+-----------+
+only showing top 20 rows
+
+
+q1: Unit = ()
+
+
+scala> val q2=hc.sql("select * from emp1").show()
+19/02/03 09:50:44 WARN LazyStruct: Extra bytes detected at the end of the row! Ignoring similar problems.
++---+------+-----+---+---+
+|eid| ename|  sal|gen|dno|
++---+------+-----+---+---+
+|101|miller|10000|  m| 11|
+|102| Blake|20000|  m| 12|
+|103|  sony|30000|  f| 11|
+|104|  sita|40000|  f| 12|
+|105|  John|50000|  m| 13|
++---+------+-----+---+---+
+
+
+--------------------------------------------------------------------------------------------------------------------
+creating a new database in hive from spark
+
+
+scala> val p1=hc.sql("create database demo1")
+19/02/03 09:53:28 WARN ObjectStore: Failed to get database demo1, returning NoSuchObjectException
+p1: org.apache.spark.sql.DataFrame = []
+
+
+scala> val p2=hc.sql("show databases").show()
++------------+
+|databaseName|
++------------+
+|       amith|
+|     buckdb1|
+|       bucks|
+|     default|
+|       demo1|
+|    durgait1|
+|  durgasoft1|
+|  durgasoft2|
+|     goutham|
+|   goverdhan|
+|     hivedb1|
+|    hivedb10|
+|    hivedb11|
+|    hivedb12|
+|    hivedb13|
+|    hivedb14|
+|    hivedb15|
+|    hivedb16|
+|    hivedb17|
+|    hivedb18|
++------------+
+only showing top 20 rows
+
+
+p2: Unit = ()
+
+
+------------------------------------------------------------------------------------------------------------------
+now create a table under demo1 database of hive
+
+
+scala> val p3=hc.sql("use demo1")
+p3: org.apache.spark.sql.DataFrame = []
+
+
+$ cat marks
+Rohith,70,80,50
+Ajith,85,65,45
+Aruna,85,75,65
+kamal,90,80,60
+miller,75,85,95
+
+
+scala> val p3=hc.sql("use demo1")
+p3: org.apache.spark.sql.DataFrame = []
+
+
+scala> val s1=hc.sql("create table markstab1(name string,s1 int,s2 int,s3 int) row format delimited fields terminated by ','")
+19/02/03 09:58:34 WARN HiveMetaStore: Location: hdfs://localhost:9000/user/hive/warehouse/demo1.db/markstab1 specified for non-external table:markstab1
+s1: org.apache.spark.sql.DataFrame = []
+
+
+scala> val s2=hc.sql("show tables").show()
++--------+---------+-----------+
+|database|tableName|isTemporary|
++--------+---------+-----------+
+|   demo1|markstab1|      false|
++--------+---------+-----------+
+
+
+s2: Unit = ()
+
+
+scala> val s3=hc.sql("select * from markstab1").show()
++----+---+---+---+
+|name| s1| s2| s3|
++----+---+---+---+
++----+---+---+---+
+
+
+s3: Unit = ()
+
+
+scala> val s4=hc.sql("load data local inpath 'marks' into table markstab1")
+s4: org.apache.spark.sql.DataFrame = []
+
+
+scala> val s5=hc.sql("select * from markstab1").show()
++------+---+---+---+
+|  name| s1| s2| s3|
++------+---+---+---+
+|Rohith| 70| 80| 50|
+| Ajith| 85| 65| 45|
+| Aruna| 85| 75| 65|
+| kamal| 90| 80| 60|
+|miller| 75| 85| 95|
++------+---+---+---+
+
+
+s5: Unit = ()
+
+
+scala> val s6=hc.sql("select name,s1,s2,s3,s1+s2+s3 as total from markstab1").show()
++------+---+---+---+-----+
+|  name| s1| s2| s3|total|
++------+---+---+---+-----+
+|Rohith| 70| 80| 50|  200|
+| Ajith| 85| 65| 45|  195|
+| Aruna| 85| 75| 65|  225|
+| kamal| 90| 80| 60|  230|
+|miller| 75| 85| 95|  255|
++------+---+---+---+-----+
+
+
+s6: Unit = ()
+
+
+-----------------------------------------------------------------------------------------------------------------
+Now quit spark shell and goto hive and check whether the database and table is creaed or not
+
+
+hive> show databases;
+OK
+amith
+buckdb1
+bucks
+default
+demo1
+durgait1
+
+
+hive> use demo1;
+OK
+Time taken: 0.24 seconds
+hive> show tables;
+OK
+markstab1
+Time taken: 0.302 seconds, Fetched: 1 row(s)
+hive> select * from markstab1;
+OK
+Rohith        70        80        50
+Ajith        85        65        45
+Aruna        85        75        65
+kamal        90        80        60
+miller        75        85        95
+Time taken: 8.043 seconds, Fetched: 5 row(s)
+
+
+-----------------------------------------------------------------------------------------------------------------
+Now create a table in hive and check at spark side
+
+
+$ cat customer.txt
+c01,Miller,A50960,HDFC,50000,Hyd,
+c02,John,A51326,ICICI,90000,pune
+c03,Sita,A51333,SBI,75000,Hyd
+c04,Rama,A62222,SBI,95000,Hyd
+c05,Laxman,A53333,Axis,15000,pune
+c06,Blake,A409654,HDFC,85000,pune
+c07,sony,A98764,ICICI,65000,Hyd
+c08,Kumar,A876453,Axis,45000,pune
+
+
+Now create customer table in hive
+
+
+hive> create table customer(cid String,cname String,accno String,bank String,bal int,city String)
+    > row format delimited
+    > fields terminated by ',';
+OK
+Time taken: 1.393 seconds
+hive> load data local inpath 'customer.txt' into table customer
+    > ;
+Loading data to table demo1.customer
+OK
+Time taken: 3.536 seconds
+hive> select * from customer;
+OK
+c01        Miller        A50960        HDFC        50000        Hyd
+c02        John        A51326        ICICI        90000        pune
+c03        Sita        A51333        SBI        75000        Hyd
+c04        Rama        A62222        SBI        95000        Hyd
+c05        Laxman        A53333        Axis        15000        pune
+c06        Blake        A409654        HDFC        85000        pune
+c07        sony        A98764        ICICI        65000        Hyd
+c08        Kumar        A876453        Axis        45000        pune
+Time taken: 0.685 seconds, Fetched: 8 row(s)
+
+
+------------------------------------------------------------------------------------------------------------------
+Now quit from hive and open spark
+
+
+scala> import org.apache.spark.sql.hive.HiveContext
+import org.apache.spark.sql.hive.HiveContext
+
+
+scala> val hc=new HiveContext(sc)
+warning: there was one deprecation warning; re-run with -deprecation for details
+hc: org.apache.spark.sql.hive.HiveContext = org.apache.spark.sql.hive.HiveContext@15c3585
+
+
+scala> val q=hc.sql("use demo1")
+q: org.apache.spark.sql.DataFrame = []
+
+
+scala> val q1=hc.sql("show tables").show()
++--------+---------+-----------+
+|database|tableName|isTemporary|
++--------+---------+-----------+
+|   demo1| customer|      false|
+|   demo1|markstab1|      false|
++--------+---------+-----------+
+
+
+q1: Unit = ()
+
+
+scala> val q2=hc.sql("select * from customer").show()
+19/02/03 10:19:36 WARN LazyStruct: Extra bytes detected at the end of the row! Ignoring similar problems.
++---+------+-------+-----+-----+----+
+|cid| cname|  accno| bank|  bal|city|
++---+------+-------+-----+-----+----+
+|c01|Miller| A50960| HDFC|50000| Hyd|
+|c02|  John| A51326|ICICI|90000|pune|
+|c03|  Sita| A51333|  SBI|75000| Hyd|
+|c04|  Rama| A62222|  SBI|95000| Hyd|
+|c05|Laxman| A53333| Axis|15000|pune|
+|c06| Blake|A409654| HDFC|85000|pune|
+|c07|  sony| A98764|ICICI|65000| Hyd|
+|c08| Kumar|A876453| Axis|45000|pune|
++---+------+-------+-----+-----+----+
+
+
+q2: Unit = ()
+
+
+scala> val q3=hc.sql("select bank,sum(bal) as revenue from customer group by bank").show()
+19/02/03 10:22:09 WARN LazyStruct: Extra bytes detected at the end of the row! Ignoring similar problems.
++-----+-------+                                                                 
+| bank|revenue|
++-----+-------+
+| HDFC| 135000|
+|  SBI| 170000|
+| Axis|  60000|
+|ICICI| 155000|
++-----+-------+
+
+
+q3: Unit = ()
+
+
+---------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+copy the csv file from LFS------->HDFS
+
+
+ hadoop fs -put Baby_Names.csv /
+
+
+scala> val baby_names=spark.sqlContext.read.format("com.databricks.spark.csv").option("header","true").option("inferschema","true").load("hdfs://localhost:9000/Baby_Names.csv")
+
+
+
+
+scala> baby_names.show()
++----+-----------+-----------+---+-----+
+|Year| First Name|     County|gen|Count|
++----+-----------+-----------+---+-----+
+|2013|      GAVIN|ST LAWRENCE|  M|    9|
+|2013|       LEVI|ST LAWRENCE|  M|    9|
+|2013|      LOGAN|   NEW YORK|  M|   44|
+|2013|     HUDSON|   NEW YORK|  M|   49|
+|2013|    GABRIEL|   NEW YORK|  M|   50|
+|2013|   THEODORE|   NEW YORK|  M|   51|
+|2013|      ELIZA|      KINGS|  F|   16|
+|2013|  MADELEINE|      KINGS|  F|   16|
+|2013|       ZARA|      KINGS|  F|   16|
+|2013|      DAISY|      KINGS|  F|   16|
+|2013|   JONATHAN|   NEW YORK|  M|   51|
+|2013|CHRISTOPHER|   NEW YORK|  M|   52|
+|2013|       LUKE|    SUFFOLK|  M|   49|
+|2013|    JACKSON|   NEW YORK|  M|   53|
+|2013|    JACKSON|    SUFFOLK|  M|   49|
+|2013|     JOSHUA|   NEW YORK|  M|   53|
+|2013|      AIDEN|   NEW YORK|  M|   53|
+|2013|    BRANDON|    SUFFOLK|  M|   50|
+|2013|       JUDY|      KINGS|  F|   16|
+|2013|      MASON|ST LAWRENCE|  M|    8|
++----+-----------+-----------+---+-----+
+
+
+scala> baby_names.registerTempTable("names")
+
+
+scala> val data=spark.sqlContext.sql("select * from names")
+data: org.apache.spark.sql.DataFrame = [Year: int, First Name: string ... 3 more fields]
+
+
+scala> data.show()
++----+-----------+-----------+---+-----+
+|Year| First Name|     County|gen|Count|
++----+-----------+-----------+---+-----+
+|2013|      GAVIN|ST LAWRENCE|  M|    9|
+|2013|       LEVI|ST LAWRENCE|  M|    9|
+|2013|      LOGAN|   NEW YORK|  M|   44|
+|2013|     HUDSON|   NEW YORK|  M|   49|
+|2013|    GABRIEL|   NEW YORK|  M|   50|
+|2013|   THEODORE|   NEW YORK|  M|   51|
+|2013|      ELIZA|      KINGS|  F|   16|
+|2013|  MADELEINE|      KINGS|  F|   16|
+|2013|       ZARA|      KINGS|  F|   16|
+|2013|      DAISY|      KINGS|  F|   16|
+|2013|   JONATHAN|   NEW YORK|  M|   51|
+|2013|CHRISTOPHER|   NEW YORK|  M|   52|
+|2013|       LUKE|    SUFFOLK|  M|   49|
+|2013|    JACKSON|   NEW YORK|  M|   53|
+|2013|    JACKSON|    SUFFOLK|  M|   49|
+|2013|     JOSHUA|   NEW YORK|  M|   53|
+|2013|      AIDEN|   NEW YORK|  M|   53|
+|2013|    BRANDON|    SUFFOLK|  M|   50|
+|2013|       JUDY|      KINGS|  F|   16|
+|2013|      MASON|ST LAWRENCE|  M|    8|
++----+-----------+-----------+---+-----+
+only showing top 20 rows
+
+
+
+
+scala> val distinctyears=spark.sqlContext.sql("select distinct Year from names")
+distinctyears: org.apache.spark.sql.DataFrame = [Year: int]
+
+
+scala> distinctyears.collect.foreach(println)
+[2007]                                                                          
+[2015]
+[2013]
+[2014]
+[2012]
+[2009]
+[2016]
+[2010]
+[2011]
+[2008]
+
+
+scala> val gendercnt=spark.sqlContext.sql("select gen,count(*) from names group by gen")
+gendercnt: org.apache.spark.sql.DataFrame = [gen: string, count(1): bigint]
+
+
+scala> gendercnt.show()
++---+--------+                                                                  
+|gen|count(1)|
++---+--------+
+|  F|  124424|
+|  M|  111086|
++---+--------+
+
+
+----------------------------------------------------------------------------------------------
+
+
+ex:2 
+
+
+copy orders.csv from LFS to HDFS
+
+
+hadoop fs -put orders.csv /
+
+
+$ hadoop fs -cat /orders.csv
+order_id,product,quantity,price,city,year
+T01,LG,10,10000,hyd,2016
+T02,samsung,40,45000,hyd,2016
+T03,sony,25,35000,hyd,2016
+T04,LG,5,17000,pune,2015
+T05,samsung,14,29000,pune,2015
+T06,sony,70,62000,hyd,2014
+T07,samsung,30,54000,pune,2016
+T08,LG,20,32000,pune,2016
+T09,LG,15,29000,hyd,2015
+T10,samsung,45,72000,mumbai,2016
+T11,LG,25,64000,mumbai,2016
+
+
+
+
+scala> val orders1=spark.sqlContext.read.format("com.databricks.spark.csv").option("header","true").option("inferschema","true").load("hdfs://localhost:9000/orders.csv")
+orders1: org.apache.spark.sql.DataFrame = [order_id: string, product: string ... 4 more fields]
+
+
+scala> orders1.show()
++--------+-------+--------+-----+------+----+
+|order_id|product|quantity|price|  city|year|
++--------+-------+--------+-----+------+----+
+|     T01|     LG|      10|10000|   hyd|2016|
+|     T02|samsung|      40|45000|   hyd|2016|
+|     T03|   sony|      25|35000|   hyd|2016|
+|     T04|     LG|       5|17000|  pune|2015|
+|     T05|samsung|      14|29000|  pune|2015|
+|     T06|   sony|      70|62000|   hyd|2014|
+|     T07|samsung|      30|54000|  pune|2016|
+|     T08|     LG|      20|32000|  pune|2016|
+|     T09|     LG|      15|29000|   hyd|2015|
+|     T10|samsung|      45|72000|mumbai|2016|
+|     T11|     LG|      25|64000|mumbai|2016|
++--------+-------+--------+-----+------+----+
+
+
+
+
+scala> orders1.registerTempTable("orderstab")
+warning: there was one deprecation warning; re-run with -deprecation for details
+
+
+scala> val data=spark.sqlContext.sql("select * from orderstab")
+data: org.apache.spark.sql.DataFrame = [order_id: string, product: string ... 4 more fields]
+
+
+scala> data.show()
++--------+-------+--------+-----+------+----+
+|order_id|product|quantity|price|  city|year|
++--------+-------+--------+-----+------+----+
+|     T01|     LG|      10|10000|   hyd|2016|
+|     T02|samsung|      40|45000|   hyd|2016|
+|     T03|   sony|      25|35000|   hyd|2016|
+|     T04|     LG|       5|17000|  pune|2015|
+|     T05|samsung|      14|29000|  pune|2015|
+|     T06|   sony|      70|62000|   hyd|2014|
+|     T07|samsung|      30|54000|  pune|2016|
+|     T08|     LG|      20|32000|  pune|2016|
+|     T09|     LG|      15|29000|   hyd|2015|
+|     T10|samsung|      45|72000|mumbai|2016|
+|     T11|     LG|      25|64000|mumbai|2016|
++--------+-------+--------+-----+------+----+
+
+
+
+
+
+
+single grouping single aggregation
+
+
+scala> val data1=spark.sqlContext.sql("select city,sum(price) from orderstab group by city")
+data1: org.apache.spark.sql.DataFrame = [city: string, sum(price): bigint]
+
+
+scala> data1.show()
++------+----------+                                                             
+|  city|sum(price)|
++------+----------+
+|   hyd|    181000|
+|mumbai|    136000|
+|  pune|    132000|
++------+----------+
+
+
+
+
+scala> val data2=spark.sqlContext.sql("select city,product,sum(price) from orderstab group by city,product").show()
++------+-------+----------+                                                     
+|  city|product|sum(price)|
++------+-------+----------+
+|   hyd|     LG|     39000|
+|mumbai|     LG|     64000|
+|  pune|samsung|     83000|
+|   hyd|samsung|     45000|
+|  pune|     LG|     49000|
+|mumbai|samsung|     72000|
+|   hyd|   sony|     97000|
++------+-------+----------+
+
+
+
+
+scala> val data3=spark.sqlContext.sql("select city,product,sum(price) from orderstab group by city,product order by city").show()
++------+-------+----------+                                                     
+|  city|product|sum(price)|
++------+-------+----------+
+|   hyd|samsung|     45000|
+|   hyd|   sony|     97000|
+|   hyd|     LG|     39000|
+|mumbai|     LG|     64000|
+|mumbai|samsung|     72000|
+|  pune|samsung|     83000|
+|  pune|     LG|     49000|
++------+-------+----------+
+
+
+
+
+scala> val data1=spark.sqlContext.sql("select city,sum(price) as totprice  from orderstab group by city order by totprice desc").show()
++------+--------+                                                               
+|  city|totprice|
++------+--------+
+|   hyd|  181000|
+|mumbai|  136000|
+|  pune|  132000|
++------+--------+
+
+
+
+
+scala> val data1=spark.sqlContext.sql("select city,sum(price) as totprice  from orderstab group by city order by totprice desc limit 2").show()
++------+--------+                                                               
+|  city|totprice|
++------+--------+
+|   hyd|  181000|
+|mumbai|  136000|
++------+--------+
+
+
+
+
+
+
+
+
+Ex:1 
+
+
+cat json1
+{"name":"Blake","age":25,"gen":"m"}
+{"name":"Ramya","age":27,"gen":"f"}
+{"name":"John","age":22,"gen":"m","city":"pune"}
+{"name":"Thanu","age":24,"gen":"f","city":"hyd"}
+
+
+
+
+copy this file from LFS-->HDFS
+
+
+$ hadoop fs -put json1 /
+
+
+
+
+Load the json file into spark using sqlContext
+
+
+scala> val data=spark.sqlContext.jsonFile("/json1")
+
+
+
+
+scala> data.show()
++---+----+-----+---+
+|age|city| name|gen|
++---+----+-----+---+
+| 25|null|Blake|  m|
+| 27|null|Ramya|  f|
+| 22|pune| John|  m|
+| 24| hyd|Thanu|  f|
++---+----+-----+---+
+
+
+scala> data.printSchema
+root
+ |-- age: long (nullable = true)
+ |-- city: string (nullable = true)
+ |-- name: string (nullable = true)
+ |-- gen: string (nullable = true)
+
+
+
+
+scala> data.registerTempTable("details")
+
+
+
+
+scala> val p=spark.sqlContext.sql("select * from details").show()
++---+----+-----+---+
+|age|city| name|gen|
++---+----+-----+---+
+| 25|null|Blake|  m|
+| 27|null|Ramya|  f|
+| 22|pune| John|  m|
+| 24| hyd|Thanu|  f|
++---+----+-----+---+
+
+
+scala> val p1=spark.sqlContext.sql("select gen,avg(age) from details group by gen").show()
++---+--------+                                                                  
+|gen|avg(age)|
++---+--------+
+|  m|    23.5|
+|  f|    25.5|
++---+--------+
+
+
+-----------------------------------------------------------------------------------------------------
+
+
+ex:2 
+
+
+Nested json
+
+
+$ hadoop fs -cat /json2
+{"name":"Ravi","age":25,"wife":{"name":"banu","age":24},"city":"hyd"}
+{"name":"Ajay","age":26,"wife":{"name":"kavitha","age":21},"city":"pune"}
+{"name":"John","age":32,"wife":{"name":"sony","age":27},"city":"pune"}
+
+
+
+
+scala> val recs=spark.sqlContext.jsonFile("/json2")
+warning: there was one deprecation warning; re-run with -deprecation for details
+recs: org.apache.spark.sql.DataFrame = [age: bigint, city: string ... 2 more fields]
+
+
+Here we get DataFrame bcoz loading file using sqlContext
+
+
+
+
+scala> recs.show()
++---+----+----+------------+
+|age|city|name|        wife|
++---+----+----+------------+
+| 25| hyd|Ravi|   [24,banu]|
+| 26|pune|Ajay|[21,kavitha]|
+| 32|pune|John|   [27,sony]|
++---+----+----+------------+
+
+
+
+
+scala> recs.printSchema
+root
+ |-- age: long (nullable = true)
+ |-- city: string (nullable = true)
+ |-- name: string (nullable = true)
+ |-- wife: struct (nullable = true)
+ |    |-- age: long (nullable = true)
+ |    |-- name: string (nullable = true)
+
+
+
+
+scala> recs.registerTempTable("recs1")
+warning: there was one deprecation warning; re-run with -deprecation for details
+
+
+scala> val p=spark.sqlContext.sql("select * from recs1").show()
++---+----+----+------------+
+|age|city|name|        wife|
++---+----+----+------------+
+| 25| hyd|Ravi|   [24,banu]|
+| 26|pune|Ajay|[21,kavitha]|
+| 32|pune|John|   [27,sony]|
++---+----+----+------------+
+
+
+
+
+scala> val p1=spark.sqlContext.sql("select wife from recs1").show()
++------------+
+|        wife|
++------------+
+|   [24,banu]|
+|[21,kavitha]|
+|   [27,sony]|
++------------+
+
+
+p1: Unit = ()
+
+
+scala> val p2=spark.sqlContext.sql("select name as husband,wife.name as wife,age as hage,wife.age as wage,city from recs1").show()
++-------+-------+----+----+----+
+|husband|   wife|hage|wage|city|
++-------+-------+----+----+----+
+|   Ravi|   banu|  25|  24| hyd|
+|   Ajay|kavitha|  26|  21|pune|
+|   John|   sony|  32|  27|pune|
++-------+-------+----+----+----+
+
+
+--------------------------------------------------------------------------------------------------
+
+
+Ex:3
+
+
+$ cat json3
+[{
+        "Year": "2013",
+        "First Name": "DRAVID",
+        "Country": "INDIA",
+        "gen": "M",
+        "Runs": "72"
+}, {
+        "Year": "2013",
+        "First Name": "WARNER",
+        "Country": "AUS",
+        "gen": "M",
+        "Runs": "68"
+}, {
+        "Year": "2013",
+        "First Name": "AFRIDI",
+        "Country": "PAK",
+        "gen": "M",
+        "Runs": "19"
+}, {
+        "Year": "2013",
+        "First Name": "GANGULY",
+        "Country": "INDIA",
+        "gen": "M",
+        "Runs": "54"
+}, {
+        "Year": "2013",
+        "First Name": "Mithali",
+        "Country": "INDIA",
+        "gen": "F",
+        "Runs": "38"
+}]
+
+
+
+
+$ hadoop fs -put json3 /
+
+
+scala> val players=sc.wholeTextFiles("hdfs://localhost:9000/json3")
+players: org.apache.spark.rdd.RDD[(String, String)] = /json3 MapPartitionsRDD[71] at wholeTextFiles at <console>:24
+
+
+Here we get paired RDD with (k,v)
+
+
+
+
+scala> players.collect()
+res21: Array[(String, String)] =
+Array((hdfs://localhost:9000/json3,"[{
+        "Year": "2013",
+        "First Name": "DRAVID",
+        "Country": "INDIA",
+        "gen": "M",
+        "Runs": "72"
+}, {
+        "Year": "2013",
+        "First Name": "WARNER",
+        "Country": "AUS",
+        "gen": "M",
+        "Runs": "68"
+}, {
+        "Year": "2013",
+        "First Name": "AFRIDI",
+        "Country": "PAK",
+        "gen": "M",
+        "Runs": "19"
+}, {
+        "Year": "2013",
+        "First Name": "GANGULY",
+        "Country": "INDIA",
+        "gen": "M",
+        "Runs": "54"
+}, {
+        "Year": "2013",
+        "First Name": "Mithali",
+        "Country": "INDIA",
+        "gen": "F",
+        "Runs": "38"
+}]
+"))
+
+
+
+
+
+
+step 2: extract only value from the above paired RDD
+
+
+scala> val players=sc.wholeTextFiles("hdfs://localhost:9000/json3").map(x=>x._2)
+players: org.apache.spark.rdd.RDD[String] = MapPartitionsRDD[74] at map at <console>:24
+
+
+here we get RDD bcoz,loading file using sparkcontext(sc)
+
+
+scala> players.collect()
+res22: Array[String] =
+Array("[{
+        "Year": "2013",
+        "First Name": "DRAVID",
+        "Country": "INDIA",
+        "gen": "M",
+        "Runs": "72"
+}, {
+        "Year": "2013",
+        "First Name": "WARNER",
+        "Country": "AUS",
+        "gen": "M",
+        "Runs": "68"
+}, {
+        "Year": "2013",
+        "First Name": "AFRIDI",
+        "Country": "PAK",
+        "gen": "M",
+        "Runs": "19"
+}, {
+        "Year": "2013",
+        "First Name": "GANGULY",
+        "Country": "INDIA",
+        "gen": "M",
+        "Runs": "54"
+}, {
+        "Year": "2013",
+        "First Name": "Mithali",
+        "Country": "INDIA",
+        "gen": "F",
+        "Runs": "38"
+}]
+")
+
+
+
+
+scala> val players1=spark.sqlContext.read.json(players)
+players1: org.apache.spark.sql.DataFrame = [Country: string, First Name: string ... 3 more fields]
+
+
+Here we get DataFrame bcoz loading data using sqlContext
+
+
+scala> players1.show()
++-------+----------+----+---+----+
+|Country|First Name|Runs|gen|Year|
++-------+----------+----+---+----+
+|  INDIA|    DRAVID|  72|  M|2013|
+|    AUS|    WARNER|  68|  M|2013|
+|    PAK|    AFRIDI|  19|  M|2013|
+|  INDIA|   GANGULY|  54|  M|2013|
+|  INDIA|   Mithali|  38|  F|2013|
++-------+----------+----+---+----+
+
+
+scala> players1.registerTempTable("cric")
+warning: there was one deprecation warning; re-run with -deprecation for details
+
+
+scala> val p1=spark.sqlContext.sql("select * from cric").show()
++-------+----------+----+---+----+
+|Country|First Name|Runs|gen|Year|
++-------+----------+----+---+----+
+|  INDIA|    DRAVID|  72|  M|2013|
+|    AUS|    WARNER|  68|  M|2013|
+|    PAK|    AFRIDI|  19|  M|2013|
+|  INDIA|   GANGULY|  54|  M|2013|
+|  INDIA|   Mithali|  38|  F|2013|
++-------+----------+----+---+----+
+
+
+scala> val p2=spark.sqlContext.sql("select country,sum(Runs) from cric group by country").show()
++-------+-------------------------+                                             
+|country|sum(CAST(Runs AS DOUBLE))|
++-------+-------------------------+
+|    AUS|                     68.0|
+|    PAK|                     19.0|
+|  INDIA|                    164.0|
++-------+-------------------------+
+
+
+
+
+// Scala program of case class same object 
+// with changing attributes
+case class Student (name:String, age:Int)
+  
+object Main
+{
+    // Main method
+    def main(args: Array[String])
+    {
+        val s1 = Student("Nidhi", 23)
+          
+        // Display parameter
+        println("Name is " + s1.name);
+        println("Age is " + s1.age);
+        val s2 = s1.copy(age = 24)
+          
+        // Display copied and changed attributes
+        println("Copy Name is " + s2.name);
+        println("Change Age is " + s2.age);
+    }
+}

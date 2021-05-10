@@ -1,0 +1,10 @@
+mysql=albums
+mysql=edges
+postgresql=artist
+postgresql=genre
+postgresql=subgenre
+postgresql=year
+postgresql=tracks
+sqlserver=playlist
+sqlserver=playlisttrack
+

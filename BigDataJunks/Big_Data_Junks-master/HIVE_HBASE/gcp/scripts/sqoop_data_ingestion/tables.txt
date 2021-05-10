@@ -1,0 +1,9 @@
+strictly_columns=albums
+strictly_columns=edges
+postgresql=artist
+postgresql=genre
+postgresql=subgenre
+postgresql=year
+sqlserver=playlist
+sqlserver=playlisttrack
+sqlserver=tracks

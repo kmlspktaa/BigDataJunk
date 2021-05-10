@@ -1,0 +1,3628 @@
+Pyspark:
+Spark using Python
+
+Spark was developed in the year 2009
+It was open source in the year 2010
+It was donate to apache in the year 2013
+
+DEF:
+
+spark is a
+     -Distributed Execution framework 
+     -in parallelel process style
+     -with in-memmory computing feature
+     -used for large-scale data processing
+
+spark can be coded with
+  i)scala
+ ii)python
+ iii)Java
+ iv)Rlanguage
+
+Spak can run on Distributed clusters like
+  i)Yarn
+ ii)AWS
+iii)mesos
+Spark can also run on stand-alone cluster
+
+YARN------>distributed computing model/cluster
+
+Spark is an execution model
+ Here we develop applications based on bussiness logic
+ when apllication is ready , we need to deploy our application on a distributed computing cluster such as 
+ YARN ,here our application is going to run
+
+
+Hadoop----->meant for
+     i)storage------------------>HDFS
+    ii)Processing--------------->Map Reduce,here we have drawbacks, so replace with spark
+
+
+Hadoop meant for batch processing
+
+Batch processing: On huge data(static)---------->applying B.L an processing it
+
+streaming process : 2 steps
+  i)Data Ingestion(DI) : Here nothing but capturing data
+ ii)Data Processing(DP): processing the captured data
+
+here DI and DP both should happen parallelly---> that is what streaming
+
+Data Ingestion : pulling data from external sources to Target HDFS
+
+Hadoop and spark both performs Batch processing
+
+In Hadoop------->Data Ingestion----->then Data Processing--->done sequentially
+
+In streaming process------>Data Ingestion an Data Processing---->both happens parallely
+                           here processing should be very fast , we should get results in secs
+                           here expecting the results immediately
+
+But in batch process------> we cannot expect the results immediately
+ex: MR------->speed cannot reach the streaming process
+   at one side keeps on capturing very fast
+ but the other side--->processing is slow as compared with capturing
+
+so go with spark, which can reach the speed of capturing 
+Spark 100 times faster than MR in memory------->given by DataBricks ,who developed spark
+
+MR cannot produce results in secs
+Spark can produce results in secs
+
+
+data------->HDFS------->processed by MR   ------->her MR application to run------->we require a Distributed cluster
+                ------->Processed by spark
+
+
+
+for MR------>Distribute cluster such as YARN is mandatory
+
+MR can run only on YARN distributed cluster
+
+But spark can run on distributed clusters such as
+                i)YARN  (not manddatory)
+               ii)AWS
+              iii)Mesos
+               iv)Kubernotes
+  spark can also run on spark stand alone cluster
+
+so spark can run on many distributed clusters
+but MR can run only on YARN cluster
+
+----------------------------------------------------------------------------------------------------------
+              storage       processing
+
+MR----------->HDFS -------->YARN
+spark-------->HDFS--------->YARN
+              AWS(s3)------>EC2--->Elastic computing cloud
+
+
+In MR,data should be within HDFS
+but for spark it can be not only in HDFS but in other environments also
+
+spark can pull data from 
+1)HDFS /LFS /NFS (N/w file system)
+2)Database like mysql,oracle,Teradata etc
+3)AWS s3
+4)NOsql------>hbase,cassandra,mongodb
+5)flume
+6)kafka
+7)kinesis
+
+spark can be integrated with any of the above mentioned
+
+-----------------------------------------------------------------------------------------------------------
+Programming Languages supported by spark
+1)Scala API
+2)Python API
+3)Java API
+4)R  API
+
+----------------------------------------------------------------------------------------------------------
+python API
+
+Advantages of python:
+
+Python was built or derived by taking features or advantages from various other programming languages
+such as
+   i)Functional programming (or) procedural-oriented programming ex: C
+  ii)Object-Oriented Programming  ex: c++,Java
+ iii)scripting language  ex: shell scripting
+ iv)modular programming  ex: modula-3 ----------->89,300 modules 
+
+Because of these multiple features, we call python as hybrid language
+
+ex:
+
+Defining a variable
+
+   JAVA             SCALA               PYTHON
+    int x=10        val x=10            x=10
+
+89,300 modules supported by python
+Datascience--------->seperated modules
+Machine Learing------>   "
+BigData ------------->   "
+Networking------------>  "
+Graphics (GUI)-------->  "
+Operating systems------>  "
+oracle ----------------> "
+mysql------------------->  "
+xml ---------------------> "
+json --------------------> "
+csv ---------------------> "
+Testing------------------> unittest, and pytest
+math --------------------> "
+
+-------------------------------------------------------------------------------------------------------------------
+
+
+Python :
+
+Python execution modes:
+2 modes
+1)Interactiv mode
+2)Batch mode
+1)Interactive mode: writing stmts directly on python interpreter
+>>> 3+4
+7
+>>> x=10
+>>> y=20
+>>> x+y
+30
+>>> x-y
+-10
+>>> x
+10
+>>> y
+20
+>>> x*y
+200
+>>> "hello" *3
+'hellohellohello'
+
+
+Python supports dynamic datatypes
+
+c/C++/Java                Python
+int x=10                   x=10    --->based on the value assigned the variables are created dynamically
+float y=4.5                y=4.5    ---->here float variable is created
+string z="hello"           z="hello"---->here string variable is created
+---------------------------------------------------------------------------------------------------------
+ 
+2)Batch mode :writing batch of stmts and saving using .py extension
+
+$ nano sample1.py
+#Program performing Arithmetic operations
+x=10
+y=20
+print(x+y)
+print(x-y)
+print(x*y)
+print(x/y)
+
+$ python sample1.py
+30
+-10
+200
+0
+
+-------------------------------------------------------------------------------------------------------------
+Fundamental Datatypes in Python:
+1)int
+2)float
+3)string
+4)complex
+5boolean
+All these datatypes are objects represented by built-in classes
+
+1)int
+
+x=10  ------This 10 is stored in an object ,that object has address and that address is stored by x
+          print(x)---->prints the content present at that address
+          print(id(x))-->prints the address of x
+          print(type(x))-->prints the type of x
+
+>>> x=10
+>>> print(x)
+10
+>>> print(id(x))
+20684928
+>>> print(type(x))
+<type 'int'>
+
+ex:2
+>>> x=10
+>>> y=10
+>>> print(x,id(x))
+(10, 20684928)
+>>> print(y,id(y))
+(10, 20684928)
+
+here only one object created and its address is given to both the variables
+
+2)float
+>>> x=4.5
+>>> print(x,type(x))
+(4.5, <type 'float'>)
+
+3)boolean
+>>> x=True
+>>> print(x,type(x))
+(True, <type 'bool'>)
+
+4)Complex
+>>> x=3+4j
+>>> print(x,type(x))
+((3+4j), <type 'complex'>)
+
+5)String
+>>> x="hello"
+>>> print(x,type(x))
+('hello', <type 'str'>)
+>>> y="India"
+>>> x+y
+'helloIndia'
+
+string indexing and slicing
+>>> x="python program"
+>>> x[0]
+'p'
+>>> x[1]
+'y'
+>>> x[0:6]
+'python'
+>>> x[-6:-1]
+'rogra'
+>>> x[-7: ]
+'program'
+>>> x[ :6]
+'python'
+>>> x[0: ]
+'python program'
+
+-----------------------------------------------------------------------------------------------------------------
+collection Datatypes:
+1)List : List is a mutable object, means changes and modifications are allowed
+2)Tuple
+3)set
+4)Dictionary
+
+1)List : List is a mutable object, means changes and modifications are allowed
+         List represnted using [ ]
+>>> x=[10,20,30,40,50]
+>>> print(x)
+[10, 20, 30, 40, 50]
+>>> len(x)
+5
+>>> sum(x)
+150
+>>> max(x)
+50
+>>> min(x)
+10
+
+modifying list value
+>>> x[1]=25
+>>> print(x)
+[10, 25, 30, 40, 50]
+
+list methods------>append(),extend(),insert(),remove(),pop()
+>>> x=[10,20,30,40,50]
+>>> x.append(60)
+>>> print(x)
+[10, 20, 30, 40, 50, 60]
+>>> x.insert(2,35)
+>>> print(x)
+[10, 20, 35, 30, 40, 50, 60]
+
+>>> x.extend(y)
+>>> print(x)
+[10, 20, 35, 30, 40, 50, 60, 1.5, 2.5, 3.5, 4.5, 5.5]
+
+>>> x.pop(2)
+35
+>>> print(x)
+[10, 20, 30, 40, 50, 60, 1.5, 2.5, 3.5, 4.5, 5.5]
+
+>>> x.remove(40)
+>>> print(x)
+[10, 20, 30, 50, 60, 1.5, 2.5, 3.5, 4.5, 5.5]
+
+----------------------------------------------------------------------------------------------------------------
+2)Tuple: It is immutable, changes and modifications are not allowed
+         Tuple reprsented using ( )
+ex:
+
+>>> x=(10,20,30,40,50)
+>>> y=([10,20,30],[40,50,60],(70,80,90))
+>>> print(x[0],type(x[0]))
+(10, <type 'int'>)
+>>> print(y[0],type(y[0]))
+([10, 20, 30], <type 'list'>)
+>>> print(y[1],type(y[1]))
+([40, 50, 60], <type 'list'>)
+>>> print(y[2],type(y[2]))
+((70, 80, 90), <type 'tuple'>)
+>>> y[0][1]=25
+>>> print(y)
+([10, 25, 30], [40, 50, 60], (70, 80, 90))
+
+
+------------------------------------------------------------------------------------------------------------
+3)sets: It is a mutable element,changes and modifications are allowed
+        set reprsnted using curly braces( { })
+        -sets doesnt allow duplicates
+        -sets doesnt support indexing
+        -in sets insertion order is not preserved, i.e the order in which the elements are insrted and the
+         order in which they are stored are not same
+ ex:
+>>> x={10,20,30,40,50}
+>>> print(x)
+set([40, 50, 20, 10, 30])
+>>> x={10,20,30,40,50,10,20}
+>>> len(x)
+5
+>>> x
+set([40, 10, 20, 50, 30])
+>>> #adding element
+... 
+>>> x.add(60)
+>>> x
+set([40, 10, 50, 20, 60, 30])
+>>> #removing element
+... 
+>>> x.discard(40)
+>>> x
+set([10, 50, 20, 60, 30])
+-----------------------------------------------------------------------------------------------------------------
+4)dictionaries: collection of(k,v) pairs
+>>> x={"name":"James","age":25}
+>>> x
+{'age': 25, 'name': 'James'}
+>>> #adding a new (k,v)pair
+... 
+>>> x['sal']=50000
+>>> x['city']='chennai'
+>>> x
+{'city': 'chennai', 'age': 25, 'name': 'James', 'sal': 50000}
+>>> #accessing an elemnt ,if u pass the key, you get the value
+... 
+>>> x['name']
+'James'
+>>> x['sal']
+50000
+--------------------------------------------------------------------------------------------------------------------
+
+flow control stmts in python:
+These stmts are used to execute or not to execute set of stmts
+                 (or)
+These stmts are used to execute set of stmts for repeated no of times
+The available flow contol stmts are
+1)if
+2)if-else
+3)elif
+4)while
+5)for
+
+1)if-else syntax:
+if(condition):
+   stmt1
+   stmt2
+   stmt3
+   stmtn
+else:
+   stmt1
+    .
+    .
+   stmtn
+All the statements witin if-block and else block should follow the same space indentation
+
+>>> #program to check whether a no is positive no or Negative no
+... 
+>>> x=input("Enter a No:")
+Enter a No:10
+>>> type(x)
+<type 'int'>
+>>> if(x>0):
+...    print(x," is a postive no")
+... else:
+...    print(x," is a negative no")
+... 
+(10, ' is a postive no')
+---------------------------------------------------------------------------------------------------------------->>> 
+>>> #Program to check whether 2 no's are equal
+... 
+>>> x=input("Enter value of x:")
+Enter value of x:10
+>>> y=input("Enter value of y:")
+Enter value of y:20
+>>> if(x==y):
+...    print("equal")
+... else:
+...    print("not equal")
+... 
+not equal
+----------------------------------------------------------------------------------------------------------------
+elif:
+
+>>> #program illustrating change in time
+... 
+>>> time=input("Enter current time:")
+Enter current time:19.12
+>>> type(time)
+<type 'float'>
+>>> if(time<=12.00):
+...    print("Good Morning...")
+... elif(time<=16.00):
+...    print("Good Afternoon...")
+... elif(time<=20.00):
+...    print("Good Evening...")
+... else:
+...    print("Good Night...")
+... 
+Good Evening...
+
+-----------------------------------------------------------------------------------------------------------------
+while loop:
+
+syntax:
+initialization
+while(condition):
+    stmt1
+    stmt2
+    stmt3
+    stmt4
+     .
+     .
+    stmtn
+    increment/decrement
+
+stmts within while will be executed untill the condition is true
+if condition is false then control comes out of while loop
+
+>>> #program to print no's from 1 to 10 
+... 
+>>> x=1
+>>> while(x<=10):
+...    print(x)
+...    x=x+1
+... 
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+-------------------------------------------------------------------------------------------------
+>>> #program to find the sum of first 'n' numbers
+
+>>> 
+>>> n=input("Enter value of n:")
+Enter value of n:10
+>>> x=1
+>>> sum=0
+>>> while(x<=n):
+...    sum=sum+x
+...    x=x+1
+... 
+>>> print(sum)
+55
+----------------------------------------------------------------------------------------------
+
+for loop: for loop in python executes for every element of collection object
+
+>>> x=[10,20,30,40,50]
+>>> for p in x:
+...    print(p)
+... 
+10
+20
+30
+40
+50
+-----------------------------------------------------------------------------------------------
+>>> #finding the sum of list elements
+... 
+>>> sum=0
+>>> for p in x:
+...    sum=sum+p
+... 
+>>> print(sum)
+150
+
+-----------------------------------------------------------------------------------------------
+>>> x=[10,20,30,40,50]
+>>> for p in x:
+...    print("hello..")
+... 
+hello..
+hello..
+hello..
+hello..
+hello..
+
+-------------------------------------------------------------------------------------------------
+Printing each character of a string for 3 times
+>>> x="spark"
+>>> for p in x:
+...    print(p*3)
+... 
+sss
+ppp
+aaa
+rrr
+kkk
+-------------------------------------------------------------------------------------------------
+Functions in python:
+
+Functions are executed on demand by making a function call
+
+A function can be executed for multiple times
+
+we can make 'n' no of function calls
+
+function is defined by using a keyword def
+
+function also follows space indentation.
+
+syntax:
+
+def functionname(parameters):
+    stmt1
+    stmt2
+    stmt3
+    .
+    .
+    .
+    .
+    stmtn
+
+
+---------------------------------------------------------------------------------------------------------------
+>>> def display():
+...    print("Good Evening...")
+...    print("Hello...")
+...    print("Hello India...")
+... 
+>>> display()
+Good Evening...
+Hello...
+Hello India...
+>>> display()
+Good Evening...
+Hello...
+Hello India...
+
+ex:2
+>>> # Function to print a list
+... x=[10,20,30,40,50]
+>>> def display():
+...    for p in x:
+...       print(p)
+... 
+>>> display()
+10
+20
+30
+40
+50
+------------------------------------------------
+>>> #Function with parameters
+... 
+>>> def compute(x,y):
+...     z=x+y
+...     print(z)
+... 
+>>> compute(10,20)
+30
+
+---------------------------------------------------
+>>> #Function with returntype
+... 
+>>> def compute1(x,y):
+...     z=x+y
+...     return z
+... 
+>>> p=compute1(20,30)
+>>> print(p)
+50
+>>> 
+>>> print(compute1(30,40))
+70
+------------------------------------------------------
+>>> #Function can return multiple values
+... 
+>>> def marks(s1,s2,s3):
+...     tot=s1+s2+s3
+...     avg=tot/3
+...     return tot,avg
+... 
+>>> p,q=marks(90,80,70)
+>>> print(p)
+240
+>>> print(q)
+80
+--------------------------------------------------------
+Lambda function:
+A function which doesnt have any name
+
+syntax :
+lambda parameters:Expression
+
+when a function doesnt have any name ,then how to call that function
+
+assign lambda function to a variable,then the variable acts as a fnname and
+using that variablename, we can make function call
+
+
+>>> #lambda fn to square a number
+... 
+>>> f1=lambda x:x*x
+>>> p=f1(10)
+>>> print(p)
+100
+>>> 
+>>> #ex:2 lambda with 2 parameters
+... 
+>>> f1=lambda x,y:x+y
+>>> p=f1(10,20)
+>>> print(p)
+30
+------------------------------------------------------------
+
+3 ways to create a RDD:
+way-I: whenever u load a file from hdfs using sparkContext(sc) then the resultant is a RDD
+
+$ hdfs dfs -put emp7 /pysparklab
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /pysparklab/emp7
+101,miller,10000,m,11,
+102,Blake,20000,m,12,
+103,sony,30000,f,11,
+104,sita,40000,f,12,
+105,John,50000,m,13
+
+>>> r1=sc.textFile("hdfs://localhost:9000/pysparklab/emp7")
+>>> r1.collect()
+[u'101,miller,10000,m,11,', u'102,Blake,20000,m,12,', u'103,sony,30000,f,11,', u'104,sita,40000,f,12,', u'105,John,50000,m,13']
+
+-------------------------------------------------------------------------------------------------------
+way-II: whenever we parallelize any python/scala/java object----->resultant is a RDD 
+
+>>> x=[10,20,30,40,50]
+>>> r2=sc.parallelize(x)
+>>> r2.collect()
+[10, 20, 30, 40, 50]
+
+-----------------------------------------------------------------------------------------------------
+working with map() : map() cant be applied on python list , its not a member of python list
+                     map() can be applied on a RDD.
+
+ex:Incrementing each element of list by 5
+>>> l1=[10,20,30,40,50]
+>>> res=l1.map(x=>x+5)
+  File "<stdin>", line 1
+    res=l1.map(x=>x+5)
+                 ^
+SyntaxError: invalid syntax
+---------------------------------------------------
+ex:2
+>>> res=l1.map(lambda x:x+5)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'list' object has no attribute 'map'
+-----------------------------------------------------
+
+III-way: whenevever we perform transformations/Actions on a RDD------->Resultant also is a RDD
+
+>>> l1=[10,20,30,40,50]
+>>> r3=sc.parallelize(l1)
+>>> r4=r3.map(x=>x+5)
+  File "<stdin>", line 1
+    r4=r3.map(x=>x+5)
+                ^
+SyntaxError: invalid syntax
+
+so go with lambda function
+>>> r4=r3.map(lambda x:x+5)
+>>> r4.collect()
+[15, 25, 35, 45, 55]   
+
+here r4 is a RDD
+-------------------------------------------------------------------------------------------------------------
+on a RDD , we can apply 2 things
+i)Transformations
+ii)Actions
+
+
+1)Transformations: 3 types
+ i)Each element Transformation 
+   ex: map(), flatMap()
+       RDD.map(.....)
+       RDD.flatMap(....)
+ 
+ ii)Filter Transformation
+    ex:RDD.filter(...)
+
+ iii)Aggregated Transformation:
+     ex: reduceByKey(),
+         groupByKey()
+         rdd.reduceByKey(_+_)
+         rdd.groupByKey( )
+
+-------------------------------------------------------------------------------------------------------------
+
+Various Transformations:
+1.map()
+2.flatMap()
+3.filter()
+4.union()
+5.intersection()
+6.substract()
+7.cartesian()
+8.distinct()
+
+1)map():Applying operation to each element of a RDD and returns a RDD.
+>>> r1=sc.parallelize([10,20,30,40,50])
+>>> # to square each element of a RDD
+... 
+>>> r2=r1.map(lambda x:x*x)
+>>> r2.collect()
+[100, 400, 900, 1600, 2500]    
+
+--------------------------------------------------------------------------------------
+2)flatMap(): Flattens the elements
+
+>>> x=[[10,20,30],[40,50,60]]
+>>> y=sc.parallelize(x)
+>>> z=y.flatMap(lambda x:x)
+>>> z.collect()
+[10, 20, 30, 40, 50, 60]
+
+ex:2
+
+>>> x=[[10,20,30],[40,50,60],[70,80,90]
+... ]
+>>> y=sc.parallelize(x)
+>>> z=y.flatMap(lambda x:x)
+>>> z.collect()
+[10, 20, 30, 40, 50, 60, 70, 80, 90]
+
+--------------------------------------------------------------------------------------
+3)filter(): filters elements of a RDD based on condition and returns a RDD
+
+>>> a=[10,20,30,40,50]
+>>> b=sc.parallelize(a)
+>>> res=b.filter(lambda x:x>=30)
+>>> res.collect()
+[30, 40, 50]
+
+ex:2
+
+>>> a=["java","python","hadoop","spark","devops"]
+>>> b=sc.parallelize(a)
+>>> # filter those other than java
+... 
+>>> res=b.filter(lambda x:x!="java")
+>>> res.collect()
+['python', 'hadoop', 'spark', 'devops']
+
+--------------------------------------------------------------------------------------
+4)union(): Combines elements of multiple RDDs  
+           by default performs union all operation (allows duplicates)
+
+>>> r1=sc.parallelize([10,20,30,40,50])
+>>> r2=sc.parallelize([10,20,60,70,80])
+>>> res=r1.union(r2)
+>>> res.collect()
+[10, 20, 30, 40, 50, 10, 20, 60, 70, 80]         
+
+---------------------------------------------------------------------------------------
+5)intersection: returns only the common elements
+>>> res1=r1.intersection(r2)
+>>> res1.collect()
+[20, 10]     
+--------------------------------------------------------------------------------------
+6)substract() : removes common elements from a RDD
+>>> res2=r1.subtract(r2)
+>>> res2.collect()
+[40, 50, 30] 
+
+--------------------------------------------------------------------------------------
+7)cartesian() : performs cartesian product with other RDD
+                Each element of left RDD will join with each element of Right RDD
+
+>>> r1=sc.parallelize(["hadoop","spark","python"])
+>>> r2=sc.parallelize([1,2,3])
+>>> res4=r1.cartesian(r2)
+>>> res4.collect()
+[('hadoop', 1), ('hadoop', 2), ('hadoop', 3), ('spark', 1), ('python', 1), ('spark', 2), ('spark', 3), ('python', 2), ('python', 3)]
+
+----------------------------------------------------------------------------------------
+8)distinct(): Eliminates the duplicates
+
+>>> r1=sc.parallelize(["java","hadoop","python","spark","hadoop","java","python"])
+>>> res5=r1.distinct()
+>>> res5.collect()
+['python', 'spark', 'java', 'hadoop'] 
+
+----------------------------------------------------------------------------------------
+
+
+
+
+Transformations on a pair RDD(k,v) pairs:
+
+1)reduceByKey()
+2)groupByKey()
+3)sortByKey()
+4)mapValues()
+5)keys()
+6)values()
+7)join()
+8)leftOuterJoin()
+9)rightOuterJoin()
+10)fullOuterJoin()
+
+---------------------------------------------------------------------------------------
+1)reduceByKey() : sum up the values with same key
+>>> r1=sc.parallelize([(11,10000),(12,20000),(13,30000),(11,40000),(12,50000),(13,60000),(11,35000)])
+>>> res=r1.reduceByKey(lambda x,y:x+y)
+>>> res.collect()
+[(12, 70000), (11, 85000), (13, 90000)]  
+
+--------------------------------------------------------------------------------------
+2)groupByKey(): groups values with the same key
+
+>>> r1=sc.parallelize([(11,10000),(12,20000),(13,30000),(11,40000),(12,50000),(13,60000),(11,35000)])
+>>> res1=r1.groupByKey()
+>>> res1.collect()
+[(12, <pyspark.resultiterable.ResultIterable object at 0x7f14f091e490>), (11, <pyspark.resultiterable.ResultIterable object at 0x7f14f091e950>), (13, <pyspark.resultiterable.ResultIterable object at 0x7f14f08b8fd0>)]
+
+here we get iterable object(combact buffer) , convert this into list and access the list
+
+>>> res2=res1.map(lambda x:(x[0],list(x[1])))
+>>> res2.collect()
+[(12, [10000, 50000]), (11, [10000, 40000, 35000]), (13, [30000, 60000])]
+
+---------------------------------------------------------------------------------------------------
+3)sortByKey():sorting based on key
+
+>>> r1=sc.parallelize([(11,10000),(12,20000),(13,30000),(11,40000),(12,50000),(13,60000),(11,35000)])
+>>> res=r1.sortByKey()
+>>> res.collect()
+[(11, 10000), (11, 40000), (11, 35000), (12, 20000), (12, 50000), (13, 30000), (13, 60000)]
+
+------------------------------------------------------------------------------------------------------
+4)mapValues() :Applying a functionality to each value without changing the key
+
+>>> r1=sc.parallelize([(11,10000),(12,20000),(13,30000),(11,40000),(12,50000),(13,60000),(11,35000)])
+>>> res=r1.mapValues(lambda x:x+5000)
+>>> res.collect()
+[(11, 15000), (12, 25000), (13, 35000), (11, 45000), (12, 55000), (13, 65000), (11, 40000)]
+
+------------------------------------------------------------------------------------------------------
+5)keys(): Returns the keys of RDDs
+>>> r1=sc.parallelize([(11,10000),(12,20000),(13,30000),(11,40000),(12,50000),(13,60000),(11,35000)])
+>>> res=r1.keys()
+>>> res.collect()
+[11, 12, 13, 11, 12, 13, 11]
+
+-----------------------------------------------------------------------------------------------------
+6)values(): returns the values of RDD
+>>> r1=sc.parallelize([(11,10000),(12,20000),(13,30000),(11,40000),(12,50000),(13,60000),(11,35000)])
+>>> res=r1.values()
+>>> res.collect()
+[10000, 20000, 30000, 40000, 50000, 60000, 35000]
+-----------------------------------------------------------------------------------------------------
+7)joins:
+
+>>> r1=sc.parallelize([(10,20),(30,40),(50,60)])
+>>> r2=sc.parallelize([(10,20),(30,40),(70,80)])
+>>> ij=r1.join(r2)
+>>> ij.collect()
+[(10, (20, 20)), (30, (40, 40))]                                                
+>>> 
+>>> loj=r1.leftOuterJoin(r2)
+>>> loj.collect()
+[(10, (20, 20)), (50, (60, None)), (30, (40, 40))]                              
+>>> 
+>>> roj=r1.rightOuterJoin(r2)
+>>> roj.collect()
+[(10, (20, 20)), (70, (None, 80)), (30, (40, 40))]                              
+>>> 
+>>> foj=r1.fullOuterJoin(r2)
+>>> foj.collect()
+[(10, (20, 20)), (70, (None, 80)), (50, (60, None)), (30, (40, 40))]  
+
+----------------------------------------------------------------------------------------------------------
+
+
+Actions :Whenever action is performed , the flow executes from its root RDD
+
+The following are the various actions:
+
+1)collect()
+2)count()
+3)countByValue()
+4)countByKey()
+5)take(num)
+6)top(num)
+7)first()
+8)reduce()
+9)sum()
+10)max()
+11)min()
+12)count()
+13)saveAsTextFile(path)
+
+-----------------------------------------------------------------------------------------------------
+1)collect() : It will collect all partitions data of different slave machines into client
+>>> x=[10,20,30,40,50,60]
+>>> r1=sc.parallelize(x)
+>>> r1.collect()
+[10, 20, 30, 40, 50, 60]
+
+---------------------------------------------------------------------------------------------------
+2)count() : counts no of elements in a RDD
+>>> r1.count()
+6
+
+---------------------------------------------------------------------------------------------------
+3)countByValue() : counts no of times each value occurs in a RDD.
+                   we get o/p in the form of dictionary(key:value)
+                   applied on a RDD
+>>> x=["hadoop","java","spark","python","spark","java","hadoop","python","hadoop","spark"]
+>>> r1=sc.parallelize(x)
+>>> r1.countByValue()
+defaultdict(<type 'int'>, {'python': 2, 'spark': 3, 'java': 2, 'hadoop': 3})
+
+ex:2
+>>> sals=[10000,20000,30000,10000,20000,30000,40000,50000,10000]
+>>> r1=sc.parallelize(sals)
+>>> r1.countByValue()
+defaultdict(<type 'int'>, {10000: 3, 20000: 2, 40000: 1, 50000: 1, 30000: 2})
+
+----------------------------------------------------------------------------------------------------
+4)countByKey() :counts no of times each key had occured
+                we get o/p in the form of dictionary(key:value)
+                should be applied on a paired RDD
+>>> x=[("IND","sachin"),("Aus","warner"),("WI","Lara"),("IND","Dravid"),("Aus","smith"),("SA","miller"),("IND","Ganguly")]
+>>> r1=sc.parallelize(x)
+>>> r1.countByKey()
+defaultdict(<type 'int'>, {'IND': 3, 'Aus': 2, 'SA': 1, 'WI': 1})
+-----------------------------------------------------------------------------------------------------
+5)take(n) : takes first 'n' elements of a RDD.
+>>> names=["Ajay","Rohin","miller","David","smith","James"]
+>>> r1=sc.parallelize(names)
+>>> r1.take(3)
+['Ajay', 'Rohin', 'miller']
+
+ex:2
+>>> x=[10,20,30,40,50]
+>>> r1=sc.parallelize(x)
+>>> r1.take(3)
+[10, 20, 30]
+
+>>> r2=r1.take(3)
+>>> r2.take(2)
+
+AttributeError: 'list' object has no attribute 'take'
+Error bcoz r2 is not a RDD ,only on RDD, we perform Actions , but r2 is a python object(list)
+>>> r3=sc.parallelize(r2)
+>>> r3.take(2)
+[10, 20]
+
+-------------------------------------------------------------------------------------------------------
+6)top(n): takes top 'n' no of elements
+>>> x=[10,20,30,40,50]
+>>> r1=sc.parallelize(x)
+>>> r1.top(3)
+[50, 40, 30]
+
+------------------------------------------------------------------------------------------------------
+7)first() : Takes 1st element of a RDD
+>>> x=[10,20,30,40,50]
+>>> r1=sc.parallelize(x)
+>>> r1.first()
+10
+-----------------------------------------------------------------------------------------------------
+8)reduce() :combines or sums elements of a RDD
+>>> x=[10,20,30,40,50]
+>>> r1=sc.parallelize(x)
+>>> r1.reduce(lambda x,y:x+y)
+150
+
+-----------------------------------------------------------------------------------------------------
+9)sum(): finds sum of RDD elements
+>>> x=[10,20,30,40,50]
+>>> r1=sc.parallelize(x)
+>>> r1.sum()
+150     
+
+---------------------------------------------------------------------------------------------------
+10)max() : finds max element of a RDD
+>>> r1.max()
+50
+--------------------------------------------------------------------------------------------------
+11)min() :finds min element of a RDD
+>>> r1.min()
+10
+------------------------------------------------------------------------------------------------
+11)count() : finds the count i.e no of elements of a RDD.
+>>> r1.count()
+5
+-----------------------------------------------------------------------------------------------
+12)saveAsTextFile(path) : saving the output of a RDD as text file into specified path
+
+>>> x=[10,20,30,40,50]
+>>> r1=sc.parallelize(x)
+>>> r2=r1.map(lambda x:x+5)
+>>> r2.collect()
+[15, 25, 35, 45, 55]  
+
+I want to save this r2 o/p into hdfs
+>>> r2.saveAsTextFile("hdfs://localhost:9000/pysparklab/res1")
+>>>              
+
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -ls /pysparklab/res1
+Found 3 items
+-rw-r--r--   1 lenovo supergroup          0 2019-02-08 18:50 /pysparklab/res1/_SUCCESS
+-rw-r--r--   1 lenovo supergroup          6 2019-02-08 18:50 /pysparklab/res1/part-00000
+-rw-r--r--   1 lenovo supergroup          9 2019-02-08 18:50 /pysparklab/res1/part-00001
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /pysparklab/res1/part-00000
+15
+25
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /pysparklab/res1/part-00001
+35
+45
+55
+
+By default we have 2 partitions,
+but i want only one partition and only one part file--->for this use coalesce() ,which is a transformation fn
+
+coalesce() : It is a transformation to decrease or combine the partitions of a RDD
+             we cannot increase the partitions using coalesce()
+
+>>> r3=r2.coalesce(1)
+>>> r2.getNumPartitions
+<bound method PipelinedRDD.getNumPartitions of PythonRDD[10] at collect at <stdin>:1>
+>>> r2.getNumPartitions()
+2
+>>> r3.getNumPartitions()
+1
+
+>>> r3.saveAsTextFile("hdfs://localhost:9000/pysparklab/res2")
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -ls /pysparklab/res2
+Found 2 items
+-rw-r--r--   1 lenovo supergroup          0 2019-02-08 19:00 /pysparklab/res2/_SUCCESS
+-rw-r--r--   1 lenovo supergroup         15 2019-02-08 19:00 /pysparklab/res2/part-00000
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /pysparklab/res2/part-00000
+15
+25
+35
+45
+55
+
+using coalesce() , we cannot increase the no of partitions, we can only decrease
+>>> r3.getNumPartitions()
+1
+>>> r4=r3.coalesce(3)
+>>> r4.getNumPartitions()
+1
+
+------------------------------------------------------------------------------------------------------------
+storing in HDFS path:
+>>> r3.saveAsTextFile("/pysparkHDFSlab/res1")
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -ls /pysparkHDFSlab
+Found 1 items
+drwxr-xr-x   - lenovo supergroup          0 2019-02-08 19:11 /pysparkHDFSlab/res1
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -ls /pysparkHDFSlab/res1
+Found 2 items
+-rw-r--r--   1 lenovo supergroup          0 2019-02-08 19:11 /pysparkHDFSlab/res1/_SUCCESS
+-rw-r--r--   1 lenovo supergroup         15 2019-02-08 19:11 /pysparkHDFSlab/res1/part-00000
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /pysparkHDFSlab/res1/part-00000
+15
+25
+35
+45
+55
+--------------------------------------------------------------------------------------------------------------
+increasing the no of partitions:
+There are 2 ways
+1)while loading the file,we need to specify the no of partitions we want
+2)while parallelizing, we need to mention the no of partitions we want
+ex:
+
+>>> r1=sc.textFile("hdfs://localhost:9000/pysparklab/emp7")
+>>> r1.getNumPartitions()
+2
+
+Now increase the no of partitions to 3.
+>>> r2=sc.textFile("hdfs://localhost:9000/pysparklab/emp7",3)
+>>> r2.getNumPartitions()
+3
+
+>>> r2.saveAsTextFile("hdfs://localhost:9000/pysparklab/res4")
+$ hdfs dfs -ls /pysparklab/res4
+Found 4 items
+-rw-r--r--   1 lenovo supergroup          0 2019-02-08 19:23 /pysparklab/res4/_SUCCESS
+-rw-r--r--   1 lenovo supergroup         45 2019-02-08 19:23 /pysparklab/res4/part-00000
+-rw-r--r--   1 lenovo supergroup         42 2019-02-08 19:23 /pysparklab/res4/part-00001
+-rw-r--r--   1 lenovo supergroup         20 2019-02-08 19:23 /pysparklab/res4/part-00002
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /pysparklab/res4/part-00000
+101,miller,10000,m,11,
+102,Blake,20000,m,12,
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /pysparklab/res4/part-00001
+103,sony,30000,f,11,
+104,sita,40000,f,12,
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /pysparklab/res4/part-00002
+105,John,50000,m,13
+
+---------------------------------------------------------------------------
+II-way to increase the no of partitions
+>>> x=[10,20,30,40,50,60,70,80,90]
+>>> r1=sc.parallelize(x)
+>>> r1.getNumPartitions()
+2
+
+
+To increase the partitions to 3
+>>> r2=sc.parallelize(x,3)
+>>> r2.getNumPartitions()
+3
+
+To increase the partitions to 4
+>>> r3=sc.parallelize(x,4)
+>>> r3.getNumPartitions()
+4
+-----------------------------------------------------------------------------
+Local objects(python objects) are stord in client machines.
+
+Spark objects(RDDs) are loaded and computed in cluster machines
+
+RDDs are declared at client ,but during flow execution they are loaded into rams of cluster machines
+
+when action is performed,all the partitions of resultant RDD are colleected and stored in client machine.
+
+
+
+
+Applying lambda() , filter() and map() functions on python lists
+
+The following are invalid syntaxes
+ex:1
+>>> x=[10,20,30,40,50]
+>>> z=x.map(y=>y+5)
+  
+    z=x.map(y=>y+5)
+              ^
+SyntaxError: invalid syntax
+
+
+ex:2
+>>> z=x.filter(y=>y>20)
+    z=x.filter(y=>y>20)
+                 ^
+SyntaxError: invalid syntax
+
+
+ex:3
+>>> z=x.map(lambda x:x+5)
+
+AttributeError: 'list' object has no attribute 'map'
+>>> z=x.filter(lambda y=>y>20)
+    z=x.filter(lambda y=>y>20)
+                        ^
+SyntaxError: invalid syntax
+
+ex:4
+>>> z=x.filter(lambda y:y>20)
+AttributeError: 'list' object has no attribute 'filter'
+
+--------------------------------------------------------------------------------------------------------------
+1)filter() : filter function accepts 2 parameters
+             i)lambda function
+            ii)list
+
+ex:1
+>>> x=[10,20,30,40,50]
+>>> y=list(filter(lambda p:p>20,x))
+>>> print(y)
+[30, 40, 50]
+
+-----------------------------------------------------------------------------------------------------------
+Task 1: I want those employees who belongs to the city "hyd"
+>>> emps=[[101,"miller",10000,"m",11,"hyd"],
+...       [102,"Blake",20000,"m",12,"pune"],
+...       [103,"anusha",30000,"f",11,"hyd"],
+...       [104,"sony",40000,"f",12,"pune"],
+...       [105,"John",50000,"m",13,"hyd"]]
+>>> hyd_recs=list(filter(lambda x:x[5]=="hyd",emps))
+>>> print(hyd_recs)
+[[101, 'miller', 10000, 'm', 11, 'hyd'], [103, 'anusha', 30000, 'f', 11, 'hyd'], [105, 'John', 50000, 'm', 13, 'hyd']]
+-------------------------------------------------------------------------------------------------------------
+Task 2: I want those employess whose salary >20000
+>>> sal_20000=list(filter(lambda x:x[2]>20000,emps))
+>>> print(sal_20000)
+[[103, 'anusha', 30000, 'f', 11, 'hyd'], [104, 'sony', 40000, 'f', 12, 'pune'], [105, 'John', 50000, 'm', 13, 'hyd']]
+
+--------------------------------------------------------------------------------------------------------------
+Task 3: I want only male records
+
+>>> male_recs=list(filter(lambda x:x[3]=="m",emps))
+>>> print(male_recs)
+[[101, 'miller', 10000, 'm', 11, 'hyd'], [102, 'Blake', 20000, 'm', 12, 'pune'], [105, 'John', 50000, 'm', 13, 'hyd']]
+>>> 
+>>> female_recs=list(filter(lambda x:x[3]=="f",emps))
+>>> print(female_recs)
+[[103, 'anusha', 30000, 'f', 11, 'hyd'], [104, 'sony', 40000, 'f', 12, 'pune']]
+
+---------------------------------------------------------------------------------------------------------------
+Giving multiple conditions:
+
+Task 4: I want those employeees who belong to dno=11 and city="hyd"
+
+>>> dno11_hyd_recs=list(filter(lambda x:(x[4]==11 and x[5]=="hyd"),emps))
+>>> print(dno11_hyd_recs)
+[[101, 'miller', 10000, 'm', 11, 'hyd'], [103, 'anusha', 30000, 'f', 11, 'hyd']]
+
+--------------------------------------------------------------------------------------------------------------------
+
+2)map() : map() function also takes 2 parameters
+          i)lambda function
+         ii)list
+
+ex:1
+
+>>> x=[10,20,30,40,50]
+>>> y=list(map(lambda p:p+2,x))
+>>> print(y)
+[12, 22, 32, 42, 52]
+
+Task:  I want to add 5000 to each employee as hike
+
+ex:1
+
+> emps
+[[101, 'miller', 10000, 'm', 11, 'hyd'], [102, 'Blake', 20000, 'm', 12, 'pune'], [103, 'anusha', 30000, 'f', 11, 'hyd'], [104, 'sony', 40000, 'f', 12, 'pune'], [105, 'John', 50000, 'm', 13, 'hyd']]
+>>> 
+>>> recs=list(map(lambda x:x[2]+5000,emps))
+>>> print(recs)
+[15000, 25000, 35000, 45000, 55000]
+>>> recs=list(map(lambda x:(x[2]+5000),emps))
+>>> print(recs)
+[15000, 25000, 35000, 45000, 55000]
+
+
+ex:2
+
+>>> emps
+[[101, 'miller', 10000, 'm', 11, 'hyd'], [102, 'Blake', 20000, 'm', 12, 'pune'], [103, 'anusha', 30000, 'f', 11, 'hyd'], [104, 'sony', 40000, 'f', 12, 'pune'], [105, 'John', 50000, 'm', 13, 'hyd']]
+>>> 
+>>> recs=list(map(lambda x:(x[0],x[1],x[2]+5000,x[3],x[4],x[5]),emps))
+>>> print(recs)
+[(101, 'miller', 15000, 'm', 11, 'hyd'), (102, 'Blake', 25000, 'm', 12, 'pune'), (103, 'anusha', 35000, 'f', 11, 'hyd'), (104, 'sony', 45000, 'f', 12, 'pune'), (105, 'John', 55000, 'm', 13, 'hyd')]
+>>> 
+
+-------------------------------------------------------------------------------------------------------------------
+
+
+
+
+Types of RDD:
+1)Input RDD
+2)Mapped RDD
+3)flatMapped RDD
+4)Filtered RDD
+
+1)Input RDD : RDD Created by loading a file
+>>> r1=sc.textFile("hdfs://localhost:9000/sparklab1/emp7")
+>>> r1.collect()
+[u'101,miller,10000,m,11,', u'102,Blake,20000,m,12,', u'103,sony,30000,f,11,', u'104,sita,40000,f,12,', u'105,John,50000,m,13']
+
+here r1 is called input RDD
+----------------------------------------------------------------------------------------------------------
+2)Mapped RDD:
+  ex: Extracting only name and sal
+
+>>> r1=sc.textFile("hdfs://localhost:9000/sparklab1/emp7")
+>>> r1.collect()
+[u'101,miller,10000,m,11,', u'102,Blake,20000,m,12,', u'103,sony,30000,f,11,', u'104,sita,40000,f,12,', u'105,John,50000,m,13']
+>>> r2=r1.map(lambda x:x.split(","))
+>>> r2.collect()
+[[u'101', u'miller', u'10000', u'm', u'11', u''], [u'102', u'Blake', u'20000', u'm', u'12', u''], [u'103', u'sony', u'30000', u'f', u'11', u''], [u'104', u'sita', u'40000', u'f', u'12', u''], [u'105', u'John', u'50000', u'm', u'13']]
+>>> r3=r2.map(lambda x:(x[1],int(x[2])))
+>>> r3.collect()
+[(u'miller', 10000), (u'Blake', 20000), (u'sony', 30000), (u'sita', 40000), (u'John', 50000)]
+
+Here r1 is input RDD
+     r2,r3 are mapped RDD
+-------------------------------------------------------------------------------------------------------------------
+3)flatMapped RDD :
+  when splitting using map------------->we get lists within list
+  when splitting using flatMap--------->we get a single flattened list 
+
+>>> r1=sc.textFile("hdfs://localhost:9000/sparklab1/emp7")
+>>> r2=r1.flatMap(lambda x:x.split(","))
+>>> r2.collect()
+[u'101', u'miller', u'10000', u'm', u'11', u'', u'102', u'Blake', u'20000', u'm', u'12', u'', u'103', u'sony', u'30000', u'f', u'11', u'', u'104', u'sita', u'40000', u'f', u'12', u'', u'105', u'John', u'50000', u'm', u'13']
+
+here,
+r1----->input RDD
+r2----->flatmapped RDD
+
+------------------------------------------------------------------------------------------------------------------
+4) Filtered RDD
+>>> r1=sc.textFile("hdfs://localhost:9000/sparklab1/emp7")
+>>> r2=r1.map(lambda x:x.split(","))
+>>> r3=r2.filter(lambda x:int(x[2])>20000)
+>>> r3.collect()
+[[u'103', u'sony', u'30000', u'f', u'11', u''], [u'104', u'sita', u'40000', u'f', u'12', u''], [u'105', u'John', u'50000', u'm', u'13']]
+
+r1------>input RDD
+r2------>mapped RDD
+r3------>filtered RDD
+
+
+ex:2  I want only male records
+>>> r1=sc.textFile("hdfs://localhost:9000/sparklab1/emp7")
+>>> r2=r1.map(lambda x:x.split(","))
+>>> r2.collect()
+[[u'101', u'miller', u'10000', u'm', u'11', u''], [u'102', u'Blake', u'20000', u'm', u'12', u''], [u'103', u'sony', u'30000', u'f', u'11', u''], [u'104', u'sita', u'40000', u'f', u'12', u''], [u'105', u'John', u'50000', u'm', u'13']]
+>>> r3=r2.filter(lambda x:x[3]=="m")
+>>> r3.collect()
+[[u'101', u'miller', u'10000', u'm', u'11', u''], [u'102', u'Blake', u'20000', u'm', u'12', u''], [u'105', u'John', u'50000', u'm', u'13']]
+
+if i want female records
+>>> r4=r2.filter(lambda x:x[3]=="f")
+>>> r4.collect()
+[[u'103', u'sony', u'30000', u'f', u'11', u''], [u'104', u'sita', u'40000', u'f', u'12', u'']]
+
+
+ex:3 Getting records of a particular department 
+>>> r5=r2.filter(lambda x:x[4]=='11')
+>>> r5.collect()
+[[u'101', u'miller', u'10000', u'm', u'11', u''], [u'103', u'sony', u'30000', u'f', u'11', u'']]
+>>> r6=r2.filter(lambda x:x[4]=='12')
+>>> r6.collect()
+[[u'102', u'Blake', u'20000', u'm', u'12', u''], [u'104', u'sita', u'40000', u'f', u'12', u'']]
+
+-------------------------------------------------------------------------------------------------------------------
+
+>>> # Word Count example
+... 
+>>> lines=["spark is distributed","spark is a parallel process system","spark is a in-memory computing system","spark is a dataflow system"]
+>>> print(lines)
+['spark is distributed', 'spark is a parallel process system', 'spark is a in-memory computing system', 'spark is a dataflow system']
+>>> lines1=sc.parallelize(lines)
+>>> words=lines1.flatMap(lambda x:x.split(" "))
+>>> words.collect()
+['spark', 'is', 'distributed', 'spark', 'is', 'a', 'parallel', 'process', 'system', 'spark', 'is', 'a', 'in-memory', 'computing', 'system', 'spark', 'is', 'a', 'dataflow', 'system']
+>>> pairrdd=words.map(lambda word:(word,1))
+>>> pairrdd.collect()
+[('spark', 1), ('is', 1), ('distributed', 1), ('spark', 1), ('is', 1), ('a', 1), ('parallel', 1), ('process', 1), ('system', 1), ('spark', 1), ('is', 1), ('a', 1), ('in-memory', 1), ('computing', 1), ('system', 1), ('spark', 1), ('is', 1), ('a', 1), ('dataflow', 1), ('system', 1)]
+>>> res=pairrdd.reduceByKey(lambda x,y:x+y)
+>>> res.collect()
+[('a', 3), ('in-memory', 1), ('process', 1), ('is', 4), ('distributed', 1), ('dataflow', 1), ('spark', 4), ('computing', 1), ('system', 3), ('parallel', 1)]
+
+-------------------------------------------------------------------------------------------------------------------
+ex:2 
+
+>>> cust=["101,Ajay,10000,SBI,hyd",
+...       "102,Rahul,20000,HDFC,pune",
+...       "103,John,30000,SBI,pune",
+...       "104,miller,25000,HDFC,hyd",
+...       "105,Blake,35000,SBI,hyd"]
+>>> #Task : select city,sum(bal) from cust group by city
+... 
+>>> cust1=cust.map(lambda x:x.split(","))
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'list' object has no attribute 'map'
+>>> cust1=sc.parallelize(cust)
+>>> c=cust1.map(lambda x:x.split(","))
+>>> c.collect()
+[['101', 'Ajay', '10000', 'SBI', 'hyd'], ['102', 'Rahul', '20000', 'HDFC', 'pune'], ['103', 'John', '30000', 'SBI', 'pune'], ['104', 'miller', '25000', 'HDFC', 'hyd'], ['105', 'Blake', '35000', 'SBI', 'hyd']]
+>>> citybalpair=c.map(lambda x:(x[4],int(x[2])))
+>>> citybalpair.collect()
+[('hyd', 10000), ('pune', 20000), ('pune', 30000), ('hyd', 25000), ('hyd', 35000)]
+>>> res=citybalpair.reduceByKey(lambda x,y:x+y)
+>>> res.collect()
+[('pune', 50000), ('hyd', 70000)]            
+
+-----------------------------------------------------------------------------------------------------------------
+
+Filters:
+ x=[10,20,30,40,50]
+>>> y=sc.parallelize(x)
+>>> z=y.filter(lambda a:a>=30)
+>>> z.collect()
+[30, 40, 50]       
+
+whenever we apply map(),flatMap() and filter() on a RDD, the resultant is alo an RDD
+>>> gender=["m","f","m","m","f"]
+>>> gender1=sc.parallelize(gender)
+>>> males=gender1.filter(lambda x:x=="m")
+>>> males.collect()
+['m', 'm', 'm']
+>>> females=gender1.filter(lambda x:x=="f")
+>>> females.collect()
+['f', 'f']
+----------------------------------------------------------
+>>> males=gender1.filter(lambda x:x.matches("m")) ------->Invalid
+>>> males.collect()
+
+AttributeError: 'str' object has no attribute 'matches'
+------------------------------------------------------------
+>>> males=gender1.filter(lambda x:x.contains("m")) ------->Invalid
+>>> males.collect()
+
+AttributeError: 'str' object has no attribute 'contains'
+----------------------------------------------------------------
+>>> males=gender1.filter(lambda x:x.equals("m")) ------->Invalid
+>>> males.collect()
+
+AttributeError: 'str' object has no attribute 'equals'
+--------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------
+ex:
+>>> #word count(when list of strings are taken)
+... 
+>>> cities=["hyd","pune","chennai","hyd","mumbai","pune","mumbai","chennai","hyd","pune"]
+The data is not ready for grouping activity , for grouping we want paired RDD 
+>>> cities=["hyd","pune","chennai","hyd","mumbai","pune","mumbai","chennai","hyd","pune"]
+>>> pair=cities.map(lambda x:(x,1))
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'list' object has no attribute 'map'
+>>> cities1=sc.parallelize(cities)
+>>> pair=cities1.map(lambda x:(x,1))
+>>> pair.collect()
+[('hyd', 1), ('pune', 1), ('chennai', 1), ('hyd', 1), ('mumbai', 1), ('pune', 1), ('mumbai', 1), ('chennai', 1), ('hyd', 1), ('pune', 1)]
+>>> res=pair.reduceByKey(lambda x,y:x+y)
+>>> res.collect()
+[('pune', 3), ('hyd', 3), ('chennai', 2), ('mumbai', 2)]   
+
+----------------------------------------------------------------------------------------------------------------
+Filtering nulls or blank spaces:
+
+>>> line= "       spark         is     a   in-memory  computing     system             "
+>>> word=line.split(" ")
+>>> print(word)
+['', '', '', '', '', '', '', 'spark', '', '', '', '', '', '', '', '', 'is', '', '', '', '', 'a', '', '', 'in-memory', '', 'computing', '', '', '', '', 'system', '', '', '', '', '', '', '', '', '', '', '', '', '']
+>>> words1=word.filter(lambda x:x!='')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'list' object has no attribute 'filter'
+>>> words1=sc.parallelize(word)
+>>> words2=words1.filter(lambda x:x!='')
+>>> words2.collect()
+['spark', 'is', 'a', 'in-memory', 'computing', 'system']
+
+----------------------------------------------------------------------------------------------------------------
+Using Functions performing filtering:
+
+Eliminating nulls and blankspaces using functions
+
+>>> line= "       spark         is     a   in-memory  computing     system             "
+>>> def eliminate(x):
+...     words=x.split(" ")
+...     words1=words.filter(lambda x:x!='')
+...     return words1
+... 
+>>> y=eliminate(line)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 3, in eliminate
+AttributeError: 'list' object has no attribute 'filter'
+>>> def eliminate(x):
+...     words=x.split(" ")
+...     words1=sc.parallelize(words)
+...     words2=words1.filter(lambda x:x!='')
+...     return words2
+... 
+>>> y=eliminate(line)
+>>> y.collect()
+['spark', 'is', 'a', 'in-memory', 'computing', 'system'] 
+
+---------------------------------------------------------------------------------------------------------------
+Function to create (k,v) pairs
+
+>>> emps=["101,Ajay,10000,m,11",
+...       "102,John,20000,m,12",
+...       "103,sony,30000,f,11",
+...       "104,Rani,40000,f,12",
+...       "105,Blake,50000,m,13"]
+
+
+using functions extracting (gen,sal) pair and perform the following
+select gen,sum(sal) from emp group by gen;
+
+>>> def makepair(x):
+...    words=x.split(",")
+...    gen=words[3]
+...    sal=int(words[2])
+...    return(gen,sal)
+... 
+>>> pair=makepair("101,Miller,10000,m,11")
+>>> print(pair)
+('m', 10000)
+
+now applying function on a RDD and extracting (k,v) pairs
+first convert list to RDD
+>>> r1=sc.parallelize(emps)
+>>> r1.collect()
+['101,Ajay,10000,m,11', '102,John,20000,m,12', '103,sony,30000,f,11', '104,Rani,40000,f,12', '105,Blake,50000,m,13']
+>>> gensalpairs=r1.map(lambda x:makepair(x))
+>>> gensalpairs.collect()
+[('m', 10000), ('m', 20000), ('f', 30000), ('f', 40000), ('m', 50000)]
+>>> res=gensalpairs.reduceByKey(lambda x,y:x+y)
+>>> res.collect()
+[('m', 80000), ('f', 70000)]
+------------------------------------------------------------------------------------------------------------------
+using Functions extracting(dno,sal) pair and finding sum(sal)
+ex:select dno,sum(sal) from emp group by dno
+
+I-Method:
+1)Define a function which extracts (dno,sal) pair
+>>> def makepair(x):
+...    words=x.split(",")
+...    dno=int(words[4])
+...    sal=int(words[2])
+...    return(dno,sal)
+
+Now applying to a single record
+>>> dnosalpair=makepair("101,miller,10000,m,11")
+>>> print(dnosalpair)
+(11, 10000)
+
+
+Now applying on group of records
+>>> r1=sc.textFile("hdfs://localhost:9000/sparklab/emp7")
+>>> r1.collect()
+[u'101,miller,10000,m,11,', u'102,Blake,20000,m,12,', u'103,sony,30000,f,11,', u'104,sita,40000,f,12,', u'105,John,50000,m,13']
+>>> dnosalpairs=r1.map(lambda x:makepair(x))
+>>> dnosalpairs.collect()
+[(11, 10000), (12, 20000), (11, 30000), (12, 40000), (13, 50000)]               
+>>> res=dnosalpairs.reduceByKey(lambda x,y:x+y)
+>>> res.collect()
+[(12, 60000), (11, 40000), (13, 50000)] 
+
+---------------------------------------------------------------------
+II-way:
+Here passing RDD as a parameter to function
+>>> r1=sc.textFile("hdfs://localhost:9000/sparklab/emp7")
+>>> r1.collect()
+[u'101,miller,10000,m,11,', u'102,Blake,20000,m,12,', u'103,sony,30000,f,11,', u'104,sita,40000,f,12,', u'105,John,50000,m,13']
+>>> dnosalpairs=r1.map(lambda x:makepair(x))
+>>> dnosalpairs.collect()
+[(11, 10000), (12, 20000), (11, 30000), (12, 40000), (13, 50000)]               
+>>> res=dnosalpairs.reduceByKey(lambda x,y:x+y)
+>>> res.collect()
+[(12, 60000), (11, 40000), (13, 50000)] 
+
+--------------------------------------------------------------------------------------------
+
+
+Word count: No of occurences of each word in a file
+
+Reading a file from HDFS and finding wordcount
+
+$ cat comment
+java is simple
+java is secure
+java is compiled
+java is interpreted
+j
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -put comment /sparklab
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /sparklab/comment
+java is simple
+java is secure
+java is compiled
+java is interpreted
+
+
+step 1: reading  file from HDFS
+>>> input=sc.textFile("hdfs://localhost:9000/sparklab/comment")
+>>> input.collect()
+[u'java is simple', u'java is secure', u'java is compiled', u'java is interpreted', u'java is easy']
+
+step 2: splitting based on delimiter ,we get list of Lists
+>>> words=input.map(lambda x:x.split(" "))
+>>> words.collect()
+[[u'java', u'is', u'simple'], [u'java', u'is', u'secure'], [u'java', u'is', u'compiled'], [u'java', u'is', u'interpreted'], [u'java', u'is', u'easy']]
+
+step 3: flattening all the list of strings into one fist
+>>> wordsflat=words.flatMap(lambda x:x)
+>>> wordsflat.collect()
+[u'java', u'is', u'simple', u'java', u'is', u'secure', u'java', u'is', u'compiled', u'java', u'is', u'interpreted', u'java', u'is', u'easy']
+
+step 2 and step 3 in a sigle step
+>>> wordsflat1=input.flatMap(lambda x:x.split(' '))
+>>> wordsflat1.collect()
+[u'java', u'is', u'simple', u'java', u'is', u'secure', u'java', u'is', u'compiled', u'java', u'is', u'interpreted', u'java', u'is', u'easy']
+
+
+step 4: Adding 1 to each word and creating a paired RDD(k,v)pair bcoz reduceByKey() can be
+        applied only on a pairedRDD
+>>> pair=wordsflat1.map(lambda x:(x,1))
+>>> pair.collect()
+[(u'java', 1), (u'is', 1), (u'simple', 1), (u'java', 1), (u'is', 1), (u'secure', 1), (u'java', 1), (u'is', 1), (u'compiled', 1), (u'java', 1), (u'is', 1), (u'interpreted', 1), (u'java', 1), (u'is', 1), (u'easy', 1)]
+
+step 5: Applying reduceByKey() on paired RDD
+>>> res=pair.reduceByKey(lambda x,y:x+y)
+>>> res.collect()
+[(u'simple', 1), (u'is', 5), (u'java', 5), (u'easy', 1), (u'compiled', 1), (u'secure', 1), (u'interpreted', 1)]
+>>> 
+
+>>> res.count()
+7
+step 6:saving in HDFS
+
+>>> res.saveAsTextFile("hdfs://localhost:9000/sparklab/wordcountres1")
+>>> res.getNumPartitions
+<bound method PipelinedRDD.getNumPartitions of PythonRDD[31] at collect at <stdin>:1>
+>>> res.getNumPartitions()
+2
+
+by default we have 2partitions
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -ls /sparklab/wordcountres1
+Found 3 items
+-rw-r--r--   3 lenovo supergroup          0 2019-02-19 19:47 /sparklab/wordcountres1/_SUCCESS
+-rw-r--r--   3 lenovo supergroup         52 2019-02-19 19:47 /sparklab/wordcountres1/part-00000
+-rw-r--r--   3 lenovo supergroup         52 2019-02-19 19:47 /sparklab/wordcountres1/part-00001
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /sparklab/wordcountres1/part-00000
+(u'simple', 1)
+(u'is', 5)
+(u'java', 5)
+(u'easy', 1)
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /sparklab/wordcountres1/part-00001
+(u'compiled', 1)
+(u'secure', 1)
+(u'interpreted', 1)
+
+By default 2 partitions------>so 2 part files
+but i want only one part file
+
+>>> res1=res.coalesce(1)  ------->for decreasing the partitions
+>>> res1.saveAsTextFile("hdfs://localhost:9000/sparklab/wordcountres2")
+>>> res1.getNumPartitions()
+1
+>>> res.getNumPartitions()
+2
+
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -ls /sparklab/wordcountres2
+Found 2 items
+-rw-r--r--   3 lenovo supergroup          0 2019-02-19 19:52 /sparklab/wordcountres2/_SUCCESS
+-rw-r--r--   3 lenovo supergroup        104 2019-02-19 19:52 /sparklab/wordcountres2/part-00000
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /sparklab/wordcountres2/part-00000
+(u'simple', 1)
+(u'is', 5)
+(u'java', 5)
+(u'easy', 1)
+(u'compiled', 1)
+(u'secure', 1)
+(u'interpreted', 1)
+
+-------------------------------------------------------------------------------------------------
+
+ex:
+
+case 1 : Single Grouping single Aggregation
+Task: select city,sum(bal) from customer group by city
+
+hdfs dfs -put customer.txt /pysparklab
+
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /pysparklab/customer.txt
+c01,Miller,A50960,HDFC,50000,Hyd,
+c02,John,A51326,ICICI,90000,pune
+c03,Sita,A51333,SBI,75000,Hyd
+c04,Rama,A62222,SBI,95000,Hyd
+c05,Laxman,A53333,Axis,15000,pune
+c06,Blake,A409654,HDFC,85000,pune
+c07,sony,A98764,ICICI,65000,Hyd
+c08,Kumar,A876453,Axis,45000,pune
+
+step 1 :Loading data from HDFS
+
+>>> cust=sc.textFile("hdfs://localhost:9000/pysparklab/customer.txt")
+>>> cust.collect()
+[u'c01,Miller,A50960,HDFC,50000,Hyd,', u'c02,John,A51326,ICICI,90000,pune', u'c03,Sita,A51333,SBI,75000,Hyd', u'c04,Rama,A62222,SBI,95000,Hyd', u'c05,Laxman,A53333,Axis,15000,pune', u'c06,Blake,A409654,HDFC,85000,pune', u'c07,sony,A98764,ICICI,65000,Hyd', u'c08,Kumar,A876453,Axis,45000,pune']
+
+step 2: Splitting based on comma delimiter---->we get list of lists
+>>> custarr=cust.map(lambda x:x.split(","))
+>>> custarr.collect()
+[[u'c01', u'Miller', u'A50960', u'HDFC', u'50000', u'Hyd', u''], [u'c02', u'John', u'A51326', u'ICICI', u'90000', u'pune'], [u'c03', u'Sita', u'A51333', u'SBI', u'75000', u'Hyd'], [u'c04', u'Rama', u'A62222', u'SBI', u'95000', u'Hyd'], [u'c05', u'Laxman', u'A53333', u'Axis', u'15000', u'pune'], [u'c06', u'Blake', u'A409654', u'HDFC', u'85000', u'pune'], [u'c07', u'sony', u'A98764', u'ICICI', u'65000', u'Hyd'], [u'c08', u'Kumar', u'A876453', u'Axis', u'45000', u'pune']]
+
+step 3: Extracting (city,bal) and creating pair RDDS
+>>> citybalpair=custarr.map(lambda x:(x[5],int(x[4])))
+>>> citybalpair.collect()
+[(u'Hyd', 50000), (u'pune', 90000), (u'Hyd', 75000), (u'Hyd', 95000), (u'pune', 15000), (u'pune', 85000), (u'Hyd', 65000), (u'pune', 45000)]
+
+step 4: Applying reduceByKey() on a pair RDD
+>>> sumbal=citybalpair.reduceByKey(lambda x,y:x+y)
+>>> sumbal.collect()
+[(u'pune', 235000), (u'Hyd', 285000)]  
+
+step 5: saving in HDFS
+>>> sumbal.saveAsTextFile("hdfs://localhost:9000/pysparklab/sumres1")
+>>> sumbal.getNumPartitions                                                     
+<bound method PipelinedRDD.getNumPartitions of PythonRDD[8] at collect at <stdin>:1>
+>>> sumbal.getNumPartitions()
+2
+
+
+On spark object(RDD) ,if u perform transformation we get spark object only.
+On python object if u perform transformatiom, we get python object only 
+
+$ hdfs dfs -ls /pysparklab/sumres1
+Found 3 items
+-rw-r--r--   3 lenovo supergroup          0 2019-02-20 19:00 /pysparklab/sumres1/_SUCCESS
+-rw-r--r--   3 lenovo supergroup         35 2019-02-20 19:00 /pysparklab/sumres1/part-00000
+-rw-r--r--   3 lenovo supergroup          0 2019-02-20 19:00 /pysparklab/sumres1/part-00001
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -ls /pysparklab/sumres1/part-00000
+-rw-r--r--   3 lenovo supergroup         35 2019-02-20 19:00 /pysparklab/sumres1/part-00000
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /pysparklab/sumres1/part-00000
+(u'pune', 235000)
+(u'Hyd', 285000)
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /pysparklab/sumres1/part-00001
+empty
+-------------------------------------------------------------------------------------------------
+Creating RDD from Python object and computing
+
+take a list and square each element of a list 
+
+>>> l=[10,20,30,40,50]
+>>> sq=l.map(lambda x:x*x)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'list' object has no attribute 'map'
+>>> l1=sc.parallelize(l)
+>>> l1.getNumPartitioms()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'RDD' object has no attribute 'getNumPartitioms'
+>>> l1.getNumPartitions()
+2
+>>> 
+
+If I want to increase no of partitions,there are 2 ways
+ i)while reading file from HDFS,specify the no of parameters
+ ii)while parallelising ,specify the no of partitions
+
+I want 3 partitions then
+
+>>> l2=sc.parallelize(l,3)
+>>> l2.getNumPartitions()
+3
+
+After converting python object into RDD, we can perform transformations and filters
+
+>>> sq=l1.map(lambda x:x*x)
+>>> sq.collect()
+[100, 400, 900, 1600, 2500]                                                     
+>>> #now applying filters
+... 
+>>> f=l1.filter(lambda x:x>=30)
+>>> f.collect()
+[30, 40, 50]
+
+----------------------------------------------------------------------------------------
+Note:
+1.Local objects(python) are stored in client machines
+2.RDD's are loaded and computed in cluster machines 
+3.RDD's are declared at client but during flow execution they are loaded into rams of 
+  cluster machines
+4.when action is performed ,all the partitions of resultant RDD are collected and stored in
+ client machine.
+
+----------------------------------------------------------------------------------------------
+Case 2: Multi-Grouping Single Aggregation
+ex: select city,bank,sum(bal) from customer grouo by city,bank
+
+step 1: Loading file
+>>> r1=sc.textFile("hdfs://localhost:9000/pysparklab/customer.txt")
+
+step 2: Splitting based on delimiter
+>>> r2=r1.map(lambda x:x.split(","))
+>>> r2.collect()
+[[u'c01', u'Miller', u'A50960', u'HDFC', u'50000', u'Hyd', u''], [u'c02', u'John', u'A51326', u'ICICI', u'90000', u'pune'], [u'c03', u'Sita', u'A51333', u'SBI', u'75000', u'Hyd'], [u'c04', u'Rama', u'A62222', u'SBI', u'95000', u'Hyd'], [u'c05', u'Laxman', u'A53333', u'Axis', u'15000', u'pune'], [u'c06', u'Blake', u'A409654', u'HDFC', u'85000', u'pune'], [u'c07', u'sony', u'A98764', u'ICICI', u'65000', u'Hyd'], [u'c08', u'Kumar', u'A876453', u'Axis', u'45000', u'pune']]
+>>> r2.persist()
+PythonRDD[21] at collect at <stdin>:1
+
+
+step 3: Extracting req fields and creating a pair RDD
+>>> citybankbalpair=r2.map(lambda x:((x[5],x[3]),int(x[4])))
+>>> citybankbalpair.collect()
+[((u'Hyd', u'HDFC'), 50000), ((u'pune', u'ICICI'), 90000), ((u'Hyd', u'SBI'), 75000), ((u'Hyd', u'SBI'), 95000), ((u'pune', u'Axis'), 15000), ((u'pune', u'HDFC'), 85000), ((u'Hyd', u'ICICI'), 65000), ((u'pune', u'Axis'), 45000)]
+
+Generating pair RDD using Function
+>>> def citybankbal(x):
+...    city=x[5]
+...    bank=x[3]
+...    bal=int(x[4])
+...    pair=((city,bank),bal)
+...    return pair
+... 
+>>> citybankbalpair1=r2.map(lambda x:citybankbal(x))
+>>> citybankbalpair1.collect()
+[((u'Hyd', u'HDFC'), 50000), ((u'pune', u'ICICI'), 90000), ((u'Hyd', u'SBI'), 75000), ((u'Hyd', u'SBI'), 95000), ((u'pune', u'Axis'), 15000), ((u'pune', u'HDFC'), 85000), ((u'Hyd', u'ICICI'), 65000), ((u'pune', u'Axis'), 45000)]
+
+step 4: performing sum aggregation using reduceByKey()
+>>> sum=citybankbalpair.reduceByKey(lambda x,y:x+y)
+>>> sum.collect()
+[((u'Hyd', u'ICICI'), 65000), ((u'pune', u'ICICI'), 90000), ((u'pune', u'Axis'), 60000), ((u'Hyd', u'HDFC'), 50000), ((u'pune', u'HDFC'), 85000), ((u'Hyd', u'SBI'), 170000)]
+
+now eliminate the inner tuple
+I want result as [('Hyd',ICICI,65000)..........
+
+>>> sum1=sum.map(lambda x:(x[0][0],x[0][1],int(x[1])))
+>>> sum1.collect()
+[(u'Hyd', u'ICICI', 65000), (u'pune', u'ICICI', 90000), (u'pune', u'Axis', 60000), (u'Hyd', u'HDFC', 50000), (u'pune', u'HDFC', 85000), (u'Hyd', u'SBI', 170000)]
+
+-------------------------------------------------------------------------------------------------
+Case 3:Single Grouping and Multiple Aggregations
+
+Query: select dno,sum(sal),max(sal),min(sal),avg(sal),count(*) from emp group by dno
+
+Step 1: Loading a file
+>>> r1=sc.textFile("hdfs://localhost:9000/pysparklab/emp7")
+
+Step 2: Splitting based on delimiter
+>>> r2=r1.map(lambda x:x.split(","))
+>>> r2.collect()
+[[u'101', u'miller', u'10000', u'm', u'11', u''], [u'102', u'Blake', u'20000', u'm', u'12', u''], [u'103', u'sony', u'30000', u'f', u'11', u''], [u'104', u'sita', u'40000', u'f', u'12', u''], [u'105', u'John', u'50000', u'm', u'13']]
+
+Step 3: Extracting the required fields (dno,sal) pair
+>>> dnosalpair=r2.map(lambda x:(int(x[4]),int(x[2])))
+>>> dnosalpair.collect()
+[(11, 10000), (12, 20000), (11, 30000), (12, 40000), (13, 50000)]
+
+Step 4: For multiple Aggregations we go with groupByKey() and we get CompactBuffer in the case of Scala,
+        but here we get iterable object ,convert that iterable object into list and access and perform the
+        aggregations
+
+>>> grp=dnosalpair.groupByKey()
+>>> grp.collect()
+[(12, <pyspark.resultiterable.ResultIterable object at 0x7f7d56d0e2d0>), (11, <pyspark.resultiterable.ResultIterable object at 0x7f7d56d0e090>), (13, <pyspark.resultiterable.ResultIterable object at 0x7f7d562c3690>)]
+>>> res=grp.collect()
+>>> print(res)
+[(12, <pyspark.resultiterable.ResultIterable object at 0x7f7d562c3710>), (11, <pyspark.resultiterable.ResultIterable object at 0x7f7d562c3790>), (13, <pyspark.resultiterable.ResultIterable object at 0x7f7d562c37d0>)]
+
+when action performd on RDD, it returns python object i.e Iterable object
+Here 1st element is dno and 2nd element is Iterable object, convert this Iterable object into list
+>>> grp1=grp.map(lambda x:(x[0],list(x[1])))
+>>> grp1.collect()
+[(12, [20000, 40000]), (11, [10000, 30000]), (13, [50000])]          
+(or) I want within a line----combining the above 2 stmts
+>> grp1=dnosalpair.groupByKey().map(lambda x:(x[0],list(x[1])))
+>>> grp1.collect()
+[(12, [20000, 40000]), (11, [10000, 30000]), (13, [50000])]  
+
+step 5: Now Performing Multiple Aggregation
+        I reduceByKey() is applied than we cannot perform multiple Aggregations only single aggregation is performed
+        performing Multiple Aggregations using functions
+>>> grp1.collect()
+[(12, [20000, 40000]), (11, [10000, 30000]), (13, [50000])]                     
+>>> def extract(x):
+...    dno=x[0]
+...    y=[]
+...    y=x[1]
+...    sum1=sum(y)
+...    max1=max(y)
+...    min1=min(y)
+...    cnt=len(y)
+...    avg=sum1/cnt
+...    res=(dno,sum1,max1,min1,cnt,avg)
+...    return res
+... 
+>>> aggr=grp1.map(lambda x:extract(x))
+>>> aggr.collect()
+[(12, 60000, 40000, 20000, 2, 30000), (11, 40000, 30000, 10000, 2, 20000), (13, 50000, 50000, 50000, 1, 50000)]
+
+--------------------------------------------------------------------------------------------------------------------
+case 4: Multi Grouping and Multiple Aggregations:
+ 
+Query: select dno,gen,sum(sal),max(sal),min(sal),avg(sal),count(*) from emp group by dno,gen
+
+Step 1: Loading a File
+>>> r1=sc.textFile("hdfs://localhost:9000/pysparklab/emp7")
+
+Step 2:Splitting based on delimiter
+>>> r2=r1.map(lambda x:x.split(","))
+>>> r2.collect()
+[[u'101', u'miller', u'10000', u'm', u'11', u''], [u'102', u'Blake', u'20000', u'm', u'12', u''], [u'103', u'sony', u'30000', u'f', u'11', u''], [u'104', u'sita', u'40000', u'f', u'12', u''], [u'105', u'John', u'50000', u'm', u'13']]
+
+Step 3: Extracting the required Fields
+>>> dnogensalpair=r2.map(lambda x:((int(x[4]),x[3]),int(x[2])))
+>>> dnogensalpair.collect()
+[((11, u'm'), 10000), ((12, u'm'), 20000), ((11, u'f'), 30000), ((12, u'f'), 40000), ((13, u'm'), 50000)]
+
+Step 4: applying groupByKey() and converting iterable object to list
+>>> grp=dnogensalpair.groupByKey().map(lambda x:(x[0],list(x[1])))
+>>> grp.collect()
+[((11, u'f'), [30000]), ((12, u'm'), [20000]), ((12, u'f'), [40000]), ((11, u'm'), [10000]), ((13, u'm'), [50000])]
+
+Step 5: 
+>>> #Performing multiple aggregations
+... 
+>>> def extract(x):
+...    dno=x[0][0]
+...    gen=x[0][1]
+...    y=[]
+...    y=x[1]
+...    sum1=sum(y)
+...    max1=max(y)
+...    min1=min(y)
+...    cnt=len(y)
+...    avg=sum1/cnt
+...    res=(dno,gen,sum1,max1,min1,cnt,avg)
+...    return res
+... 
+>>> aggr=grp.map(lambda x:extract(x))
+>>> aggr.collect()
+[(11, u'f', 30000, 30000, 30000, 1, 30000), (12, u'm', 20000, 20000, 20000, 1, 20000), (12, u'f', 40000, 40000, 40000, 1, 40000), (11, u'm', 10000, 10000, 10000, 1, 10000), (13, u'm', 50000, 50000, 50000, 1, 50000)]
+
+------------------------------------------------------------------------------------------------------------------
+
+Cross joins:
+
+Cartesian Product:means each element of leftside RDD will join with each element of rightside RDD
+>>> dno=sc.parallelize([11,12,13])
+>>> sal=sc.parallelize([10000,20000,30000])
+>>> cp=dno.cartesian(sal)
+>>> cp.collect()
+[(11, 10000), (11, 20000), (11, 30000), (12, 10000), (13, 10000), (12, 20000), (12, 30000), (13, 20000), (13, 30000)]
+
+--------------------------------------------------------------------------------------------------------------------
+Joins:
+
+Task: select city,sum(sal) from emp e join dept d on (e.dno=d.dno) group by city
+
+sal------>present in emp file
+city------>present in dept 
+
+>>> emp=sc.textFile("hdfs://localhost:9000/sparklab1/emps1")
+>>> dept=sc.textFile("hdfs://localhost:9000/sparklab1/dept1")
+>>> emparr=emp.map(lambda x:x.split(","))
+>>> deptarr=dept.map(lambda x:x.split(","))
+>>> emparr.collect()
+[[u'101', u'aaa', u'1000', u'm', u'11'], [u'102', u'bbb', u'2000', u'f', u'12'], [u'103', u'ccc', u'3000', u'm', u'12'], [u'104', u'ddd', u'4000', u'f', u'13'], [u'105', u'eee', u'5000', u'm', u'11'], [u'106', u'fff', u'6000', u'f', u'14'], [u'107', u'ggg', u'7000', u'm', u'15'], [u'108', u'hhh', u'8000', u'f', u'16']]
+>>> deptarr.collect()
+[[u'11', u'mrkt', u'hyd'], [u'12', u'HR', u'delhi'], [u'13', u'fin', u'pune'], [u'17', u'HR', u'hyd'], [u'18', u'fin', u'pune'], [u'19', u'mrkt', u'delhi']]
+>>> dnosalpair=emparr.map(lambda x:(int(x[4]),int(x[2])))
+>>> dnosalpair.collect()
+[(11, 1000), (12, 2000), (12, 3000), (13, 4000), (11, 5000), (14, 6000), (15, 7000), (16, 8000)]
+>>> dnocitypair=deptarr.map(lambda x:(int(x[0]),x[2]))
+>>> dnocitypair.collect()
+[(11, u'hyd'), (12, u'delhi'), (13, u'pune'), (17, u'hyd'), (18, u'pune'), (19, u'delhi')]
+
+we got pair RDDs, now data is ready to perform join
+>>> emp=sc.textFile("hdfs://localhost:9000/sparklab1/emps1")
+>>> dept=sc.textFile("hdfs://localhost:9000/sparklab1/dept1")
+>>> emparr=emp.map(lambda x:x.split(","))
+>>> deptarr=dept.map(lambda x:x.split(","))
+>>> emparr.collect()
+[[u'101', u'aaa', u'1000', u'm', u'11'], [u'102', u'bbb', u'2000', u'f', u'12'], [u'103', u'ccc', u'3000', u'm', u'12'], [u'104', u'ddd', u'4000', u'f', u'13'], [u'105', u'eee', u'5000', u'm', u'11'], [u'106', u'fff', u'6000', u'f', u'14'], [u'107', u'ggg', u'7000', u'm', u'15'], [u'108', u'hhh', u'8000', u'f', u'16']]
+>>> deptarr.collect()
+[[u'11', u'mrkt', u'hyd'], [u'12', u'HR', u'delhi'], [u'13', u'fin', u'pune'], [u'17', u'HR', u'hyd'], [u'18', u'fin', u'pune'], [u'19', u'mrkt', u'delhi']]
+>>> dnosalpair=emparr.map(lambda x:(int(x[4]),int(x[2])))
+>>> dnosalpair.collect()
+[(11, 1000), (12, 2000), (12, 3000), (13, 4000), (11, 5000), (14, 6000), (15, 7000), (16, 8000)]
+>>> dnocitypair=deptarr.map(lambda x:(int(x[0]),x[2]))
+>>> dnocitypair.collect()
+[(11, u'hyd'), (12, u'delhi'), (13, u'pune'), (17, u'hyd'), (18, u'pune'), (19, u'delhi')]
+>>> ij=dnosalpair.join(dnocitypair)
+>>> ij.collect()
+[(12, (2000, u'delhi')), (12, (3000, u'delhi')), (13, (4000, u'pune')), (11, (1000, u'hyd')), (11, (5000, u'hyd'))]
+>>> #I want city,sal pair
+... 
+>>> citysalpair=ij.map(lambda x:(x[1][1],x[1][0]))
+>>> citysalpair.collect()
+[(u'delhi', 2000), (u'delhi', 3000), (u'pune', 4000), (u'hyd', 1000), (u'hyd', 5000)]
+>>> #now data is ready for reduceByKey()
+... 
+>>> citysumsal=citysalpair.reduceByKey(lambda x,y:x+y)
+>>> citysumsal.collect()
+[(u'hyd', 6000), (u'pune', 4000), (u'delhi', 5000)]
+-------------------------------------------------------------------------------------------------------------------
+
+ex:1 Creating DataFrames from lists using sparksession(spark)
+
+>>> x=[('miller',25,'hyd'),('Blake',30,'pune')]
+>>> df=spark.createDataFrame(x)
+>>> df.show()
++------+---+----+
+|    _1| _2|  _3|
++------+---+----+
+|miller| 25| hyd|
+| Blake| 30|pune|
++------+---+----+
+--------------------------------------------------------------------------------------------------------------   
+ex:2      creating DataFrames with schema
+
+>>> x=[('miller',25,'hyd'),('Blake',30,'pune')]
+>>> df=spark.createDataFrame(x,['name','age','city'])
+>>> df.show()
++------+---+----+
+|  name|age|city|
++------+---+----+
+|miller| 25| hyd|
+| Blake| 30|pune|
++------+---+----+
+-------------------------------------------------------------------------------------------------------------------
+ex 3:  To count no of rows in a Dataframe
+
+>>> df.count()
+2 
+
+
+>>> df.printSchema()
+root
+ |-- name: string (nullable = true)
+ |-- age: long (nullable = true)
+ |-- city: string (nullable = true)
+
+-----------------------------------------------------------------------------------------------------------------
+ex:4  Using Dictionary Creating a DataFrame and providing schema
+>>> d=[{'name':'miller','age':24,'city':'hyd'}]
+>>> df=spark.createDataFrame(d)
+
+>>> df.show()
++---+----+------+
+|age|city|  name|
++---+----+------+
+| 24| hyd|miller|
++---+----+------+
+-----------------------------------------------------------------------------------------------------------------
+ex:5 Creating DF from RDD
+
+>>> x=[('miller',25,'hyd'),('Blake',30,'pune')]
+>>> rdd1=sc.parallelize(x)
+>>> df1=spark.createDataFrame(rdd1)
+>>> #adding schema to the RDD
+... 
+>>> df2=spark.createDataFrame(rdd1,['Name','Age','City'])
+>>> df2.show()
++------+---+----+
+|  Name|Age|City|
++------+---+----+
+|miller| 25| hyd|
+| Blake| 30|pune|
++------+---+----+
+
+>>> df2.collect()
+[Row(Name=u'miller', Age=25, City=u'hyd'), Row(Name=u'Blake', Age=30, City=u'pune')]
+-------------------------------------------------------------------------------------------------------------------
+Ex:6  creating DataFrame using Row Object
+>>> from pyspark.sql import Row
+>>> #First create schema RDD using Row object and convert it into DF.
+... 
+>>> x=[('miller',25,'hyd'),('Blake',30,'pune')]
+>>> rdd1=sc.parallelize(x)
+>>> student=Row('name','age','city')
+>>> student1 = rdd1.map(lambda r:student(*r))
+>>> df=spark.createDataFrame(student1)
+>>> df.collect()
+[Row(name=u'miller', age=25, city=u'hyd'), Row(name=u'Blake', age=30, city=u'pune')]
+>>> df.show()
++------+---+----+
+|  name|age|city|
++------+---+----+
+|miller| 25| hyd|
+| Blake| 30|pune|
++------+---+----+
+
+-------------------------------------------------------------------------------------------------------------------
+ex:7 Providing Schema using StructType
+>>> from pyspark.sql.types import *
+>>> schema=StructType([StructField("name",StringType(),True),
+...                    StructField("age",IntegerType(),True),
+...                    StructField("city",StringType(),True)])
+>>> x=[('miller',25,'hyd'),('Blake',30,'pune')]
+>>> rdd1=sc.parallelize(x)
+>>> df1=spark.createDataFrame(rdd1,schema)
+>>> df1.show()
++------+---+----+
+|  name|age|city|
++------+---+----+
+|miller| 25| hyd|
+| Blake| 30|pune|
++------+---+----+
+
+--------------------------------------------------------------------------------------------------------------------
+ex:8 changing schema or column names
+
+>>> rdd1=sc.parallelize([('miller',25,'hyd'),('Blake',30,'Pune')])
+>>> df2=spark.createDataFrame(rdd1,"stdname:string,stdage:int,city:string")
+>>> df2.show()
++-------+------+----+
+|stdname|stdage|city|
++-------+------+----+
+| miller|    25| hyd|
+|  Blake|    30|Pune|
++-------+------+----+
+
+---------------------------------------------------------------------------------------------------------------------
+ex:9 creating emp data
+>>> from pyspark.sql import Row
+>>> emp=[(101,'Miller',10000,'m',11),
+...      (102,'Blake',20000,'m',12),
+...      (103,'Latha',30000,'f',11),
+...      (104,'sony',40000,'f',12)]
+>>> rdd1=sc.parallelize(emp)
+>>> df=spark.createDataFrame(rdd1,['eid','ename','sal','gen','dno'])
+>>> df.collect()
+[Row(eid=101, ename=u'Miller', sal=10000, gen=u'm', dno=11), Row(eid=102, ename=u'Blake', sal=20000, gen=u'm', dno=12), Row(eid=103, ename=u'Latha', sal=30000, gen=u'f', dno=11), Row(eid=104, ename=u'sony', sal=40000, gen=u'f', dno=12)]
+>>> df.show()
++---+------+-----+---+---+
+|eid| ename|  sal|gen|dno|
++---+------+-----+---+---+
+|101|Miller|10000|  m| 11|
+|102| Blake|20000|  m| 12|
+|103| Latha|30000|  f| 11|
+|104|  sony|40000|  f| 12|
++---+------+-----+---+---+
+------------------------------------------------------------------------------------------------------------------
+ex: 10  Loading data from HDFS and creating RDD and converting that into DF.
+
+>>> r1=sc.textFile("hdfs://localhost:9000/pysparklab/emp7")
+>>> r1.collect()
+[u'101,miller,10000,m,11,', u'102,Blake,20000,m,12,', u'103,sony,30000,f,11,', u'104,sita,40000,f,12,', u'105,John,50000,m,13']
+>>> r2=r1.map(lambda x:x.split(','))
+>>> r2.collect()
+[[u'101', u'miller', u'10000', u'm', u'11', u''], [u'102', u'Blake', u'20000', u'm', u'12', u''], [u'103', u'sony', u'30000', u'f', u'11', u''], [u'104', u'sita', u'40000', u'f', u'12', u''], [u'105', u'John', u'50000', u'm', u'13']]
+>>> r3=r2.map(lambda x:Row(eid=int(x[0]),ename=x[1],sal=int(x[2]),gen=x[3],dno=int(x[4])))
+>>> df=spark.createDataFrame(r3)
+>>> df.show()
++---+---+------+-----+---+
+|dno|eid| ename|  sal|gen|
++---+---+------+-----+---+
+| 11|101|miller|10000|  m|
+| 12|102| Blake|20000|  m|
+| 11|103|  sony|30000|  f|
+| 12|104|  sita|40000|  f|
+| 13|105|  John|50000|  m|
++---+---+------+-----+---+
+
+--------------------------------------------------------------------------------------------------------------------
+working with different DataFrame API's
+
+1)df.printSchema()
+
+>>> df.printSchema()
+root
+ |-- dno: long (nullable = true)
+ |-- eid: long (nullable = true)
+ |-- ename: string (nullable = true)
+ |-- sal: long (nullable = true)
+ |-- gen: string (nullable = true)
+
+>>> emps=spark.createDataFrame(r3)
+>>> emps.show()
++---+---+------+-----+---+
+|dno|eid| ename|  sal|gen|
++---+---+------+-----+---+
+| 11|101|miller|10000|  m|
+| 12|102| Blake|20000|  m|
+| 11|103|  sony|30000|  f|
+| 12|104|  sita|40000|  f|
+| 13|105|  John|50000|  m|
++---+---+------+-----+---+
+
+-------------------------------------------------------------------------------------------------------------------
+2)select() : to select or extract a particular column
+
+>>> emps.select("ename").show()
++------+
+| ename|
++------+
+|miller|
+| Blake|
+|  sony|
+|  sita|
+|  John|
++------+
+-------------------------------------------------------------------------------------------------------------------
+3) To Extract multiple columns
+
+>> emps.select("ename","sal").show()
++------+-----+
+| ename|  sal|
++------+-----+
+|miller|10000|
+| Blake|20000|
+|  sony|30000|
+|  sita|40000|
+|  John|50000|
++------+-----+
+
+--------------------------------------------------------------------------------------------------------------
+4)Transformations or Modifications
+  ex: adding 3000 hike to each employee
+
+applying df to each column independently
+>>> res=emps.select(emps.ename,emps.sal+3000)
+>>> res.show()
++------+------------+
+| ename|(sal + 3000)|
++------+------------+
+|miller|       13000|
+| Blake|       23000|
+|  sony|       33000|
+|  sita|       43000|
+|  John|       53000|
++------+------------+
+
+
+
+ ii)selectExpr()
+>>> emps.selectExpr("ename","sal+3000").show()
++------+------------+
+| ename|(sal + 3000)|
++------+------------+
+|miller|       13000|
+| Blake|       23000|
+|  sony|       33000|
+|  sita|       43000|
+|  John|       53000|
++------+------------+
+
+------------------------------------------------------------------------------------------------------------------
+5)filter():
+
+>>> e1=emps.filter(emps.sal>20000)
+>>> e1.show()
++---+---+-----+-----+---+
+|dno|eid|ename|  sal|gen|
++---+---+-----+-----+---+
+| 11|103| sony|30000|  f|
+| 12|104| sita|40000|  f|
+| 13|105| John|50000|  m|
++---+---+-----+-----+---+
+
+Note: when Transformations or Filter is applied on a DF ,then the resulant is also a DF
+-----------------------------------------------------------------------------------------------------------------
+6)collect() : returns all records as list of rows
+>>> emps.collect()
+[Row(dno=11, eid=101, ename=u'miller', sal=10000, gen=u'm'), Row(dno=12, eid=102, ename=u'Blake', sal=20000, gen=u'm'), Row(dno=11, eid=103, ename=u'sony', sal=30000, gen=u'f'), Row(dno=12, eid=104, ename=u'sita', sal=40000, gen=u'f'), Row(dno=13, eid=105, ename=u'John', sal=50000, gen=u'm')]
+
+-----------------------------------------------------------------------------------------------------------------
+7)count() : Returns no of rows in a DataFrame
+>>> emps.count()
+5               
+----------------------------------------------------------------------------------------------------------------
+8)columns:Returns column names as list
+>>> emps.columns
+['dno', 'eid', 'ename', 'sal', 'gen']
+
+---------------------------------------------------------------------------------------------------------------
+9)printSchema():
+>>> emps.printSchema()
+root
+ |-- dno: long (nullable = true)
+ |-- eid: long (nullable = true)
+ |-- ename: string (nullable = true)
+ |-- sal: long (nullable = true)
+ |-- gen: string (nullable = true)
+
+----------------------------------------------------------------------------------------------------------------
+10)describe()
+>>> emps.describe()
+19/03/28 17:00:32 WARN Utils: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.debug.maxToStringFields' in SparkEnv.conf.
+DataFrame[summary: string, dno: string, eid: string, ename: string, sal: string, gen: string]
+
+---------------------------------------------------------------------------------------------------------------
+11)
+>>> emps.describe(['sal']).show()
++-------+------------------+
+|summary|               sal|
++-------+------------------+
+|  count|                 5|
+|   mean|           30000.0|
+| stddev|15811.388300841896|
+|    min|             10000|
+|    max|             50000|
++-------+------------------+
+
+>>> emps.describe().show()
++-------+------------------+------------------+-----+------------------+----+   
+|summary|               dno|               eid|ename|               sal| gen|
++-------+------------------+------------------+-----+------------------+----+
+|  count|                 5|                 5|    5|                 5|   5|
+|   mean|              11.8|             103.0| null|           30000.0|null|
+| stddev|0.8366600265340753|1.5811388300841898| null|15811.388300841896|null|
+|    min|                11|               101|Blake|             10000|   f|
+|    max|                13|               105| sony|             50000|   m|
++-------+------------------+------------------+-----+------------------+----+
+
+-------------------------------------------------------------------------------------------------------------------
+12)distinct() : returns a new DF containing distinct rows
+>>> d1=emps.select("dno")
+>>> d1.show()
++---+
+|dno|
++---+
+| 11|
+| 12|
+| 11|
+| 12|
+| 13|
++---+
+
+>>> d1.distinct().show()
++---+                                                                           
+|dno|
++---+
+| 12|
+| 11|
+| 13|
++---+
+
+-------------------------------------------------------------------------------------------------------------------
+13)drop() : drops a particular column and returns a new DF
+
+>>> e1=emps.drop("dno")
+>>> e1.show()
++---+------+-----+---+
+|eid| ename|  sal|gen|
++---+------+-----+---+
+|101|miller|10000|  m|
+|102| Blake|20000|  m|
+|103|  sony|30000|  f|
+|104|  sita|40000|  f|
+|105|  John|50000|  m|
++---+------+-----+---+
+
+-------------------------------------------------------------------------------------------------------------------
+14)dropDuplicates(): drops duplicates based on single/multiple columns
+>>> e2=emps.dropDuplicates(['dno'])
+>>> e2.show()
++---+---+------+-----+---+                                                      
+|dno|eid| ename|  sal|gen|
++---+---+------+-----+---+
+| 12|102| Blake|20000|  m|
+| 11|101|miller|10000|  m|
+| 13|105|  John|50000|  m|
++---+---+------+-----+---+
+
+ex:2
+>>> e3=emps.dropDuplicates(['dno','gen'])
+>>> e3.show()
++---+---+------+-----+---+                                                      
+|dno|eid| ename|  sal|gen|
++---+---+------+-----+---+
+| 12|104|  sita|40000|  f|
+| 12|102| Blake|20000|  m|
+| 11|103|  sony|30000|  f|
+| 13|105|  John|50000|  m|
+| 11|101|miller|10000|  m|
++---+---+------+-----+---+
+
+------------------------------------------------------------------------------------------------------------------
+15)first():
+
+>>> emps.first()
+Row(dno=11, eid=101, ename=u'miller', sal=10000, gen=u'm')
+
+-----------------------------------------------------------------------------------------------------------------
+16)foreach():
+   Applies function foreach row of DF.
+>>> def display(emps):
+...   print(emps.ename)
+... 
+>>> emps.foreach(display)
+sita
+John
+miller
+Blake
+sony
+
+------------------------------------------------------------------------------------------------------------------
+17)sort():
+
+>>> emps.sort(emps.sal.desc()).show()
++---+---+------+-----+---+                                                      
+|dno|eid| ename|  sal|gen|
++---+---+------+-----+---+
+| 13|105|  John|50000|  m|
+| 12|104|  sita|40000|  f|
+| 11|103|  sony|30000|  f|
+| 12|102| Blake|20000|  m|
+| 11|101|miller|10000|  m|
++---+---+------+-----+---+
+
+ii)>>> from pyspark.sql.functions import *
+>>> emps.sort(asc("ename")).show()
++---+---+------+-----+---+
+|dno|eid| ename|  sal|gen|
++---+---+------+-----+---+
+| 12|102| Blake|20000|  m|
+| 13|105|  John|50000|  m|
+| 11|101|miller|10000|  m|
+| 12|104|  sita|40000|  f|
+| 11|103|  sony|30000|  f|
++---+---+------+-----+---+
+
+iii)>>> emps.sort(desc("ename")).show()
++---+---+------+-----+---+
+|dno|eid| ename|  sal|gen|
++---+---+------+-----+---+
+| 11|103|  sony|30000|  f|
+| 12|104|  sita|40000|  f|
+| 11|101|miller|10000|  m|
+| 13|105|  John|50000|  m|
+| 12|102| Blake|20000|  m|
++---+---+------+-----+---+
+
+---------------------------------------------------------------------------------------------------------------
+18)orderBy():
+>>> emps.orderBy("ename").show()
++---+---+------+-----+---+
+|dno|eid| ename|  sal|gen|
++---+---+------+-----+---+
+| 12|102| Blake|20000|  m|
+| 13|105|  John|50000|  m|
+| 11|101|miller|10000|  m|
+| 12|104|  sita|40000|  f|
+| 11|103|  sony|30000|  f|
++---+---+------+-----+---+
+
+-----------------------------------------------------------------------------------------------------------------
+19)getNumPartitions():
+>>> emps.rdd.getNumPartitions()
+2
+
+----------------------------------------------------------------------------------------------------------------
+20)repartition():
+>>> emps.repartition(5).rdd.getNumPartitions()
+5
+
+ii)repartition on specified column : It shuffles the data
+>>> e1=emps.repartition("dno")
+>>> e1.show()
++---+---+------+-----+---+                                                      
+|dno|eid| ename|  sal|gen|
++---+---+------+-----+---+
+| 12|102| Blake|20000|  m|
+| 12|104|  sita|40000|  f|
+| 11|101|miller|10000|  m|
+| 11|103|  sony|30000|  f|
+| 13|105|  John|50000|  m|
++---+---+------+-----+---+
+
+iii)
+>>> e2=emps.repartition(7,"dno")
+>>> e2.show()
++---+---+------+-----+---+
+|dno|eid| ename|  sal|gen|
++---+---+------+-----+---+
+| 13|105|  John|50000|  m|
+| 12|102| Blake|20000|  m|
+| 12|104|  sita|40000|  f|
+| 11|101|miller|10000|  m|
+| 11|103|  sony|30000|  f|
++---+---+------+-----+---+
+
+>>> e2.rdd.getNumPartitions()
+7
+
+iv)
+>>> e3=emps.repartition("dno","gen")
+>>> e3.show()
++---+---+------+-----+---+                                                      
+|dno|eid| ename|  sal|gen|
++---+---+------+-----+---+
+| 12|104|  sita|40000|  f|
+| 12|102| Blake|20000|  m|
+| 11|103|  sony|30000|  f|
+| 13|105|  John|50000|  m|
+| 11|101|miller|10000|  m|
++---+---+------+-----+---+
+
+>>> e3.rdd.getNumPartitions()
+200
+--------------------------------------------------------------------------------------------------------------------
+21)replace():
+
+>>> emps1=emps.replace(['m','f'],['male','female'],'gen')
+>>> emps1.show()
++---+---+------+-----+------+
+|dno|eid| ename|  sal|   gen|
++---+---+------+-----+------+
+| 11|101|miller|10000|  male|
+| 12|102| Blake|20000|  male|
+| 11|103|  sony|30000|female|
+| 12|104|  sita|40000|female|
+| 13|105|  John|50000|  male|
++---+---+------+-----+------+
+
+ii)
+>>> emps2=emps.replace(["sita","John"],["Gita","James"],'ename')
+>>> emps2.show()
++---+---+------+-----+---+
+|dno|eid| ename|  sal|gen|
++---+---+------+-----+---+
+| 11|101|miller|10000|  m|
+| 12|102| Blake|20000|  m|
+| 11|103|  sony|30000|  f|
+| 12|104|  Gita|40000|  f|
+| 13|105| James|50000|  m|
++---+---+------+-----+---+
+
+iii)repalce 11------->mrkt
+            12------->fin
+            13------->HR
+here we get nulls as dno is int and dnamis of string type
+>>> emps3=emps.replace([11,12,13],['mrkt','fin','HR'],'dno')
+>>> emps3.show()
++----+---+------+-----+---+
+| dno|eid| ename|  sal|gen|
++----+---+------+-----+---+
+|null|101|miller|10000|  m|
+|null|102| Blake|20000|  m|
+|null|103|  sony|30000|  f|
+|null|104|  sita|40000|  f|
+|null|105|  John|50000|  m|
++----+---+------+-----+---+
+
+-------------------------------------------------------------------------------------------------------------------
+22)toDF():
+   to change the schema or column names
+>>> emps1=emps.toDF('ecode','empname','income','Gender','dno')
+>>> emps1.show()
++-----+-------+------+------+---+
+|ecode|empname|income|Gender|dno|
++-----+-------+------+------+---+
+|   11|    101|miller| 10000|  m|
+|   12|    102| Blake| 20000|  m|
+|   11|    103|  sony| 30000|  f|
+|   12|    104|  sita| 40000|  f|
+|   13|    105|  John| 50000|  m|
++-----+-------+------+------+---+
+
+-------------------------------------------------------------------------------------------------------------------
+23)toJSON():
+>>> emps.toJSON().collect()
+[u'{"dno":11,"eid":101,"ename":"miller","sal":10000,"gen":"m"}', u'{"dno":12,"eid":102,"ename":"Blake","sal":20000,"gen":"m"}', u'{"dno":11,"eid":103,"ename":"sony","sal":30000,"gen":"f"}', u'{"dno":12,"eid":104,"ename":"sita","sal":40000,"gen":"f"}', u'{"dno":13,"eid":105,"ename":"John","sal":50000,"gen":"m"}']
+
+-------------------------------------------------------------------------------------------------------------------
+24)toLocalIterator(): Returns local python iterator object such as list,tuple,set and dictionary
+
+>>> l1=list(emps.toLocalIterator())
+>>> print(l1)
+[Row(dno=11, id=101, name=u'miller', sal=10000, gen=u'm'), Row(dno=12, id=102, name=u'Blake', sal=20000, gen=u'm'), Row(dno=11, id=103, name=u'sony', sal=30000, gen=u'f'), Row(dno=12, id=104, name=u'sita', sal=40000, gen=u'f'), Row(dno=13, id=105, name=u'John', sal=50000, gen=u'm')]
+
+-------------------------------------------------------------------------------------------------------------------
+25)withColumnRenamed():
+
+>>> emps.withColumnRenamed("id","ecode").show()
++---+-----+------+-----+---+
+|dno|ecode|  name|  sal|gen|
++---+-----+------+-----+---+
+| 11|  101|miller|10000|  m|
+| 12|  102| Blake|20000|  m|
+| 11|  103|  sony|30000|  f|
+| 12|  104|  sita|40000|  f|
+| 13|  105|  John|50000|  m|
++---+-----+------+-----+---+
+
+>>> 
+--------------------------------------------------------------------------------------------------------------
+26)withColumn():Adding a new column
+
+ex:
+
+>>> emps.withColumn('tax',emps.sal-2000).show()
++---+---+------+-----+---+-----+
+|dno| id|  name|  sal|gen|  tax|
++---+---+------+-----+---+-----+
+| 11|101|miller|10000|  m| 8000|
+| 12|102| Blake|20000|  m|18000|
+| 11|103|  sony|30000|  f|28000|
+| 12|104|  sita|40000|  f|38000|
+| 13|105|  John|50000|  m|48000|
++---+---+------+-----+---+-----+
+
+----------------------------------------------------------------------------------------------------
+27)
+   Groupings and Aggregations:
+Aggregated functions:
+i)agg()
+ii)sum()
+iii)avg()
+iv)max()
+v)min
+
+groupBy():
+
+>>> #select gen,count(*) from emp group by gen
+... 
+>>> grp=emps.groupBy("gen").count()
+>>> grp.show()
++---+-----+                                                                     
+|gen|count|
++---+-----+
+|  m|    3|
+|  f|    2|
++---+-----+
+
+
+
+
+case1: single grouping and single aggreagation
+
+>>> res=emps.groupBy("gen").sum("sal")
+>>> res.show()
++---+--------+                                                                  
+|gen|sum(sal)|
++---+--------+
+|  m|   80000|
+|  f|   70000|
++---+--------+
+
+              (or)
+>>> from pyspark.sql.functions import *
+>>> res =emps.groupBy("gen").agg(sum("sal")).show()
++---+--------+                                                                  
+|gen|sum(sal)|
++---+--------+
+|  m|   80000|
+|  f|   70000|
++---+--------+
+
+
+---------------------------------------------------
+case2: multi-Grouping and single aggregation
+
+>>> res=emps.groupBy("dno","gen").sum("sal")
+>>> res.show()
++---+---+--------+                                                              
+|dno|gen|sum(sal)|
++---+---+--------+
+| 12|  f|   40000|
+| 12|  m|   20000|
+| 11|  f|   30000|
+| 13|  m|   50000|
+| 11|  m|   10000|
++---+---+--------+
+
+                     (or)
+>>> res =emps.groupBy("dno","gen").agg(sum("sal")).show()
+
++---+---+--------+                                                              
+|dno|gen|sum(sal)|
++---+---+--------+
+| 12|  f|   40000|
+| 12|  m|   20000|
+| 11|  f|   30000|
+| 13|  m|   50000|
+| 11|  m|   10000|
++---+---+--------+
+
+
+
+------------------------------------------------------------------------------------------------------------------
+case 3:single grouping and multiple aggregation
+
+>>> from pyspark.sql.functions import *
+>>> res=emps.groupBy("dno").agg(sum("sal"),max("sal"),min("sal"),avg("sal"),count("sal")).show()
++---+--------+--------+--------+--------+----------+                            
+|dno|sum(sal)|max(sal)|min(sal)|avg(sal)|count(sal)|
++---+--------+--------+--------+--------+----------+
+| 12|   60000|   40000|   20000| 30000.0|         2|
+| 11|   40000|   30000|   10000| 20000.0|         2|
+| 13|   50000|   50000|   50000| 50000.0|         1|
++---+--------+--------+--------+--------+----------+
+
+-------------------------------------------------------------------------------------------------------------------
+case 4:Multi grouping and multiple aggregation:
+
+>>> from pyspark.sql.functions import *
+>>> res=emps.groupBy("dno","gen").agg(sum("sal"),max("sal"),min("sal"),avg("sal"),count("sal")).show()
++---+---+--------+--------+--------+--------+----------+                        
+|dno|gen|sum(sal)|max(sal)|min(sal)|avg(sal)|count(sal)|
++---+---+--------+--------+--------+--------+----------+
+| 12|  f|   40000|   40000|   40000| 40000.0|         1|
+| 12|  m|   20000|   20000|   20000| 20000.0|         1|
+| 11|  f|   30000|   30000|   30000| 30000.0|         1|
+| 13|  m|   50000|   50000|   50000| 50000.0|         1|
+| 11|  m|   10000|   10000|   10000| 10000.0|         1|
++---+---+--------+--------+--------+--------+----------+
+
+--------------------------------------------------------------------------------------------------------------------
+28) joins
+
+syntax:
+
+df1.join(df2,joining condition,'type of join')
+
+types:
+1.inner
+2.outer
+3.left_outer
+4.right_outer
+5.full_outer
+
+>>> r1=sc.textFile("hdfs://localhost:9000/pysparklab/emps1")
+>>> r2=r1.map(lambda x:x.split(","))
+>>> from pyspark.sql import Row
+>>> r3=r2.map(lambda x:Row(id=int(x[0]),name=x[1],sal=int(x[2]),gen=x[3],dno=int(x[4])))
+>>> emps1=spark.createDataFrame(r3)
+>>> emps1.show()
++---+---+----+----+---+
+|dno| id|name| sal|gen|
++---+---+----+----+---+
+| 11|101| aaa|1000|  m|
+| 12|102| bbb|2000|  f|
+| 12|103| ccc|3000|  m|
+| 13|104| ddd|4000|  f|
+| 11|105| eee|5000|  m|
+| 14|106| fff|6000|  f|
+| 15|107| ggg|7000|  m|
+| 16|108| hhh|8000|  f|
++---+---+----+----+---+
+
+>>> rr1=sc.textFile("hdfs://localhost:9000/pysparklab/dept1")
+>>> rr2=rr1.map(lambda x:x.split(","))
+>>> rr3=rr2.map(lambda x:Row(dno=int(x[0]),dname=x[1],city=x[2]))
+>>> dept1=spark.createDataFrame(rr3)
+>>> dept1.show()
++-----+-----+---+
+| city|dname|dno|
++-----+-----+---+
+|  hyd| mrkt| 11|
+|delhi|   HR| 12|
+| pune|  fin| 13|
+|  hyd|   HR| 17|
+| pune|  fin| 18|
+|delhi| mrkt| 19|
++-----+-----+---+
+---------------------------------------------------------------------------------------------------
+1)inner join:
+>>> ij1=emps1.join(dept1,emps1.dno==dept1.dno,'inner').select(emps1.id,emps1.name,emps1.sal,emps1.gen,emps1.dno,dept1.dname,dept1.city)
+>>> ij1.show()
++---+----+----+---+---+-----+-----+                                             
+| id|name| sal|gen|dno|dname| city|
++---+----+----+---+---+-----+-----+
+|102| bbb|2000|  f| 12|   HR|delhi|
+|103| ccc|3000|  m| 12|   HR|delhi|
+|101| aaa|1000|  m| 11| mrkt|  hyd|
+|105| eee|5000|  m| 11| mrkt|  hyd|
+|104| ddd|4000|  f| 13|  fin| pune|
++---+----+----+---+---+-----+-----+
+---------------------------------------------------------------------------------------------------
+2)left outer join:
+
+>>> loj=emps1.join(dept1,emps1.dno==dept1.dno,'left_outer').select(emps1.id,emps1.name,emps1.sal,emps1.gen,emps1.dno,dept1.dname,dept1.city)
+>>> loj.show()
++---+----+----+---+---+-----+-----+                                             
+| id|name| sal|gen|dno|dname| city|
++---+----+----+---+---+-----+-----+
+|102| bbb|2000|  f| 12|   HR|delhi|
+|103| ccc|3000|  m| 12|   HR|delhi|
+|101| aaa|1000|  m| 11| mrkt|  hyd|
+|105| eee|5000|  m| 11| mrkt|  hyd|
+|104| ddd|4000|  f| 13|  fin| pune|
+|106| fff|6000|  f| 14| null| null|
+|107| ggg|7000|  m| 15| null| null|
+|108| hhh|8000|  f| 16| null| null|
++---+----+----+---+---+-----+-----+
+
+--------------------------------------------------------------------------------------------------------
+3)right outer join:
+
+>>> roj=emps1.join(dept1,emps1.dno==dept1.dno,'right_outer').select(emps1.id,emps1.name,emps1.sal,emps1.gen,dept1.dno,dept1.dname,dept1.city)
+>>> roj.show()
++----+----+----+----+---+-----+-----+                                           
+|  id|name| sal| gen|dno|dname| city|
++----+----+----+----+---+-----+-----+
+|null|null|null|null| 19| mrkt|delhi|
+|null|null|null|null| 17|   HR|  hyd|
+| 102| bbb|2000|   f| 12|   HR|delhi|
+| 103| ccc|3000|   m| 12|   HR|delhi|
+| 101| aaa|1000|   m| 11| mrkt|  hyd|
+| 105| eee|5000|   m| 11| mrkt|  hyd|
+| 104| ddd|4000|   f| 13|  fin| pune|
+|null|null|null|null| 18|  fin| pune|
++----+----+----+----+---+-----+-----+
+
+-------------------------------------------------------------------------------------------------------------
+4)full outer join:
+
+>>> foj=emps1.join(dept1,emps1.dno==dept1.dno,'full_outer').select(emps1.id,emps1.name,emps1.sal,emps1.gen,emps1.dno,dept1.dname,dept1.city)
+>>> foj.show()
++----+----+----+----+----+-----+-----+                                          
+|  id|name| sal| gen| dno|dname| city|
++----+----+----+----+----+-----+-----+
+|null|null|null|null|null| mrkt|delhi|
+|null|null|null|null|null|   HR|  hyd|
+| 102| bbb|2000|   f|  12|   HR|delhi|
+| 103| ccc|3000|   m|  12|   HR|delhi|
+| 101| aaa|1000|   m|  11| mrkt|  hyd|
+| 105| eee|5000|   m|  11| mrkt|  hyd|
+| 104| ddd|4000|   f|  13|  fin| pune|
+|null|null|null|null|null|  fin| pune|
+| 106| fff|6000|   f|  14| null| null|
+| 107| ggg|7000|   m|  15| null| null|
+| 108| hhh|8000|   f|  16| null| null|
++----+----+----+----+----+-----+-----+
+
+--------------------------------------------------------------------------------------------------------------
+29)Eliminating nulls :
+eliminating the records with null values
+
+>>> foj.dropna().show()
++---+----+----+---+---+-----+-----+                                             
+| id|name| sal|gen|dno|dname| city|
++---+----+----+---+---+-----+-----+
+|102| bbb|2000|  f| 12|   HR|delhi|
+|103| ccc|3000|  m| 12|   HR|delhi|
+|101| aaa|1000|  m| 11| mrkt|  hyd|
+|105| eee|5000|  m| 11| mrkt|  hyd|
+|104| ddd|4000|  f| 13|  fin| pune|
++---+----+----+---+---+-----+-----+
+
+-----------------------------------------------------------------------------------------------------------------
+30)fill():
+   replacing nulls with zero 
+>>> foj.na.fill(0).show()
++---+----+----+----+---+-----+-----+                                            
+| id|name| sal| gen|dno|dname| city|
++---+----+----+----+---+-----+-----+
+|  0|null|   0|null|  0| mrkt|delhi|
+|  0|null|   0|null|  0|   HR|  hyd|
+|102| bbb|2000|   f| 12|   HR|delhi|
+|103| ccc|3000|   m| 12|   HR|delhi|
+|101| aaa|1000|   m| 11| mrkt|  hyd|
+|105| eee|5000|   m| 11| mrkt|  hyd|
+|104| ddd|4000|   f| 13|  fin| pune|
+|  0|null|   0|null|  0|  fin| pune|
+|106| fff|6000|   f| 14| null| null|
+|107| ggg|7000|   m| 15| null| null|
+|108| hhh|8000|   f| 16| null| null|
++---+----+----+----+---+-----+-----+
+
+>>> foj.na.fill({'name':'unknown','id':000,'sal':0000,'gen':'unknown','dno':00,'dname':'unknown','city':'unknown'}).show()
++---+-------+----+-------+---+-------+-------+                                  
+| id|   name| sal|    gen|dno|  dname|   city|
++---+-------+----+-------+---+-------+-------+
+|  0|unknown|   0|unknown|  0|   mrkt|  delhi|
+|  0|unknown|   0|unknown|  0|     HR|    hyd|
+|102|    bbb|2000|      f| 12|     HR|  delhi|
+|103|    ccc|3000|      m| 12|     HR|  delhi|
+|101|    aaa|1000|      m| 11|   mrkt|    hyd|
+|105|    eee|5000|      m| 11|   mrkt|    hyd|
+|104|    ddd|4000|      f| 13|    fin|   pune|
+|  0|unknown|   0|unknown|  0|    fin|   pune|
+|106|    fff|6000|      f| 14|unknown|unknown|
+|107|    ggg|7000|      m| 15|unknown|unknown|
+|108|    hhh|8000|      f| 16|unknown|unknown|
++---+-------+----+-------+---+-------+-------+
+
+------------------------------------------------------------------------------------------------------------------
+
+Working with Sql queries:
+
+For working with sql queries, Register DataFrame as temp table and apply all valid sql queries on it...
+
+To register DF as table:
+2 ways
+1.df.registerTempTable("tablename")
+2.sqlContext.registerDataFrameAsTable(df,"tablename")
+
+sqlContext.sql("<--------- sql query-------> ").show()
+
+>>> r1=sc.textFile("hdfs://localhost:9000/pysparklab/emp7")
+>>> r2=r1.map(lambda x:x.split(","))
+>>> from pyspark.sql import Row
+>>> r3=r2.map(lambda x:Row(id=int(x[0]),name=x[1],sal=int(x[2]),gen=x[3],dno=int(x[4])))
+>>> emps=spark.createDataFrame(r3)
+>>> emps.show()
++---+---+------+-----+---+
+|dno| id|  name|  sal|gen|
++---+---+------+-----+---+
+| 11|101|miller|10000|  m|
+| 12|102| Blake|20000|  m|
+| 11|103|  sony|30000|  f|
+| 12|104|  sita|40000|  f|
+| 13|105|  John|50000|  m|
++---+---+------+-----+---+
+---------------------------------------------------------------------------------------------------------------
+I-way :
+>>> emps.registerTempTable("emps1")
+>>> e1=sqlContext.sql("select * from emps1")     
+// The result of sql query also returns a DF.
+
+>>> e1.show()
++---+---+------+-----+---+
+|dno| id|  name|  sal|gen|
++---+---+------+-----+---+
+| 11|101|miller|10000|  m|
+| 12|102| Blake|20000|  m|
+| 11|103|  sony|30000|  f|
+| 12|104|  sita|40000|  f|
+| 13|105|  John|50000|  m|
++---+---+------+-----+---+
+   (or)
+----------------------------------------------------------------------------------------------------------------
+II-way  :
+
+>>> sqlContext.registerDataFrameAsTable(emps,"emps2")
+>>> e2=sqlContext.sql("select * from emps2")
+>>> e2.show()
++---+---+------+-----+---+
+|dno| id|  name|  sal|gen|
++---+---+------+-----+---+
+| 11|101|miller|10000|  m|
+| 12|102| Blake|20000|  m|
+| 11|103|  sony|30000|  f|
+| 12|104|  sita|40000|  f|
+| 13|105|  John|50000|  m|
++---+---+------+-----+---+
+
+Here emps2 is the table name ,on this table we can perform any valid sql queries
+
+r1---->RDD
+emps--->DF
+emps2 -->Table
+
+file------->RDD--------->DF------->table-------->query
+
+------------------------------------------------------------------------------------------------------------
+
+
+>>> # Adding an extra column
+... 
+>>> taxadd=sqlContext.sql("select * ,sal*0.10 as tax from emps2").show()
++---+---+------+-----+---+-------+
+|dno| id|  name|  sal|gen|    tax|
++---+---+------+-----+---+-------+
+| 11|101|miller|10000|  m|1000.00|
+| 12|102| Blake|20000|  m|2000.00|
+| 11|103|  sony|30000|  f|3000.00|
+| 12|104|  sita|40000|  f|4000.00|
+| 13|105|  John|50000|  m|5000.00|
++---+---+------+-----+---+-------+
+--------------------------------------------------------------------------------------------------------------
+
+>>> # Groupings and Aggregations:
+... 
+>>> #case 1: single Grouping and Single Aggregation
+... 
+>>> singrp_sinaggr =sqlContext.sql("select gen,sum(sal) from emps2 group by gen").show()
++---+--------+                                                                  
+|gen|sum(sal)|
++---+--------+
+|  m|   80000|
+|  f|   70000|
++---+--------+
+
+>>> #case 2: Multi Grouping and singlele Aggregation:
+... 
+>>> mulgrp_sinaggr=sqlContext.sql("select dno,gen,sum(sal) from emps2 group By dno,gen").show()
++---+---+--------+                                                              
+|dno|gen|sum(sal)|
++---+---+--------+
+| 12|  f|   40000|
+| 12|  m|   20000|
+| 11|  f|   30000|
+| 13|  m|   50000|
+| 11|  m|   10000|
++---+---+--------+
+
+>>> #case 3: Single Grouping and multiple Aggregation:
+... 
+>>> singrp_mulaggr=sqlContext.sql("select dno,sum(sal),avg(sal),max(sal),min(sal),count(*)  from emps2 group By dno").show()
++---+--------+--------+--------+--------+--------+                              
+|dno|sum(sal)|avg(sal)|max(sal)|min(sal)|count(1)|
++---+--------+--------+--------+--------+--------+
+| 12|   60000| 30000.0|   40000|   20000|       2|
+| 11|   40000| 20000.0|   30000|   10000|       2|
+| 13|   50000| 50000.0|   50000|   50000|       1|
++---+--------+--------+--------+--------+--------+
+
+------------------------------------------------------------------------------------------------------------------
+
+ #case 4: Multi Grouping and multiple Aggregation:
+... 
+>>> mulgrp_mulaggr=sqlContext.sql("select dno,gen,sum(sal),avg(sal),max(sal),min(sal),count(*)  from emps2 group By dno,gen").show()
++---+---+--------+--------+--------+--------+--------+                          
+|dno|gen|sum(sal)|avg(sal)|max(sal)|min(sal)|count(1)|
++---+---+--------+--------+--------+--------+--------+
+| 12|  f|   40000| 40000.0|   40000|   40000|       1|
+| 12|  m|   20000| 20000.0|   20000|   20000|       1|
+| 11|  f|   30000| 30000.0|   30000|   30000|       1|
+| 13|  m|   50000| 50000.0|   50000|   50000|       1|
+| 11|  m|   10000| 10000.0|   10000|   10000|       1|
++---+---+--------+--------+--------+--------+--------+
+
+-------------------------------------------------------------------------------------------------------------
+JOINS:
+
+Task: For each city,I want totsal generated
+but
+sal------->emp table
+city------>dept table
+
+Step 1:Loading both emp and dept from HDFS
+
+emp
+>>> r1=sc.textFile("hdfs://localhost:9000/pysparklab/emps1")
+>>> r2=r1.map(lambda x:x.split(","))
+>>> r3=r2.map(lambda x:Row(id=int(x[0]),name=x[1],sal=int(x[2]),gen=x[3],dno=int(x[4])))
+>>> emp1=spark.createDataFrame(r3)
+
+>>> emp1.show()
++---+---+----+----+---+
+|dno| id|name| sal|gen|
++---+---+----+----+---+
+| 11|101| aaa|1000|  m|
+| 12|102| bbb|2000|  f|
+| 12|103| ccc|3000|  m|
+| 13|104| ddd|4000|  f|
+| 11|105| eee|5000|  m|
+| 14|106| fff|6000|  f|
+| 15|107| ggg|7000|  m|
+| 16|108| hhh|8000|  f|
++---+---+----+----+---+
+
+dept
+
+>>> rr1=sc.textFile("hdfs://localhost:9000/pysparklab/dept1")
+>>> rr2=rr1.map(lambda x:x.split(","))
+>>> rr3=rr2.map(lambda x:Row(dno=int(x[0]),dname=x[1],city=x[2]))
+>>> dept=spark.createDataFrame(rr3)
+>>> dept.show()
++-----+-----+---+
+| city|dname|dno|
++-----+-----+---+
+|  hyd| mrkt| 11|
+|delhi|   HR| 12|
+| pune|  fin| 13|
+|  hyd|   HR| 17|
+| pune|  fin| 18|
+|delhi| mrkt| 19|
++-----+-----+---+
+
+Now registering DF as tempTable
+
+>>> sqlContext.registerDataFrameAsTable(emp1,"emps1")
+>>> sqlContext.registerDataFrameAsTable(dept,"depts1")
+>>> e1=sqlContext.sql("select * from emps1").show()
++---+---+----+----+---+
+|dno| id|name| sal|gen|
++---+---+----+----+---+
+| 11|101| aaa|1000|  m|
+| 12|102| bbb|2000|  f|
+| 12|103| ccc|3000|  m|
+| 13|104| ddd|4000|  f|
+| 11|105| eee|5000|  m|
+| 14|106| fff|6000|  f|
+| 15|107| ggg|7000|  m|
+| 16|108| hhh|8000|  f|
++---+---+----+----+---+
+
+>>> e2=sqlContext.sql("select * from depts1").show()
++-----+-----+---+
+| city|dname|dno|
++-----+-----+---+
+|  hyd| mrkt| 11|
+|delhi|   HR| 12|
+| pune|  fin| 13|
+|  hyd|   HR| 17|
+| pune|  fin| 18|
+|delhi| mrkt| 19|
++-----+-----+---+
+
+>>> res=sqlContext.sql("select city,sum(sal) as totsal from emps1 e join depts1 d on e.dno=d.dno group by city").show()
++-----+------+                                                                  
+| city|totsal|
++-----+------+
+|delhi|  5000|
+|  hyd|  6000|
+| pune|  4000|
++-----+------+
+
+Note: the query result(res) is also a Datarame ,if u want to query on that  then register that DF as  temp table 
+      and performing quering
+
+------------------------------------------------------------------------------------------------------------------
+
+Spark and hive Integration:
+
+for spark integrating with hive, we need to copy the following into spark installation folder
+1)hive-site.xml from hive
+2)hdfs-site.xml from hadoop
+3)core-site.xml from hadoop
+
+we can copy them by directly going to those directries and copying or 
+copying by using cp command 
+
+$ cp $HIVE_HOME/conf/hive-site.xml $SPARK_HOME/conf
+$ cp $HADOOP_HOME/etc/hadoop/hdfs-site.xml $SPARK_HOME/conf
+$ cp $HADOOP_HOME/etc/hadoop/core-site.xml $SPARK_HOME/conf
+
+>>> from pyspark.sql import Row,HiveContext
+>>> hc=HiveContext(sc)                      //using hc(HiveContext object), we can perform sql queries
+>>> hc.sql("show databases").show()
++------------+
+|databaseName|
++------------+
+|         db1|
+|         db2|
+|     default|
+|    sparkdb1|
++------------+
+
+HEre it is not displaying all the databases-------->so restart the pyspark shell after integrating 
+
+>>> quit()
+lenovo@lenovo-Lenovo-G450:~$ pyspark
+
+>>> from pyspark.sql import Row,HiveContext
+>>> hc=HiveContext(sc)
+>>> hc.sql("show databases").show()
++------------+
+|databaseName|
++------------+
+|       amith|
+|     buckdb1|
+|       bucks|
+|     default|
+|       demo1|
+|    durgait1|
+|  durgasoft1|
+|  durgasoft2|
+|     goutham|
+|   goverdhan|
+|     hivedb1|
+|    hivedb10|
+|    hivedb11|
+|    hivedb12|
+|    hivedb13|
+|    hivedb14|
+|    hivedb15|
+|    hivedb16|
+|    hivedb17|
+|    hivedb18|
++------------+
+only showing top 20 rows
+
+creating a database in hive from spark side
+
+>>> hc.sql("create database demo2")
+19/04/06 07:16:55 WARN ObjectStore: Failed to get database demo2, returning NoSuchObjectException
+DataFrame[]
+>>> hc.sql("show databases").show()
++------------+
+|databaseName|
++------------+
+|       amith|
+|     buckdb1|
+|       bucks|
+|     default|
+|       demo1|
+|       demo2|
+|    durgait1|
+|  durgasoft1|
+|  durgasoft2|
+|     goutham|
+|   goverdhan|
+|     hivedb1|
+|    hivedb10|
+|    hivedb11|
+|    hivedb12|
+|    hivedb13|
+|    hivedb14|
+|    hivedb15|
+|    hivedb16|
+|    hivedb17|
++------------+
+only showing top 20 rows
+
+>>> hc.sql("use demo2")
+>>> hc.sql("create table samp1(id int,name string,sal int)")
+#here creating table in hive from spark
+
+>>> hc.sql("show tables").show()
++--------+---------+-----------+
+|database|tableName|isTemporary|
++--------+---------+-----------+
+|   demo2|    samp1|      false|
++--------+---------+-----------+
+
+>>> hc.sql("create table samp2(id int,name string,sal int) row format delimited fields terminated by ','")
+
+>>> hc.sql("show tables").show()
++--------+---------+-----------+
+|database|tableName|isTemporary|
++--------+---------+-----------+
+|   demo2|    samp1|      false|
+|   demo2|    samp2|      false|
++--------+---------+-----------+
+
+$ cat dupes
+101,aaa,10000
+101,bbb,20000
+101,aaa,10000
+101,aaa,10000
+101,aaa,10000
+102,bbb,40000
+103,ccc,50000
+102,bbb,40000
+102,bbb,40000
+
+now loading the above LFS file into hive from spark
+
+>>> hc.sql("load data local inpath 'dupes' into table samp2")
+DataFrame[]
+>>> hc.sql("select * from samp2").show()
++---+----+-----+
+| id|name|  sal|
++---+----+-----+
+|101| aaa|10000|
+|101| bbb|20000|
+|101| aaa|10000|
+|101| aaa|10000|
+|101| aaa|10000|
+|102| bbb|40000|
+|103| ccc|50000|
+|102| bbb|40000|
+|102| bbb|40000|
++---+----+-----+
+
+Now goto hive environment and check whethe database and table is created or not
+
+hive> show databases;
+OK
+amith
+buckdb1
+bucks
+default
+demo1
+demo2
+
+hive> use demo2;
+OK
+Time taken: 0.229 seconds
+hive> show tables;
+OK
+samp1
+samp2
+Time taken: 0.174 seconds, Fetched: 2 row(s)
+hive> select * from samp2;
+OK
+101	aaa	10000
+101	bbb	20000
+101	aaa	10000
+101	aaa	10000
+101	aaa	10000
+102	bbb	40000
+103	ccc	50000
+102	bbb	40000
+102	bbb	40000
+
+database creation, table creation ,loading data into table everything done at spark side.
+
+now create a database and table here in hive and check at spark side
+
+$ cat marks
+Rohith,70,80,50
+Ajith,85,65,45
+Aruna,85,75,65
+kamal,90,80,60
+miller,75,85,95
+
+hive> create database dbpyspark1;
+OK
+Time taken: 0.56 seconds
+hive> use dbpyspark1;
+OK
+Time taken: 0.214 seconds
+
+hive> create table stdmarks1(name string,s1 int,s2 int,s3 int)
+    > row format delimited
+    > fields terminated by',';
+OK
+Time taken: 1.756 seconds
+hive> load data local inpath 'marks' into table stdmarks1;
+Loading data to table dbpyspark1.stdmarks1
+OK
+Time taken: 5.341 seconds
+hive> select * from stdmarks1;
+OK
+Rohith	70	80	50
+Ajith	85	65	45
+Aruna	85	75	65
+kamal	90	80	60
+miller	75	85	95
+
+Now go to the spark side and check
+
+>>> from pyspark.sql import Row,HiveContext
+>>> hc=HiveContext(sc)
+>>> hc.sql("show databases").show()
++------------+
+|databaseName|
++------------+
+|       amith|
+|     buckdb1|
+|       bucks|
+|  dbpyspark1|
+|     default|
+|       demo1|
+|       demo2|
+
+
+>>> hc.sql("use dbpyspark1")
+DataFrame[]
+>>> hc.sql("show tables").show()
++----------+---------+-----------+
+|  database|tableName|isTemporary|
++----------+---------+-----------+
+|dbpyspark1|stdmarks1|      false|
++----------+---------+-----------+
+
+>>> hc.sql("select * from stdmarks1").show()
++------+---+---+---+
+|  name| s1| s2| s3|
++------+---+---+---+
+|Rohith| 70| 80| 50|
+| Ajith| 85| 65| 45|
+| Aruna| 85| 75| 65|
+| kamal| 90| 80| 60|
+|miller| 75| 85| 95|
++------+---+---+---+
+
+>>> hc.sql("select name,s1,s2,s3,s1+s2+s3 from stdmarks1").show()
++------+---+---+---+----------------+
+|  name| s1| s2| s3|((s1 + s2) + s3)|
++------+---+---+---+----------------+
+|Rohith| 70| 80| 50|             200|
+| Ajith| 85| 65| 45|             195|
+| Aruna| 85| 75| 65|             225|
+| kamal| 90| 80| 60|             230|
+|miller| 75| 85| 95|             255|
++------+---+---+---+----------------+
+
+>>> hc.sql("select name,s1,s2,s3,s1+s2+s3 as total from stdmarks1").show()
++------+---+---+---+-----+
+|  name| s1| s2| s3|total|
++------+---+---+---+-----+
+|Rohith| 70| 80| 50|  200|
+| Ajith| 85| 65| 45|  195|
+| Aruna| 85| 75| 65|  225|
+| kamal| 90| 80| 60|  230|
+|miller| 75| 85| 95|  255|
++------+---+---+---+-----+
+
+here create anothe table and load this data(insert overwrite) ---->table to table copy
+
+>>> hc.sql("create table stdmarks2(name string,s1 int,s2 int,s3 int,total int) row format delimited fields terminated by ','")
+
+>>> hc.sql("show tables").show()
++----------+---------+-----------+
+|  database|tableName|isTemporary|
++----------+---------+-----------+
+|dbpyspark1|stdmarks1|      false|
+|dbpyspark1|stdmarks2|      false|
++----------+---------+-----------+
+
+>>> hc.sql("insert overwrite table stdmarks2 select name,s1,s2,s3,s1+s2+s3 from stdmarks1")
+DataFrame[]
+>>> hc.sql("select * from stdmarks2").show()
++------+---+---+---+-----+
+|  name| s1| s2| s3|total|
++------+---+---+---+-----+
+|Rohith| 70| 80| 50|  200|
+| Ajith| 85| 65| 45|  195|
+| Aruna| 85| 75| 65|  225|
+| kamal| 90| 80| 60|  230|
+|miller| 75| 85| 95|  255|
++------+---+---+---+-----+
+
+if the query generaes data then the resultant is a DF
+
+creating emp table from spark side:
+
+>> hc.sql("create table emp(eid int,ename string,sal int,gen string,dno int) row format delimited fields terminated by ','") 
+
+DataFrame[]
+>>> hc.sql("show tables").show()
++----------+---------+-----------+
+|  database|tableName|isTemporary|
++----------+---------+-----------+
+|dbpyspark1|      emp|      false|
+|dbpyspark1|stdmarks1|      false|
+|dbpyspark1|stdmarks2|      false|
++----------+---------+-----------+
+
+>>> hc.sql("load data local inpath 'emp7' into table emp")
+DataFrame[]
+>>> hc.sql("select * from emp").show()
++---+------+-----+---+---+
+|eid| ename|  sal|gen|dno|
++---+------+-----+---+---+
+|101|miller|10000|  m| 11|
+|102| Blake|20000|  m| 12|
+|103|  sony|30000|  f| 11|
+|104|  sita|40000|  f| 12|
+|105|  John|50000|  m| 13|
++---+------+-----+---+---+
+
+now we can perform all types of queries using spark execution model
+
+>>> # i want only male records
+... 
+>>> males=hc.sql("select * from emp where gen='m'").show()
+19/04/06 08:04:56 WARN LazyStruct: Extra bytes detected at the end of the row! Ignoring similar problems.
++---+------+-----+---+---+
+|eid| ename|  sal|gen|dno|
++---+------+-----+---+---+
+|101|miller|10000|  m| 11|
+|102| Blake|20000|  m| 12|
+|105|  John|50000|  m| 13|
++---+------+-----+---+---+
+
+now we can also convert this DF into temp table and perform queries as
+
+>>> emps=hc.sql("select * from emp")
+>>> # here the result of sql query returns a DF ,so here emps is a DF
+... 
+>>> emps
+DataFrame[eid: int, ename: string, sal: int, gen: string, dno: int]
+
+>>> sqlContext.registerDataFrameAsTable(emps,"emps1")
+
+>>> sqlContext.sql("select * from emps1").show()
+
++---+------+-----+---+---+
+|eid| ename|  sal|gen|dno|
++---+------+-----+---+---+
+|101|miller|10000|  m| 11|
+|102| Blake|20000|  m| 12|
+|103|  sony|30000|  f| 11|
+|104|  sita|40000|  f| 12|
+|105|  John|50000|  m| 13|
++---+------+-----+---+---+
+
+-------------------------------------------------------------------------------------------------------------------------
+
+spark Cluster:
+
+Spark can run on
+i)yarn Cluster
+ii)mesos
+iii)AWS
+
+The cluster that we are using is YARN Cluster.
+
+YARN------>Distributed computing cluster--------->comes along with hadoop
+
+we submit our spark Application to YARN cluster.
+------------------------------------------------------------------------------------------------------------
+ex:
+
+$ nano wordcount.py
+
+
+from pyspark import SparkConf,SparkContext
+import sys
+
+if __name__=='__main__':
+
+    conf=SparkConf()
+
+    sc=SparkContext('local',"worcountApp",conf=conf)
+
+    r1=sc.textFile(sys.argv[1])
+
+    r2=r1.flatMap(lambda x:x.split(" ")).map(lambda x:(x,1)).reduceByKey(lambda x,y:x+y)
+
+    r2.saveAsTextFile(sys.argv[2])
+
+    sc.stop()
+
+Now Submitting the spark Application
+syntax:
+$spark-submit Configurationoptions programpath inputpath outputpath
+
+Here configuationoptions are optional
+
+now submitting or application
+$ spark-submit /home/lenovo/wordcount.py file:///home/lenovo/comment file:///home/lenovo/wcres
+
+output:
+$ ls wcres
+part-00000  _SUCCESS
+lenovo@lenovo-Lenovo-G450:~$ cat wcres/part-00000
+(u'java', 5)
+(u'secure', 1)
+(u'simple', 1)
+(u'compiled', 1)
+(u'is', 5)
+(u'interpreted', 1)
+(u'easy', 1)
+
+
+within the program we have specified 
+
+sc=SparkContext('local')
+spark Application can run in local/cluster(YARN)
+
+local----->one machine
+cluster--->multiple machines
+
+Q)how to configure the master
+  master can be of (local/cluster(YARN)) 
+
+in jupyter we have seen
+
+from pyspark.sql import SparkSession
+sparkdriver=SparkSession.builder.master("local").appName("wordcount").getOrCreate()
+
+here we are mentioning master as ----->local
+
+if u want cluster mode----->then specify as "yarn" cluster as shown below
+
+sparkdriver=SparkSession.builder.master("yarn").appName("wordcount").getOrCreate()
+
+
+now goto our application(wordcount.py) and change local mode to cluster mode(yarn)
+
+
+$ nano wordcount.py
+
+
+from pyspark import SparkConf,SparkContext
+import sys
+
+if __name__=='__main__':
+
+    conf=SparkConf()
+
+    sc=SparkContext('yarn',"worcountApp",conf=conf) #if spark 1.xx version speciy as  "yarn-client"
+
+    r1=sc.textFile(sys.argv[1])
+
+    r2=r1.flatMap(lambda x:x.split(" ")).map(lambda x:(x,1)).reduceByKey(lambda x,y:x+y)
+
+    r2.saveAsTextFile(sys.argv[2])
+
+    sc.stop()
+
+
+Now submit ur Application to YARN cluster,
+
+start YARN Services
+
+while trying to run the application on yarn
+      try to take i/p from hdfs and
+      try to write the o/p to hdfs
+
+Now submit ur Application:
+
+$ hdfs dfs -put comment /pysparklab
+lenovo@lenovo-Lenovo-G450:~$ hdfs dfs -cat /pysparklab/comment
+java is secure
+java is simple
+java is compiled
+java is interpreted
+
+$ spark-submit /home/lenovo/worcount.py hdfs://localhost:9000/pysparklab/comment hdfs://localhost:9000/pysparklab/wordcountres1
+
+$ hdfs dfs -cat /pysparklab/wordcountres1/part-00000
+(u'java', 5)
+(u'secure', 1)
+(u'simple', 1)
+(u'compiled', 1)
+(u'is', 5)
+(u'interpreted', 1)
+(u'easy', 1)

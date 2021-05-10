@@ -1,0 +1,138 @@
+#Author: Abuchi Okeke
+#Date: 10/18/2020
+#Procedure and code base for assignment 6
+# 
+#
+
+
+#1 Create Databases
+
+hdfs dfs -mkdir /user/databases/mysql
+hdfs dfs -mkdir /user/databases/sqlserver
+hdfs dfs -mkdir /user/databases/postgresql
+hdfs dfs -mkdir /user/databases/csv
+
+####################################################################################
+
+#2 Import all tables from databases to hdfs
+
+sqoop import-all-tables --connect jdbc:mysql://localhost/musicbrainz --username root --password Password! --m 1 --warehouse-dir /user/databases/mysql/musicdb
+
+sqoop import-all-tables --connect jdbc:postgresql://localhost:5432/musicbrainz --username postgres --password Password --m 1 --warehouse-dir /user/databases/postgresql/musicdb
+
+sqoop import-all-tables --connect 'jdbc:sqlserver://localhost:1433;databaseName=master' --username 'SA' --password Password --m 1 --warehouse-dir /user/databases/sqlserver/musicdb
+
+##################################################################################
+
+#3 Move a .csv file to gcp using scp command or sftp
+
+scp data.csv Buchi@35.225.142.191:~
+
+#4 Establish sftp connection with gcp vm instance
+sftp Buchi@35.225.142.191
+
+sftp> put data.csv 
+
+#5 Get file from gcp to LFS
+sftp> get data.csv album.csv
+
+#Upload to hdfs
+hdfs dfs -put ~/datasets/albums.csv /user/databases/csv
+
+##################################################################################
+
+create database raw;
+create database dsl;
+create database asl;
+
+use raw;
+
+#6 Create Hive tables
+
+#Create Hive External Table 1
+CREATE EXTERNAL TABLE genre_external(
+    id VARCHAR(1000),
+    labels VARCHAR(1000),
+    Names VARCHAR(255))
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+LOCATION '/user/databases/postgresql/musicdb/genre/';
+
+#Create Hive External Table 2
+CREATE EXTERNAL TABLE subgenre_external (
+    id VARCHAR(1000),
+    labels VARCHAR(1000),
+    Names VARCHAR(255))
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+LOCATION '/user/databases/postgresql/musicdb/subgenre/';
+
+#Create Hive External Table 3
+CREATE EXTERNAL TABLE year_external(
+    id VARCHAR(255),
+    label VARCHAR(255),
+    name int)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+LOCATION '/user/databases/postgresql/musicdb/year/';
+
+
+#Create Hive External Table 4
+CREATE EXTERNAL TABLE albums_external(
+    id VARCHAR(255),
+    label VARCHAR(255),
+    title VARCHAR(10000),
+    year INT,
+    number INT)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+LOCATION '/user/databases/csv/';
+
+####################################################################################
+
+#Creating Hive Internal Table
+
+use dsl;
+
+CREATE TABLE genre_internal(
+    id VARCHAR(1000),
+    labels VARCHAR(1000),
+    Names VARCHAR(255))
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ',';
+
+insert overwrite table genre_internal select * from genre_external;
+
+CREATE TABLE subgenre_internal (
+    id VARCHAR(1000),
+    labels VARCHAR(1000),
+    Names VARCHAR(255))
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ',';
+
+insert overwrite table subgenre_internal select * from subgenre_external;
+
+CREATE TABLE year_internal(
+    id VARCHAR(255),
+    label VARCHAR(255),
+    name int)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ',';
+
+insert overwrite table year_internal select * from year_external;
+
+CREATE TABLE albums_internal(
+    id VARCHAR(255),
+    label VARCHAR(255),
+    title VARCHAR(10000),
+    year INT,
+    number INT)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ',';
+
+insert overwrite table albums_internal select * from albums_external;
+
+#Execute scripts
+
+hive -f create_hive_internal_tables.hql
+hive -f create_hive_external_tables.hql

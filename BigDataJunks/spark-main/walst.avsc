@@ -1,0 +1,15 @@
+{
+    "type": "record",
+    "name": "Dept_store",
+    "fields": [
+        {"name": "Date", "type": "string"},
+        {"name": "Store", "type": "int"},
+        {"name": "Dept", "type": "int"},
+        {"name": "Temperature", "type": "float"},
+        {"name": "Fuel_Price", "type": "float"},
+        {"name": "CPI", "type": "float"},
+        {"name": "Unemployment", "type": "float"},
+        {"name": "IsHoliday", "type": "string"},
+        {"name": "Weekly_Sales", "type": "float"}
+    ]
+}
